@@ -7,14 +7,10 @@ public class SessionMSample : MonoBehaviour
 {
 	public SessionM sessionM;
 
+	public Text sessionMSDK;
 	public Text sessionMStateLabel;
 
-	public Text optOutLabel;
-	public Text isRegisteredLabel;
-	public Text isLoggedInLabel;
-	public Text pointBalanceLabel;
-	public Text unclaimedAchCountLabel;
-	public Text unclaimedAchValueLable;
+	public SessionMSampleGUI gui;
 
 	public string action1;
 	public string action2;
@@ -55,6 +51,10 @@ public class SessionMSample : MonoBehaviour
 	{
 		Debug.Log("Event: NotifySessionStateChanged Fired");
 		sessionMStateLabel.text = "SessionM State: " + state.ToString();
+		if (state == SessionState.StartedOnline) {
+			gui.OnPopulateRewards(sessionM.GetRewards());
+			gui.OnPopulateTiers(sessionM.GetTiers());
+		}
 	}
 
 	private void NotifyUnclaimedAchievementDataUpdated(IAchievementData achievementData)
@@ -70,12 +70,7 @@ public class SessionMSample : MonoBehaviour
 		if(user == null)
 			return;
 
-		optOutLabel.text = "Opt Out: " + user.IsOptedOut().ToString();
-		isRegisteredLabel.text = "Is Registered: " + user.IsRegistered();
-		isLoggedInLabel.text = "Is Logged In: " + user.IsLoggedIn();
-		pointBalanceLabel.text = "Point Balance: " + user.GetUserPointBalance();
-		unclaimedAchCountLabel.text = "Unclaimed Achievement Count: " + user.GetUnclaimedAchievementCount();
-		unclaimedAchValueLable.text = "Unclaimed Achievement Value: " + user.GetUnclaimedAchievementValue();
+		gui.OnPopulateUser(user);
 	}
 
 	//Unity Lifecycle
@@ -87,9 +82,41 @@ public class SessionMSample : MonoBehaviour
 		SessionMEventListener.NotifySessionError += NotifySessionError;
 		SessionMEventListener.NotifyUnclaimedAchievementDataUpdated += NotifyUnclaimedAchievementDataUpdated;
 		SessionMEventListener.NotifyUserInfoChanged += UserChanged;
-
+		sessionMSDK.text = "SDK VERSION: " + sessionM.GetSDKVersion();
 		UserChanged(null);
 	}
+
+//	public Reward r;
+//	private void Test()
+//	{
+//		Debug.Log ("Testing Rewards");
+//		string s = "{" +
+//		           "\"id\": 7749," +
+//		           "\"name\": \"$2 iTunes Gift Card\"," +
+//		           "\"points\": 5000," +
+//		           "\"image\": \"https://cdn2.getm.pt/1/9c/2/648115/itunes.png\"," +
+//		           "\"type\": \"Offer\"," +
+//		           "\"expires_at\": null," +
+//		           "\"url\": \"https://api.tour-sessionm.com/offers/7749\"," +
+//		           "\"tier\": \"platinum\"" +
+//		           "}";
+//		
+//		var dict = MiniJSON.Json.Deserialize(s) as Dictionary<string, object>;
+//		long id = (System.Int64) dict["id"];
+//		string name = (string) dict["name"];
+//		long points = (System.Int64) dict["points"];
+//		string imageURL = (string)dict["image"];
+//		string type = (string) dict["type"];
+//		string expiresAt = (string) dict["expires_at"];
+//		string url = (string) dict["url"];
+//		string tier = (string)dict ["tier"];
+//
+//		r = new Reward ((int)id, name, (int)points, imageURL, url, tier, type, expiresAt);
+//		Reward[] rewards = new Reward[2];
+//		rewards [0] = r;
+//		rewards [1] = r;
+//		gui.OnPopulateRewards (rewards);
+//	}
 
 	private void OnDisable()
 	{

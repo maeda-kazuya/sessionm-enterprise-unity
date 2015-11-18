@@ -1,7 +1,6 @@
 using UnityEngine;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using MiniJSON;
 
@@ -28,6 +27,7 @@ public class ISessionM_Android : ISessionM
 		CreateListenerObject();
 		
 		if(sessionMGameObject.androidAppId != null) {
+			SetServiceRegion(SessionM.serviceRegion);
 			StartSession(null);
 		}
 	}
@@ -75,27 +75,36 @@ public class ISessionM_Android : ISessionM
 		
 		return state;
 	}
-
-	public bool GetUserOptOutStatus()
-	{
-		bool status = false;
-		
-		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
-			status = activityObject.Call<bool>("getUserOptOutStatus");			
-		}
-
-		return status;
-	}
-
+	
 	public string GetUser()
 	{
 		string userJSON = null;
-
+		
 		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
 			userJSON = activityObject.Call<string>("getUser");
 		}
-
+		
 		return userJSON;
+	}
+
+	public void SetUserOptOutStatus(bool status){
+		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
+			activityObject.Call("setUserOptOutStatus", status);
+		}
+	}
+	
+	public void SetShouldAutoUpdateAchievementsList(bool shouldAutoUpdate)
+	{
+		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
+			activityObject.Call("setShouldAutoUpdateAchievementsList", shouldAutoUpdate);                   
+		}
+	}
+	
+	public void UpdateAchievementsList()
+	{
+		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
+			activityObject.Call("updateAchievementsList");                  
+		}
 	}
 	
 	public int GetUnclaimedAchievementCount()
@@ -176,15 +185,62 @@ public class ISessionM_Android : ISessionM
 	{
 		return LogLevel.Off;
 	}
-	
+
 	public string GetSDKVersion()
 	{
 		return androidInstance.Call<string>("getSDKVersion");			
 	}
 	
+	public string GetRewards()
+	{
+		string rewardsJSON = null;
+		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
+			rewardsJSON = activityObject.Call<string>("getRewardsJSON");
+		}
+		return rewardsJSON;
+	}
+
+	public string GetMessagesList()
+	{
+		string messagesJSON = null;
+		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
+			messagesJSON = activityObject.Call<string>("getMessagesList");
+		}
+		return messagesJSON;
+	}
+
+	public void SetMessagesEnabled(bool enabled)
+	{
+		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
+			activityObject.Call("setMessagesEnabled", enabled);
+		}
+	}
+	
 	public void SetMetaData(string data, string key)
 	{
 		androidInstance.Call("setMetaData", key, data);
+	}
+
+	public void SetServiceRegion(ServiceRegion serviceRegion)
+	{
+		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
+            //Always 0 for now
+			activityObject.Call("setServiceRegion", 0);                  
+		}
+	}
+
+	public void SetServerType(string url)
+	{
+		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
+			activityObject.Call("setServerType", url);                  
+		}
+	}
+
+	public void SetAppKey(string appKey)
+	{
+		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
+			activityObject.Call("setAppKey", appKey);                  
+		}
 	}
 	
 	public void NotifyPresented()
@@ -212,6 +268,22 @@ public class ISessionM_Android : ISessionM
 				isPresented = false;
 			}
 		}
+	}
+
+	public void PresentTierList()
+	{
+		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
+			activityObject.Call ("presentTierList");
+		}
+	}
+
+	public string GetTiers()
+	{
+		string tiers = null;
+		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
+			tiers = activityObject.Call<string> ("getTiers");
+		}
+		return tiers;
 	}
 	
 	public void SetCallback(ISessionMCallback callback) 

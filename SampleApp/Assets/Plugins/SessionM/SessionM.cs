@@ -34,7 +34,15 @@ public class SessionM : MonoBehaviour
 		
 		return instance;
 	}
-	
+
+	public static ServiceRegion serviceRegion = ServiceRegion.USA;
+
+	//Call this method before starting the session to set the service region.
+	public static void SetServiceRegion(ServiceRegion region)
+	{
+		serviceRegion = region;
+	}
+
 	//Here, SessionM instantiates the appropiate Native interface to be used on each platform.
 	//iOS: iSessionM_IOS
 	//Android: iSessionM_Android
@@ -58,11 +66,6 @@ public class SessionM : MonoBehaviour
 		return sessionMNative.GetSessionState();
 	}
 
-	//Returns user opt out status.
-	public bool GetUserOptOutStatus(){
-		return sessionMNative.GetUserOptOutStatus();
-	}
-	
 	//Use this method for displaying a badge or other SessionM tools.  Remember, your Acheivement count can accumulate over days, so be sure to support at least
 	//triple digit numbers.
 	public int GetUnclaimedAchievementCount()
@@ -70,6 +73,7 @@ public class SessionM : MonoBehaviour
 		return sessionMNative.GetUnclaimedAchievementCount();
 	}
 
+	//Use this method to get current user data.
 	public UserData GetUserData()
 	{
 		UserData userData = null;
@@ -84,6 +88,23 @@ public class SessionM : MonoBehaviour
 		userData = GetUserData(userDataJSON);
 
 		return userData;
+	}
+
+	//Use this method to set user opt-out status
+	public void SetUserOptOutStatus(bool status){
+		sessionMNative.SetUserOptOutStatus(status);
+	}
+
+	//Use this method to set the value of shouldAutoUpdateAchievementsList
+	public void SetShouldAutoUpdateAchievementsList(bool shouldAutoUpdate)
+	{
+		sessionMNative.SetShouldAutoUpdateAchievementsList(shouldAutoUpdate);
+	}
+
+	//Use this method to manually update the user's achievementsList field. Has no effect if shouldAutoUpdateAchievementsList is set to true.
+	public void UpdateAchievementsList()
+	{
+		sessionMNative.UpdateAchievementsList();
 	}
 
 	//This method is required for displaying Native Acheivements.  Fore more information, please see the Unity plugin documetnation.
@@ -140,6 +161,20 @@ public class SessionM : MonoBehaviour
 	{
 		return sessionMNative.GetSDKVersion();
 	}
+
+	public Reward[] GetRewards()
+	{
+		return GetRewardData(sessionMNative.GetRewards());
+	}
+
+	public void setMessagesEnabled(bool enabled) {
+		sessionMNative.SetMessagesEnabled (enabled);
+	}
+
+	public string GetMessagesList()
+	{
+		return sessionMNative.GetMessagesList();
+	}
 	
 	public LogLevel GetLogLevel()
 	{
@@ -162,6 +197,18 @@ public class SessionM : MonoBehaviour
 	{
 		sessionMNative.SetMetaData(data, key);
 	}
+
+	//Call this method before starting the session to set the server url.
+	public void SetServerType(string url)
+	{
+		sessionMNative.SetServerType(url);
+	}
+	
+	//Call this method before starting the session to set the app key.
+	public void SetAppKey(string appKey)
+	{
+		sessionMNative.SetAppKey(appKey);
+	}
 	
 	public void NotifyPresented()
 	{
@@ -181,6 +228,16 @@ public class SessionM : MonoBehaviour
 	public void DismissActivity()
 	{
 		sessionMNative.DismissActivity();
+	}
+
+	public void PresentTierList()
+	{
+		sessionMNative.PresentTierList();
+	}
+
+	public string GetTiers()
+	{
+		return sessionMNative.GetTiers();
 	}
 	
 	public void SetCallback(ISessionMCallback callback)
@@ -224,15 +281,27 @@ public class SessionM : MonoBehaviour
 	public static IAchievementData GetAchievementData(string jsonString) 
 	{
 		Dictionary<string, object> achievementDict = Json.Deserialize(jsonString) as Dictionary<string,object>;
+
 		long mpointValue = (Int64)achievementDict["mpointValue"];
+		long timesEarned = (Int64)achievementDict["timesEarned"];
+		long unclaimedCount = (Int64)achievementDict["unclaimedCount"];
+		long distance = (Int64)achievementDict["distance"];
 		bool isCustom = (bool)achievementDict["isCustom"];
 		string identifier = (string)achievementDict["identifier"];
+		string importID = (string)achievementDict["importID"];
+		string instructions = (string)achievementDict["instructions"];
+		string achievementIconURL = (string)achievementDict["achievementIconURL"];
+		string action = (string)achievementDict["action"];
 		string name = (string)achievementDict["name"];
 		string message = (string)achievementDict["message"];
-		IAchievementData achievementData = new AchievementData(identifier, name, message, (int)mpointValue, isCustom);
+		string limitText = (string)achievementDict["limitText"];
+		DateTime lastEarnedDate = new DateTime((Int64)achievementDict["lastEarnedDate"], DateTimeKind.Utc);
+
+		IAchievementData achievementData = new AchievementData(identifier, importID, instructions, achievementIconURL, action, name, message, limitText, (int)mpointValue, isCustom, lastEarnedDate, (int)timesEarned, (int)unclaimedCount, (int)distance);
 		return achievementData;
 	}
 
+	//This is a useful method you can call whenever you need to parse a JSON string into a the UserData custom class.
 	public static UserData GetUserData(string jsonString)
 	{
 		Dictionary<string, object> userDict = Json.Deserialize(jsonString) as Dictionary<string, object>;
@@ -243,7 +312,69 @@ public class SessionM : MonoBehaviour
 		long unclaimedAchievementCount = (Int64)userDict["getUnclaimedAchievementCount"];
 		long unclaimedAchievementValue = (Int64)userDict["getUnclaimedAchievementValue"];
 
-		UserData userData = new UserData(isOptedOut, isRegistered, isLoggedIn, (int)userPointBalance, (int)unclaimedAchievementCount, (int)unclaimedAchievementValue);
-		return userData;
+		string achievementsJSON = (string)userDict["getAchievementsJSON"];
+		string[] achievementsJSONArray = UnpackJSONArray(achievementsJSON);
+
+		AchievementData[] achievementsArray = new AchievementData[achievementsJSONArray.Length];
+		for(int i = 0; i < achievementsJSONArray.Length; i++) {
+			string achievement = achievementsJSONArray[i];
+			if(achievement == "")
+			{
+				break;
+			}
+			achievementsArray[i] = GetAchievementData(achievement) as AchievementData;
+		}
+		List<AchievementData> achievements = new List<AchievementData>(achievementsArray);
+
+		string achievementsListJSON = (string)userDict["getAchievementsListJSON"];
+		string[] achievementsListJSONArray = UnpackJSONArray(achievementsListJSON);
+
+		AchievementData[] achievementsListArray = new AchievementData[achievementsListJSONArray.Length];
+                for(int i = 0; i < achievementsListJSONArray.Length; i++) {
+                        string achievement = achievementsListJSONArray[i];
+			if(achievement == "")
+			{
+				break;
+			}
+                        achievementsListArray[i] = GetAchievementData(achievement) as AchievementData;
+                }
+		List<AchievementData> achievementsList = new List<AchievementData>(achievementsListArray);
+
+		string tierName = (string)userDict["getTierName"];
+		string tierPercentage = (string)userDict["getTierPercentage"];
+		string tierAnniversaryDate = (string)userDict["getTierAnniversaryDate"];
+
+		return new UserData(isOptedOut, isRegistered, isLoggedIn, (int)userPointBalance, (int)unclaimedAchievementCount, (int)unclaimedAchievementValue, achievements, achievementsList, tierName, tierPercentage, tierAnniversaryDate);
+	}
+
+	public static Reward[] GetRewardData(string jsonString)
+	{
+		string[] rewardJSONArray = UnpackJSONArray (jsonString);
+
+		Reward[] rewardArray = new Reward[rewardJSONArray.Length];
+
+		for (int i = 0; i < rewardJSONArray.Length; i++) {
+
+			var dict = MiniJSON.Json.Deserialize(rewardJSONArray[i]) as Dictionary<string, object>;
+			long id = (System.Int64) dict["id"];
+			string name = (string) dict["name"];
+			long points = (System.Int64) dict["points"];
+			string imageURL = (string)dict["image"];
+			string type = (string) dict["type"];
+			string expiresAt = (string) dict["expires_at"];
+			string url = (string) dict["url"];
+			string tier = (string)dict ["tier"];
+			
+			rewardArray[i] = new Reward ((int)id, name, (int)points, imageURL, url, tier, type, expiresAt);
+		}
+
+		return rewardArray;
+	}
+
+	private static string[] UnpackJSONArray(string json)
+	{
+		string[] separatorArray = new string[] {"__"};
+		string[] JSONArray = json.Split(separatorArray, StringSplitOptions.None);
+		return JSONArray;
 	}
 }

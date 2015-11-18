@@ -1,7 +1,6 @@
 using UnityEngine;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using MiniJSON;
 
@@ -17,11 +16,12 @@ public class ISessionM_iOS : ISessionM
 	
 	[DllImport ("__Internal")]
 	protected static extern void SMSetCallbackGameObjectName(string gameObjectName);
-	public ISessionM_iOS(SessionM sessionMParent) 
+	public ISessionM_iOS(SessionM sessionMParent)
 	{
 		sessionMGameObject = sessionMParent;
 		
 		if(sessionMParent.iosAppId != null) {
+			SetServiceRegion(SessionM.serviceRegion);
 			StartSession(null);
 			SetLogLevel(sessionMParent.logLevel);
 		}
@@ -59,19 +59,33 @@ public class ISessionM_iOS : ISessionM
 	{
 		return (SessionState)SMGetSessionState();
 	}
-	
-	[DllImport ("__Internal")]
-	private static extern bool SMPlayerDataGetUserOptOutStatus();
-	public bool GetUserOptOutStatus()
-	{
-		return SMPlayerDataGetUserOptOutStatus();
-	}
 
 	[DllImport ("__Internal")]
 	private static extern string SMGetUserJSON();
 	public string GetUser() 
 	{
 		return SMGetUserJSON(); 
+	}
+
+	[DllImport ("__Internal")]
+	private static extern void SMPlayerDataSetUserOptOutStatus(bool status);
+	public void SetUserOptOutStatus(bool status) 
+	{
+		SMPlayerDataSetUserOptOutStatus(status);
+	}
+
+	[DllImport ("__Internal")]
+	private static extern void SMSetShouldAutoUpdateAchievementsList(bool shouldAutoUpdate);
+	public void SetShouldAutoUpdateAchievementsList(bool shouldAutoUpdate)
+	{
+		SMSetShouldAutoUpdateAchievementsList(shouldAutoUpdate);
+	}
+
+	[DllImport ("__Internal")]
+	private static extern void SMUpdateAchievementsList();
+	public void UpdateAchievementsList()
+	{
+		SMUpdateAchievementsList();
 	}
 
 	[DllImport ("__Internal")]
@@ -143,6 +157,13 @@ public class ISessionM_iOS : ISessionM
 	{
 		return (LogLevel)SMGetLogLevel();
 	}
+
+	[DllImport ("__Internal")]
+	private static extern void SMSetServiceRegion(int region);
+	public void SetServiceRegion(ServiceRegion region)
+	{
+		SMSetServiceRegion((int)region);
+	}
 	
 	[DllImport ("__Internal")]
 	private static extern string SMGetSDKVersion();
@@ -150,7 +171,30 @@ public class ISessionM_iOS : ISessionM
 	{
 		return SMGetSDKVersion();
 	}
+
+	[DllImport ("__Internal")]
+	private static extern string SMGetRewardsJSON();
+	public string GetRewards()
+	{
+		string rewardsJSON = SMGetRewardsJSON();
+		return rewardsJSON;
+	}
 	
+	[DllImport ("__Internal")]
+	private static extern void SMSetMessagesEnabled(bool enabled);
+	public void SetMessagesEnabled(bool enabled)
+	{
+		SMSetMessagesEnabled(enabled);
+	}
+
+	[DllImport ("__Internal")]
+	private static extern string SMGetMessagesList();
+	public string GetMessagesList()
+	{
+		string messages = SMGetMessagesList();
+		return messages;
+	}
+
 	[DllImport ("__Internal")]
 	private static extern void SMSetMetaData(string data, string key);
 	public void SetMetaData(string data, string key)
@@ -177,6 +221,20 @@ public class ISessionM_iOS : ISessionM
 	public void NotifyClaimed()
 	{
 		SMNotifyCustomAchievementClaimed();
+	}
+
+	[DllImport ("__Internal")]
+	private static extern void SMPresentTierList();
+	public void PresentTierList()
+	{
+		SMPresentTierList();
+	}
+
+	[DllImport ("__Internal")]
+	private static extern string SMGetTiers();
+	public string GetTiers()
+	{
+		SMGetTiers();
 	}
 	
 	public void SetCallback(ISessionMCallback callback) 

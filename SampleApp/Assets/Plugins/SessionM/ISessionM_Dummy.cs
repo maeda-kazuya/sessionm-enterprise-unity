@@ -29,6 +29,17 @@ public class ISessionM_Dummy : ISessionM
 		return null;
 	}
 	
+	public void SetUserOptOutStatus(bool status){
+	}
+
+	public void SetShouldAutoUpdateAchievementsList(bool shouldAutoUpdate)
+	{
+	}
+
+	public void UpdateAchievementsList()
+	{
+	}
+
 	public int GetUnclaimedAchievementCount()
 	{
 		return 0;
@@ -76,9 +87,34 @@ public class ISessionM_Dummy : ISessionM
 		return LogLevel.Off;
 	}
 	
+	public void SetServiceRegion(ServiceRegion region)
+	{
+	}
+
+	public void SetServerType(string url)
+	{
+	}
+
+	public void SetAppKey(string appKey)
+	{
+	}
+
 	public string GetSDKVersion()
 	{
 		return null;
+	}
+
+	public string GetRewards()
+	{
+		return null;
+	}
+
+	public string GetMessagesList()
+	{
+		return null;
+	}
+
+	public void SetMessagesEnabled(bool enabled){
 	}
 	
 	public void SetMetaData(string data, string key)
@@ -95,6 +131,15 @@ public class ISessionM_Dummy : ISessionM
 	
 	public void NotifyClaimed()
 	{
+	}
+
+	public void PresentTierList()
+	{
+	}
+
+	public string GetTiers()
+	{
+		return null;
 	}
 	
 	public void SetCallback(ISessionMCallback callback) 

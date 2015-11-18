@@ -1,0 +1,271 @@
+.
+├── Config-Example
+├── Config-SdkVersion
+├── LICENSE
+├── Plugin_BaseActivity
+│   ├── AndroidManifest.xml
+│   ├── AndroidManifest.xml.meta
+│   ├── ISessionM_Android.cs
+│   ├── ISessionM_Android.cs.meta
+│   └── README.md
+├── Plugin_Prime31
+│   ├── AndroidManifest.xml
+│   ├── AndroidManifest.xml.meta
+│   ├── ISessionM_Android.cs
+│   ├── ISessionM_Android.cs.meta
+│   ├── Prime31UnityActivity.jar.meta
+│   └── README.md
+├── Plugin_Shared
+│   └── Assets
+│       ├── Editor
+│       │   ├── PostprocessBuildPlayer
+│       │   ├── PostprocessBuildPlayer.meta
+│       │   ├── PostprocessBuildPlayer_SessionM
+│       │   ├── PostprocessBuildPlayer_SessionM.meta
+│       │   ├── SessionMXcodeUpdatePostBuild.py
+│       │   └── SessionMXcodeUpdatePostBuild.py.meta
+│       ├── Editor.meta
+│       ├── Plugins
+│       │   ├── Android
+│       │   │   ├── SessionM.jar.meta
+│       │   │   └── SessionMUnity.jar.meta
+│       │   ├── Android.meta
+│       │   ├── MiniJSON.cs
+│       │   ├── MiniJSON.cs.meta
+│       │   ├── SessionM
+│       │   │   ├── AchievementData.cs
+│       │   │   ├── AchievementData.cs.meta
+│       │   │   ├── Art
+│       │   │   │   ├── gift-1.png
+│       │   │   │   ├── gift-1.png.meta
+│       │   │   │   ├── m-circle-2.png
+│       │   │   │   ├── m-circle-2.png.meta
+│       │   │   │   ├── m-circle-3.png
+│       │   │   │   ├── m-circle-3.png.meta
+│       │   │   │   ├── m-circle.png
+│       │   │   │   ├── m-circle.png.meta
+│       │   │   │   ├── m-gift-01.svg
+│       │   │   │   ├── m-gift-01.svg.meta
+│       │   │   │   ├── m-gift-1.png
+│       │   │   │   ├── m-gift-1.png.meta
+│       │   │   │   ├── m-gift-2-01.svg
+│       │   │   │   ├── m-gift-2-01.svg.meta
+│       │   │   │   ├── m-square-2.png
+│       │   │   │   ├── m-square-2.png.meta
+│       │   │   │   ├── m-square-3.png
+│       │   │   │   ├── m-square-3.png.meta
+│       │   │   │   ├── mpoints-1.png
+│       │   │   │   ├── mpoints-1.png.meta
+│       │   │   │   ├── mpoints-2.png
+│       │   │   │   └── mpoints-2.png.meta
+│       │   │   ├── Art.meta
+│       │   │   ├── Example
+│       │   │   │   ├── SessionMListenerExample.cs
+│       │   │   │   └── SessionMListenerExample.cs.meta
+│       │   │   ├── Example.meta
+│       │   │   ├── IAchievementData.cs
+│       │   │   ├── IAchievementData.cs.meta
+│       │   │   ├── ISessionM.cs
+│       │   │   ├── ISessionM.cs.meta
+│       │   │   ├── ISessionMCallback.cs
+│       │   │   ├── ISessionMCallback.cs.meta
+│       │   │   ├── ISessionM_Dummy.cs
+│       │   │   ├── ISessionM_Dummy.cs.meta
+│       │   │   ├── ISessionM_iOS.cs
+│       │   │   ├── ISessionM_iOS.cs.meta
+│       │   │   ├── SessionM.cs
+│       │   │   ├── SessionM.cs.meta
+│       │   │   ├── SessionMEventListener.cs
+│       │   │   ├── SessionMEventListener.cs.meta
+│       │   │   ├── UserData.cs
+│       │   │   └── UserData.cs.meta
+│       │   ├── SessionM.meta
+│       │   ├── iOS
+│       │   │   └── libSessionM-Unity.a.meta
+│       │   └── iOS.meta
+│       └── Plugins.meta
+├── README.rst
+├── ReleaseNotes.txt
+├── SampleApp
+│   ├── Assembly-CSharp-firstpass-vs.csproj
+│   ├── Assembly-CSharp-firstpass.csproj
+│   ├── Assembly-CSharp-vs.csproj
+│   ├── Assembly-CSharp.csproj
+│   ├── Assets
+│   │   ├── Editor
+│   │   │   ├── PostprocessBuildPlayer
+│   │   │   ├── PostprocessBuildPlayer.meta
+│   │   │   ├── PostprocessBuildPlayer_SessionM
+│   │   │   ├── PostprocessBuildPlayer_SessionM.meta
+│   │   │   ├── SessionMXcodeUpdatePostBuild.py
+│   │   │   └── SessionMXcodeUpdatePostBuild.py.meta
+│   │   ├── Editor.meta
+│   │   ├── LICENSE
+│   │   ├── Plugins
+│   │   │   ├── Android
+│   │   │   │   ├── AndroidManifest.xml
+│   │   │   │   ├── AndroidManifest.xml.meta
+│   │   │   │   ├── SessionM.jar
+│   │   │   │   ├── SessionM.jar.meta
+│   │   │   │   ├── SessionMUnity.jar
+│   │   │   │   └── SessionMUnity.jar.meta
+│   │   │   ├── Android.meta
+│   │   │   ├── MiniJSON.cs
+│   │   │   ├── MiniJSON.cs.meta
+│   │   │   ├── SessionM
+│   │   │   │   ├── AchievementData.cs
+│   │   │   │   ├── AchievementData.cs.meta
+│   │   │   │   ├── Art
+│   │   │   │   │   ├── gift-1.png
+│   │   │   │   │   ├── gift-1.png.meta
+│   │   │   │   │   ├── m-circle-2.png
+│   │   │   │   │   ├── m-circle-2.png.meta
+│   │   │   │   │   ├── m-circle-3.png
+│   │   │   │   │   ├── m-circle-3.png.meta
+│   │   │   │   │   ├── m-circle.png
+│   │   │   │   │   ├── m-circle.png.meta
+│   │   │   │   │   ├── m-gift-01.svg
+│   │   │   │   │   ├── m-gift-01.svg.meta
+│   │   │   │   │   ├── m-gift-1.png
+│   │   │   │   │   ├── m-gift-1.png.meta
+│   │   │   │   │   ├── m-gift-2-01.svg
+│   │   │   │   │   ├── m-gift-2-01.svg.meta
+│   │   │   │   │   ├── m-square-2.png
+│   │   │   │   │   ├── m-square-2.png.meta
+│   │   │   │   │   ├── m-square-3.png
+│   │   │   │   │   ├── m-square-3.png.meta
+│   │   │   │   │   ├── mpoints-1.png
+│   │   │   │   │   ├── mpoints-1.png.meta
+│   │   │   │   │   ├── mpoints-2.png
+│   │   │   │   │   └── mpoints-2.png.meta
+│   │   │   │   ├── Art.meta
+│   │   │   │   ├── Example
+│   │   │   │   │   ├── SessionMListenerExample.cs
+│   │   │   │   │   └── SessionMListenerExample.cs.meta
+│   │   │   │   ├── Example.meta
+│   │   │   │   ├── IAchievementData.cs
+│   │   │   │   ├── IAchievementData.cs.meta
+│   │   │   │   ├── ISessionM.cs
+│   │   │   │   ├── ISessionM.cs.meta
+│   │   │   │   ├── ISessionMCallback.cs
+│   │   │   │   ├── ISessionMCallback.cs.meta
+│   │   │   │   ├── ISessionM_Android.cs
+│   │   │   │   ├── ISessionM_Android.cs.meta
+│   │   │   │   ├── ISessionM_Dummy.cs
+│   │   │   │   ├── ISessionM_Dummy.cs.meta
+│   │   │   │   ├── ISessionM_iOS.cs
+│   │   │   │   ├── ISessionM_iOS.cs.meta
+│   │   │   │   ├── SessionM.cs
+│   │   │   │   ├── SessionM.cs.meta
+│   │   │   │   ├── SessionMEventListener.cs
+│   │   │   │   ├── SessionMEventListener.cs.meta
+│   │   │   │   ├── UserData.cs
+│   │   │   │   └── UserData.cs.meta
+│   │   │   ├── SessionM.meta
+│   │   │   ├── iOS
+│   │   │   │   ├── libSessionM-Unity.a
+│   │   │   │   └── libSessionM-Unity.a.meta
+│   │   │   └── iOS.meta
+│   │   ├── Plugins.meta
+│   │   ├── README.txt
+│   │   ├── README.txt.meta
+│   │   ├── Sample.unity
+│   │   ├── Sample.unity.meta
+│   │   ├── SessionM\ Sample\ Code
+│   │   │   ├── AchievementToast.cs
+│   │   │   ├── AchievementToast.cs.meta
+│   │   │   ├── Images
+│   │   │   │   ├── Button.psd
+│   │   │   │   ├── Button.psd.meta
+│   │   │   │   ├── Circle.tif
+│   │   │   │   ├── Circle.tif.meta
+│   │   │   │   ├── SessionMHeader.psd
+│   │   │   │   └── SessionMHeader.psd.meta
+│   │   │   ├── Images.meta
+│   │   │   ├── SessionMNotificationBadge.cs
+│   │   │   ├── SessionMNotificationBadge.cs.meta
+│   │   │   ├── SessionMSample.cs
+│   │   │   ├── SessionMSample.cs.meta
+│   │   │   ├── SimpleSpriteButton.cs
+│   │   │   ├── SimpleSpriteButton.cs.meta
+│   │   │   ├── bebaskai
+│   │   │   │   ├── BebasKai-Regular.otf
+│   │   │   │   ├── BebasKai-Regular.otf.meta
+│   │   │   │   ├── License.txt
+│   │   │   │   └── License.txt.meta
+│   │   │   └── bebaskai.meta
+│   │   └── SessionM\ Sample\ Code.meta
+│   ├── LICENSE
+│   ├── ProjectSettings
+│   │   ├── AudioManager.asset
+│   │   ├── DynamicsManager.asset
+│   │   ├── EditorBuildSettings.asset
+│   │   ├── EditorSettings.asset
+│   │   ├── GraphicsSettings.asset
+│   │   ├── InputManager.asset
+│   │   ├── NavMeshAreas.asset
+│   │   ├── NavMeshLayers.asset
+│   │   ├── NetworkManager.asset
+│   │   ├── Physics2DSettings.asset
+│   │   ├── ProjectSettings.asset
+│   │   ├── QualitySettings.asset
+│   │   ├── TagManager.asset
+│   │   └── TimeManager.asset
+│   ├── README.txt
+│   ├── SessionMSample-csharp.sln
+│   ├── SessionMSample.sln
+│   └── SessionMSample.userprefs
+├── android-sdk
+│   ├── AndroidManifest.xml
+│   ├── build.gradle
+│   ├── build.sh
+│   ├── gradle
+│   │   └── wrapper
+│   │       ├── gradle-wrapper.jar
+│   │       └── gradle-wrapper.properties
+│   ├── gradlew
+│   ├── libs
+│   │   └── android.jar
+│   ├── res
+│   │   ├── drawable-hdpi
+│   │   │   └── ic_launcher.png
+│   │   ├── drawable-mdpi
+│   │   │   └── ic_launcher.png
+│   │   ├── drawable-xhdpi
+│   │   │   └── ic_launcher.png
+│   │   ├── values
+│   │   │   ├── strings.xml
+│   │   │   └── styles.xml
+│   │   ├── values-v11
+│   │   │   └── styles.xml
+│   │   └── values-v14
+│   │       └── styles.xml
+│   └── src
+│       └── com
+│           └── sessionm
+│               └── unity
+│                   ├── BaseNativeActivity.java
+│                   ├── SessionMListener.java
+│                   └── SessionMPlugin.java.in
+├── build.sh
+├── clean.sh
+├── folderTree.txt
+└── iOS-sdk
+    ├── Podfile
+    ├── SessionM-Unity
+    │   ├── SessionM_Unity.h.in
+    │   └── SessionM_Unity.m
+    ├── SessionM-Unity.xcodeproj
+    │   ├── project.pbxproj
+    │   └── project.xcworkspace
+    │       ├── contents.xcworkspacedata
+    │       └── xcshareddata
+    │           └── xcschemes
+    │               └── SessionM-Unity.xcscheme
+    ├── SessionM-Unity.xcworkspace
+    │   └── contents.xcworkspacedata
+    ├── SessionM-UnityTests
+    │   └── Info.plist
+    └── build.sh
+
+47 directories, 221 files

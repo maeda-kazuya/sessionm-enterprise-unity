@@ -920,6 +920,7 @@ MonoBehaviour:
   action2: 100Bubbles
   action3: Played
   toaster: {fileID: 1548472611}
+  tiers: []
 --- !u!114 &336433429
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -951,7 +952,6 @@ MonoBehaviour:
   tierPercentage: {fileID: 118267395}
   tierAnniversary: {fileID: 201596114}
   tiersText: {fileID: 1604449408}
-  rewardsText: {fileID: 0}
   rewardsGrid: {fileID: 528070823}
   rewardObjectPrefab: {fileID: 11454186, guid: 4b5f5338e6e094e39b8fdbabdce18cec, type: 2}
 --- !u!1 &356773027
@@ -2830,8 +2830,8 @@ RectTransform:
   m_RootOrder: 1
   m_AnchorMin: {x: .5, y: .5}
   m_AnchorMax: {x: .5, y: .5}
-  m_AnchoredPosition: {x: 132.598648, y: 95.3987122}
-  m_SizeDelta: {x: 800, y: 30}
+  m_AnchoredPosition: {x: 12.3000002, y: 95.4000015}
+  m_SizeDelta: {x: 321.399994, y: 30}
   m_Pivot: {x: .5, y: .5}
 --- !u!114 &1604449408
 MonoBehaviour:
@@ -2845,10 +2845,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: .972549021, g: .168627456, b: .105882354, a: 1}
+  m_Color: {r: .911764681, g: .911764681, b: .911764681, a: 1}
   m_FontData:
     m_Font: {fileID: 12800000, guid: 05290f271a8824d0c9af69e3b26c2cf2, type: 3}
-    m_FontSize: 10
+    m_FontSize: 25
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 10
@@ -2858,7 +2858,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 
+  m_Text: '[{"tier":"silver","name":"Silver","instructions":null},{"tier":"gold","name":"Gold","instructions":null},{"tier":"platinum","name":"Platinum","instructions":null}] '
 --- !u!222 &1604449409
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3607,7 +3607,7 @@ CanvasGroup:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2136274493}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 1
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0

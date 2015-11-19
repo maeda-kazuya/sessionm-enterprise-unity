@@ -260,9 +260,10 @@ public class SessionM : MonoBehaviour
 		sessionMNative.PresentTierList();
 	}
 
-	public string GetTiers()
+	public Tier[] GetTiers()
 	{
-		return sessionMNative.GetTiers();
+		Debug.Log("GetTiers");
+		return GetTierData(sessionMNative.GetTiers());
 	}
 	
 	public void SetCallback(ISessionMCallback callback)
@@ -373,6 +374,22 @@ public class SessionM : MonoBehaviour
 		return userData;
 	}
 
+	public static Tier[] GetTierData(string jsonString)
+	{
+		var dictList = MiniJSON.Json.Deserialize(jsonString) as List<System.Object>;
+		Tier[] tierArray = new Tier[dictList.Count];
+
+		for(int i = 0; i < dictList.Count; i++) {
+			var dict = dictList[i] as Dictionary<System.String, System.Object>;
+			string tier = (string) dict["tier"];
+			string name = (string) dict["name"];
+			string instructions = (string) dict["instructions"];
+			tierArray[i] = new Tier(tier, name, instructions);
+		}
+
+		return tierArray;
+	}
+
 	public static Reward[] GetRewardData(string jsonString) 
 	{
 		string[] rewardJSONArray = UnpackJSONArray (jsonString);
@@ -395,6 +412,7 @@ public class SessionM : MonoBehaviour
 
 		return rewardArray;
 	}
+	
 
 	private static string[] UnpackJSONArray(string json)
 	{

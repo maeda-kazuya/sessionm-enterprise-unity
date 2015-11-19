@@ -24,7 +24,6 @@ public class SessionMSampleGUI : MonoBehaviour {
 	public Text tierAnniversary;
 
 	public Text tiersText;
-	public Text rewardsText;
 
 	public GridLayoutGroup rewardsGrid;
 	public RewardObject rewardObjectPrefab;
@@ -55,10 +54,17 @@ public class SessionMSampleGUI : MonoBehaviour {
 		}
 	}
 
-	public void OnPopulateTiers(string json)
+	public void OnPopulateTiers(Tier[] tiers)
 	{
-		Debug.Log (json);
-		tiersText.text = json;
+		Debug.Log("OnPopulateTiers");
+		tiersText.text = "Available Tiers: \n";
+
+		for(int i = 0; i < tiers.Length; i++) {
+			tiersText.text += "Tier " + i + " : " + tiers[i].name + "\n";
+			if(tiers[i].instructions != null) {
+				tiersText.text += "Instructions: " + tiers[i].instructions + "\n";
+			}
+		}
 	}
 
 	public void OnPopulateRewards(Reward[] rewards)

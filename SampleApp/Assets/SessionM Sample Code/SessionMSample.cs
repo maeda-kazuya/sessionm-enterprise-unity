@@ -96,7 +96,44 @@ public class SessionMSample : MonoBehaviour
 		SessionMEventListener.NotifyUnclaimedAchievementDataUpdated += NotifyUnclaimedAchievementDataUpdated;
 		SessionMEventListener.NotifyUserInfoChanged += UserChanged;
 		sessionMSDK.text = "SDK VERSION: " + sessionM.GetSDKVersion();
+		Test();
 		UserChanged(null);
+	}
+
+	public Tier[] tiers;
+
+	private void Test()
+	{
+		string s = 
+			"[{" +
+			"\"tier\": \"silver\"," +
+			"\"name\": \"Silver\"," +
+			"\"instructions\": null" +
+			"}," +
+			"{" +
+			"\"tier\": \"gold\"," +
+			"\"name\": \"Gold\"," +
+			"\"instructions\": null" +
+			"}," +
+			"{" +
+			"\"tier\": \"platinum\"," +
+			"\"name\": \"Platinum\"," +
+			"\"instructions\": null" +
+			"}]";
+		
+		var dictList = MiniJSON.Json.Deserialize(s) as List<System.Object>;
+		Debug.Log(dictList.Count);
+		Tier[] tierArray = new Tier[dictList.Count];
+
+		for(int i = 0; i < dictList.Count; i++) {
+			Debug.Log(dictList[i].GetType());
+			var dict = dictList[i] as Dictionary<System.String, System.Object>;
+			string tier = (string) dict["tier"];
+			string name = (string) dict["name"];
+			string instructions = (string) dict["instructions"];
+			tierArray[i] = new Tier(tier, name, instructions);
+		}
+		tiers = tierArray;
 	}
 
 //	public Reward r;

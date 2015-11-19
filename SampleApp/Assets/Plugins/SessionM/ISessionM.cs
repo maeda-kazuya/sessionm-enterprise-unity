@@ -31,7 +31,8 @@ public enum ServiceRegion
 {
 	Unknown = 0,
 	Japan = 1,
-	USA = 2
+	USA = 2,
+	Custom = 3
 }
 
 /* User actions. 

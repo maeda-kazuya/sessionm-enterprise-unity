@@ -75,9 +75,22 @@ public class SessionMSample : MonoBehaviour
 
 	//Unity Lifecycle
 
+	private void Awake()
+	{
+		//Set service region before SessionM instance is activated
+		// SessionM.SetServiceRegion(ServiceRegion.USA);
+		SessionM.SetServerType("https://api.tour-sessionm.com");
+		SessionM.SetShouldAutoUpdateAchievementsList(true);
+		SessionM.SetMessagesEnabled(true);
+		SessionM.SetSessionAutoStartEnabled(false);
+		sessionM.gameObject.SetActive(true);
+	}
+
+
 	private void OnEnable()
 	{
 		//Assign useful events to Helper Functions in the class.
+		sessionM.StartSession("0bfeb00013f0f634420a04ed5806a66a58d49d8b");
 		SessionMEventListener.NotifySessionStateChanged += NotifySessionStateChanged;
 		SessionMEventListener.NotifySessionError += NotifySessionError;
 		SessionMEventListener.NotifyUnclaimedAchievementDataUpdated += NotifyUnclaimedAchievementDataUpdated;

@@ -30,6 +30,7 @@ void SMSetCallbackGameObjectName(char *gameObjectName);
  @param region The service region.
  */
 void SMSetServiceRegion(int region);
+void SMSetServerType(const char *url);
 
 
 void SMStartSession(char *appId);
@@ -43,6 +44,8 @@ SMLogLevel SMGetLogLevel(void);
 void SMSetLogLevel(SMLogLevel level);
 const char *SMGetSDKVersion(void);
 const char *SMGetRewardsJSON(void);
+void SMSetMessagesEnabled(bool enabled);
+const char *SMGetMessagesList(void);
 void SMSetMetaData(const char *data, const char *key);
 SessionMState SMGetSessionState(void);
 void SMPlayerDataSetUserOptOutStatus(BOOL optOut);
@@ -56,6 +59,7 @@ void SMNotifyCustomAchievementPresented(const char *achievementId);
 void SMNotifyCustomAchievementDismissed(void);
 void SMNotifyCustomAchievementClaimed(void);
 void SMPresentTierList(void);
+const char *SMGetTiers(void);
 
 @interface SessionM_Unity : NSObject
 

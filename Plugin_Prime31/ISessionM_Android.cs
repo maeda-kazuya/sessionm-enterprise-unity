@@ -13,29 +13,41 @@ public class ISessionM_Android : ISessionM
 	private SessionM sessionMGameObject;
 	private ISessionMCallback callback;
 	private SessionMEventListener listener;
-
+	
 	private static AndroidJavaObject androidInstance;
-	private AndroidJavaClass sessionMObject = new AndroidJavaClass ("com.sessionm.unity.SessionMPlugin");
+	
 	private Boolean isPresented = false;
 	
 	public ISessionM_Android(SessionM sessionMParent)
 	{
 		sessionMGameObject = sessionMParent;
+		
 		initAndroidInstance();
 		
 		CreateListenerObject();
 		
 		if(sessionMGameObject.androidAppId != null) {
-			SetServiceRegion(SessionM.serviceRegion);
-			StartSession(null);
+			SetShouldAutoUpdateAchievementsList(SessionM.shouldAutoUpdateAchievementsList);
+			SetMessagesEnabled(SessionM.shouldEnableMessages);
+			SetLogLevel(sessionMParent.logLevel);
+			if (SessionM.serviceRegion == ServiceRegion.Custom) {
+				SetServerType(SessionM.serverURL);
+			} else {
+				SetServiceRegion(SessionM.serviceRegion);
+			}
+			if (SessionM.shouldAutoStartSession) {
+				StartSession(null);
+			}
 		}
 	}
 	
 	private void CreateListenerObject()
 	{
 		listener = sessionMGameObject.gameObject.AddComponent<SessionMEventListener>();
-
-		sessionMObject.CallStatic("setCallbackGameObjectName", sessionMGameObject.gameObject.name);
+		
+		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
+			activityObject.CallStatic("setCallbackGameObjectName", sessionMGameObject.gameObject.name);
+		}
 		
 		listener.SetNativeParent(this);
 		
@@ -72,35 +84,61 @@ public class ISessionM_Android : ISessionM
 		
 		return state;
 	}
-
+	
 	public string GetUser()
 	{
 		string userJSON = null;
-
-			userJSON = sessionMObject.CallStatic<string>("getUser");
-
+		
+		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
+			userJSON = activityObject.Call<string>("getUser");
+		}
+		
 		return userJSON;
 	}
 
 	public void SetUserOptOutStatus(bool status){
-		sessionMObject.CallStatic("setUserOptOutStatus", status);
+		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
+			activityObject.Call("setUserOptOutStatus", status);
+		}
 	}
-
+	
 	public void SetShouldAutoUpdateAchievementsList(bool shouldAutoUpdate)
 	{
-		sessionMObject.CallStatic("setShouldAutoUpdateAchievementsList", shouldAutoUpdate);                   
+		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
+			activityObject.Call("setShouldAutoUpdateAchievementsList", shouldAutoUpdate);                   
+		}
+	}
+
+    public void SetSessionAutoStartEnabled(bool autoStart)
+	{
+		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
+			activityObject.Call("setSessionAutoStartEnabled", autoStart);                   
+		}
+	}
+
+	public bool IsSessionAutoStartEnabled()
+	{
+		bool isEnabled = true;
+		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
+			isEnabled = activityObject.Call<bool>("isSessionAutoStartEnabled");                   
+		}
+		return isEnabled;
 	}
 	
 	public void UpdateAchievementsList()
 	{
-		sessionMObject.CallStatic("updateAchievementsList");                  
+		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
+			activityObject.Call("updateAchievementsList");                  
+		}
 	}
-
+	
 	public int GetUnclaimedAchievementCount()
 	{
 		int count = 0;
-
-			count = sessionMObject.CallStatic<int>("getUnclaimedAchievementCount");			
+		
+		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
+			count = activityObject.Call<int>("getUnclaimedAchievementCount");			
+		}
 		
 		return count;
 	}
@@ -108,8 +146,10 @@ public class ISessionM_Android : ISessionM
 	public string GetUnclaimedAchievementData() 
 	{
 		string achievementJSON = null;
-
-		achievementJSON = sessionMObject.CallStatic<string>("getUnclaimedAchievementJSON");
+		
+		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
+			achievementJSON = activityObject.Call<string>("getUnclaimedAchievementJSON");			
+		}
 		
 		return achievementJSON;
 	}
@@ -127,8 +167,9 @@ public class ISessionM_Android : ISessionM
 	
 	public bool PresentActivity(ActivityType type)
 	{
-		using (AndroidJavaObject activityType = GetAndroidActivityTypeObject(type)) {
-			isPresented = androidInstance.Call<bool>("presentActivity", activityType);			
+		using (AndroidJavaObject activityType = GetAndroidActivityTypeObject(type),
+		       activityObject = GetCurrentActivity()) {
+			isPresented = activityObject.Call<bool>("presentActivity", activityType);			
 		}
 		return isPresented;
 	}
@@ -152,8 +193,10 @@ public class ISessionM_Android : ISessionM
 	public bool IsActivityAvailable(ActivityType type)
 	{
 		bool available = false;
-		using (AndroidJavaObject activityType = GetAndroidActivityTypeObject(type)) {
-			available = sessionMObject.CallStatic<bool>("isActivityAvailable", activityType);			
+
+		using (AndroidJavaObject activityType = GetAndroidActivityTypeObject(type),
+		       activityObject = GetCurrentActivity()) {
+			available = activityObject.Call<bool>("isActivityAvailable", activityType);			
 		}
 		return available;
 	}
@@ -167,7 +210,7 @@ public class ISessionM_Android : ISessionM
 	{
 		return LogLevel.Off;
 	}
-	
+
 	public string GetSDKVersion()
 	{
 		return androidInstance.Call<string>("getSDKVersion");			
@@ -176,10 +219,28 @@ public class ISessionM_Android : ISessionM
 	public string GetRewards()
 	{
 		string rewardsJSON = null;
-		rewardsJSON = sessionMObject.CallStatic<string>("getRewardsJSON");
+		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
+			rewardsJSON = activityObject.Call<string>("getRewardsJSON");
+		}
 		return rewardsJSON;
 	}
 
+	public string GetMessagesList()
+	{
+		string messagesJSON = null;
+		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
+			messagesJSON = activityObject.Call<string>("getMessagesList");
+		}
+		return messagesJSON;
+	}
+
+	public void SetMessagesEnabled(bool enabled)
+	{
+		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
+			activityObject.Call("setMessagesEnabled", enabled);
+		}
+	}
+	
 	public void SetMetaData(string data, string key)
 	{
 		androidInstance.Call("setMetaData", key, data);
@@ -187,28 +248,67 @@ public class ISessionM_Android : ISessionM
 
 	public void SetServiceRegion(ServiceRegion serviceRegion)
 	{
-		sessionMObject.CallStatic("setServiceRegion", 0);                  
+		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
+            //Always 0 for now
+			activityObject.Call("setServiceRegion", 0);                  
+		}
+	}
+
+	public void SetServerType(string url)
+	{
+		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
+			activityObject.Call("setServerType", url);                  
+		}
+	}
+
+	public void SetAppKey(string appKey)
+	{
+		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
+			activityObject.Call("setAppKey", appKey);                  
+		}
 	}
 	
 	public void NotifyPresented()
 	{
-		isPresented = sessionMObject.CallStatic<bool>("notifyCustomAchievementPresented");
+		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
+			isPresented = activityObject.Call<bool>("notifyCustomAchievementPresented");
+		}
 	}
 	
 	public void NotifyDismissed()
 	{
 		if (isPresented) {
-			sessionMObject.CallStatic ("notifyCustomAchievementCancelled");
-			isPresented = false;
+			using (AndroidJavaObject activityObject = GetCurrentActivity()) {
+				activityObject.Call ("notifyCustomAchievementCancelled");
+				isPresented = false;
+			}
 		}
 	}
 	
 	public void NotifyClaimed()
-	{
+	{	
 		if (isPresented) {
-			sessionMObject.CallStatic ("notifyCustomAchievementClaimed");
-			isPresented = false;
+			using (AndroidJavaObject activityObject = GetCurrentActivity()) {
+				activityObject.Call ("notifyCustomAchievementClaimed");
+				isPresented = false;
+			}
 		}
+	}
+
+	public void PresentTierList()
+	{
+		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
+			activityObject.Call ("presentTierList");
+		}
+	}
+
+	public string GetTiers()
+	{
+		string tiers = null;
+		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
+			tiers = activityObject.Call<string> ("getTiers");
+		}
+		return tiers;
 	}
 	
 	public void SetCallback(ISessionMCallback callback) 
@@ -221,7 +321,9 @@ public class ISessionM_Android : ISessionM
 	{
 		return this.callback;
 	}
-
+	
+	// MonoBehavior 
+	
 	public AndroidJavaObject GetCurrentActivity() 
 	{
 		using (AndroidJavaClass playerClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer")) {
@@ -229,7 +331,6 @@ public class ISessionM_Android : ISessionM
 		}
 	}
 	
-	// MonoBehavior 
 	private AndroidJavaObject GetAndroidActivityTypeObject(ActivityType type) 
 	{
 		if(Application.platform != RuntimePlatform.Android) {
@@ -242,7 +343,7 @@ public class ISessionM_Android : ISessionM
 				typeString = "ACHIEVEMENT";	
 			} else if(type == ActivityType.Portal) {
 				typeString = "PORTAL";	
-			} 
+			}
 			
 			AndroidJavaObject activityType = typeClass.CallStatic<AndroidJavaObject>("valueOf", typeString);
 			return activityType;		

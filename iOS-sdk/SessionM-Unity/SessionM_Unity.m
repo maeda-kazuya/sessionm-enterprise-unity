@@ -17,6 +17,7 @@ static NSString *SMPackStrings(NSArray * strings);
 static NSString *SMPackJSONArray(NSArray *jsonArray);
 static NSString *SMAchievementDataToJSONString(SMAchievementData *achievementData);
 static NSString *SMUserToJSONString(SMUser *user);
+static NSString *SMRewardsToJSONString(NSArray *rewards);
 static NSString *SMMessagesListToJSONString(NSArray *messages);
 static NSString *SMTiersToJSONString(NSArray *tiers);
 SessionM_Unity *__unityClientSharedInstance;
@@ -192,8 +193,13 @@ const char *SMGetSDKVersion(void) {
 
 // Returns a JSON representation of the list of rewards the user can redeem
 const char *SMGetRewardsJSON(void) {
-    const char *rewardsJSON = [SMPackJSONArray([SessionM sharedInstance].rewards) cStringUsingEncoding:NSUTF8StringEncoding];
-    return rewardsJSON ? strdup(rewardsJSON) : NULL;
+    NSString *rewardsString = nil;
+    NSArray *rewardsData = [SessionM sharedInstance].rewards;
+    if (rewardsData) {
+        rewardsString = SMRewardsToJSONString(rewardsData);
+    }
+    const char *c = [rewardsString cStringUsingEncoding:NSUTF8StringEncoding];
+    return c ? strdup(c) : NULL;
 }
 
 void SMSetMessagesEnabled(bool enabled) {
@@ -378,6 +384,19 @@ static NSString *SMUserToJSONString(SMUser *user) {
 
     NSError *error = nil;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:userDict
+                                                       options:0
+                                                         error:&error];
+    NSString *jsonString = nil;
+    if (!error) {
+        jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    }
+
+    return jsonString;
+}
+
+static NSString *SMRewardsToJSONString(NSArray *rewards) {
+    NSError *error = nil;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:rewards
                                                        options:0
                                                          error:&error];
     NSString *jsonString = nil;

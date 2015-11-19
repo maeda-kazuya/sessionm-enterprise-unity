@@ -392,12 +392,11 @@ public class SessionM : MonoBehaviour
 
 	public static Reward[] GetRewardData(string jsonString) 
 	{
-		string[] rewardJSONArray = UnpackJSONArray (jsonString);
+		var dictList = MiniJSON.Json.Deserialize(jsonString) as List<System.Object>;
+		Reward[] rewardArray = new Reward[dictList.Count];
 
-		Reward[] rewardArray = new Reward[rewardJSONArray.Length];
-
-		for (int i = 0; i < rewardJSONArray.Length; i++) {
-			var dict = MiniJSON.Json.Deserialize(rewardJSONArray[i]) as Dictionary<string, object>;
+		for (int i = 0; i < dictList.Count; i++) {
+			var dict = dictList[i] as Dictionary<System.String, System.Object>;
 			long id = (System.Int64) dict["id"];
 			string name = (string) dict["name"];
 			long points = (System.Int64) dict["points"];

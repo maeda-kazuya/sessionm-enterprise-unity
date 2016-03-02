@@ -19,6 +19,7 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -292,6 +293,16 @@ public class SessionMListener implements ActivityListener, SessionListener {
         }
         return jsonObject.toString();
     }
+
+    //Return feed message data as JSON for unity
+    public static String getTiersJSON(List<JSONObject> tiersList) {
+        JSONArray tiersArray = new JSONArray();
+        for (JSONObject tier : tiersList) {
+            tiersArray.put(tier);
+        }
+        return tiersArray.toString();
+    }
+
 
     //Return rewards data as JSON for unity
     public static String getRewardsJSON(){

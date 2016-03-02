@@ -13,6 +13,10 @@ import com.sessionm.api.SessionM;
 import com.sessionm.api.User;
 import com.unity3d.player.UnityPlayerActivity;
 
+import org.json.JSONObject;
+
+import java.util.List;
+
 public class BaseNativeActivity extends UnityPlayerActivity {
 
     private final static String TAG = "SessionM.Unity";
@@ -71,6 +75,10 @@ public class BaseNativeActivity extends UnityPlayerActivity {
         return json;
     }
 
+    public void setMessagesEnabled(boolean enabled) {
+        sessionM.setMessagesEnabled(enabled);
+    }
+
     public void setUserOptOutStatus(boolean status){
         if(Log.isLoggable(TAG, Log.DEBUG)) {
             Log.d(TAG, this + ".setUserOptOutStatus()");
@@ -81,6 +89,15 @@ public class BaseNativeActivity extends UnityPlayerActivity {
     public String getRewardsJSON(){
         return SessionMListener.getRewardsJSON();
     }
+
+    public String getTiers(){
+        String json = "";
+        List<JSONObject> tiersList = sessionM.getTiers();
+        if (tiersList != null)
+            json = SessionMListener.getTiersJSON(tiersList);
+        return json;
+    }
+
 
     public void updateAchievementsList(){
         if(Log.isLoggable(TAG, Log.DEBUG)) {
@@ -100,6 +117,22 @@ public class BaseNativeActivity extends UnityPlayerActivity {
         sessionM.setServerType(SessionM.SERVER_TYPE_CUSTOM, "https://api.tour-sessionm.com");
         //if (serviceRegion == 0)
             //sessionM.setServerType(SessionM.SERVER_TYPE_PRODUCTION);
+    }
+
+    public void setServerType(String url) {
+        sessionM.setServerType(SessionM.SERVER_TYPE_CUSTOM, url);
+    }
+
+    public void setAppKey(String appKey) {
+        sessionM.setAppKey(appKey);
+    }
+
+    public void setSessionAutoStartEnabled(boolean autoStartSession) {
+        sessionM.getExtension().setSessionAutoStartEnabled(autoStartSession);
+    }
+
+    public boolean isSessionAutoStartEnabled() {
+        return sessionM.getExtension().isSessionAutoStartEnabled();
     }
 
     public boolean notifyCustomAchievementPresented() {
@@ -154,6 +187,9 @@ public class BaseNativeActivity extends UnityPlayerActivity {
                 Log.e(TAG, this + ".notifyCustomAchievementClaimed()", e);
             }
         }
+    }
+
+    public void presentTierList() {
     }
 
     // Activity 

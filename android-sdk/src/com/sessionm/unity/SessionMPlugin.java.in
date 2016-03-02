@@ -11,6 +11,9 @@ import com.sessionm.api.SessionM.ActivityType;
 import com.sessionm.api.SessionM;
 import com.sessionm.api.User;
 
+import org.json.JSONObject;
+import java.util.List;
+
 public class SessionMPlugin{
 
     private final static String TAG = "SessionM.Unity";
@@ -51,6 +54,10 @@ public class SessionMPlugin{
         return json;
     }
 
+    public static void setMessagesEnabled(boolean enabled) {
+            sessionM.setMessagesEnabled(enabled);
+    }
+
     public static String getUser() {
         String json = null;
         User user = sessionM.getUser();
@@ -64,9 +71,39 @@ public class SessionMPlugin{
         return SessionMListener.getRewardsJSON();
     }
 
+    public static String getTiers(){
+        String json = "";
+        List<JSONObject> tiersList = sessionM.getTiers();
+        if (tiersList != null)
+            json = SessionMListener.getTiersJSON(tiersList);
+        return json;
+    }
+
+
+
     public static void setServiceRegion(int serviceRegion) {
         if (serviceRegion == 0)
             sessionM.setServerType(SessionM.SERVER_TYPE_PRODUCTION);
+    }
+
+    public static void setServerType(String url) {
+        sessionM.setServerType(SessionM.SERVER_TYPE_CUSTOM, url);
+    }
+
+    public static void setAppKey(String appKey) {
+        sessionM.setAppKey(appKey);
+    };
+
+    public static void setSessionAutoStartEnabled(boolean autoStartSession) {
+        sessionM.getExtension().setSessionAutoStartEnabled(autoStartSession);
+    }
+
+    public static boolean isSessionAutoStartEnabled() {
+        return sessionM.getExtension().isSessionAutoStartEnabled();
+    }
+
+    public static void startSession(String appKey) {
+        sessionM.startSession(ac, appKey);
     }
 
     public static boolean notifyCustomAchievementPresented() {
@@ -121,6 +158,9 @@ public class SessionMPlugin{
                 Log.e(TAG, ac + ".notifyCustomAchievementClaimed()", e);
             }
         }
+    }
+
+    public static void presentTierList() {
     }
 
     public static void setUserOptOutStatus(boolean status){

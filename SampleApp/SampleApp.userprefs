@@ -2,11 +2,11 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Plugins/SessionM/SessionM.cs">
     <Files>
-      <File FileName="Assets/Plugins/SessionM/SessionM.cs" Line="389" Column="3" />
-      <File FileName="Assets/SessionM Sample Code/SessionMSample.cs" Line="124" Column="1" />
-      <File FileName="Assets/SessionM Sample Code/SessionMSampleGUI.cs" Line="59" Column="29" />
-      <File FileName="Assets/Plugins/SessionM/UserData.cs" Line="14" Column="40" />
-      <File FileName="Assets/Plugins/SessionM/Tier.cs" Line="9" Column="8" />
+      <File FileName="Assets/SessionM Sample Code/SessionMSampleGUI.cs" Line="1" Column="1" />
+      <File FileName="Assets/SessionM Sample Code/SessionMSample.cs" Line="84" Column="5" />
+      <File FileName="Assets/Plugins/SessionM/ISessionM_Android.cs" Line="240" Column="30" />
+      <File FileName="Assets/Plugins/SessionM/Reward.cs" Line="1" Column="1" />
+      <File FileName="Assets/Plugins/SessionM/SessionM.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

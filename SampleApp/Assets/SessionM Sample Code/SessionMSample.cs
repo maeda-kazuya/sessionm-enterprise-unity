@@ -78,10 +78,10 @@ public class SessionMSample : MonoBehaviour
 	private void Awake()
 	{
 		//Set service region before SessionM instance is activated
-		// SessionM.SetServiceRegion(ServiceRegion.USA);
-		SessionM.SetServerType("https://api.tour-sessionm.com");
+		SessionM.SetServiceRegion(ServiceRegion.USA);
+		//SessionM.SetServerType("https://api.tour-sessionm.com");
 		SessionM.SetShouldAutoUpdateAchievementsList(true);
-		SessionM.SetMessagesEnabled(true);
+		//SessionM.SetMessagesEnabled(true);
 		SessionM.SetSessionAutoStartEnabled(false);
 		sessionM.gameObject.SetActive(true);
 	}

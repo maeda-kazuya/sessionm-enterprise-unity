@@ -36,11 +36,46 @@ public class SessionM : MonoBehaviour
 	}
 
 	public static ServiceRegion serviceRegion = ServiceRegion.USA;
+	public static string serverURL = "https://api.sessionm.com";
+	public static bool shouldAutoUpdateAchievementsList = false;
+	public static bool shouldEnableMessages = false;
+	public static bool shouldAutoStartSession = true;
 
 	//Call this method before starting the session to set the service region.
 	public static void SetServiceRegion(ServiceRegion region)
 	{
 		serviceRegion = region;
+	}
+
+	//Call this method before starting the session to set the server url.
+	public static void SetServerType(string url)
+	{
+		serviceRegion = ServiceRegion.Custom;
+		serverURL = url;
+	}
+
+	///Use this method to set whether the achievements list will be updated automatically.
+	public static void SetShouldAutoUpdateAchievementsList(bool shouldAutoUpdate)
+	{
+		shouldAutoUpdateAchievementsList = shouldAutoUpdate;
+	}
+
+	//Use this method to enable or disable messages API.
+	public static void SetMessagesEnabled(bool shouldEnable)
+	{
+		shouldEnableMessages = shouldEnable;
+	}
+
+	//Set if session should auto start. Default is true.
+	public static void SetSessionAutoStartEnabled(bool autoStartEnabled)
+	{
+		shouldAutoStartSession = autoStartEnabled;
+	}
+
+	//Get if session should auto start. Default is true.
+	public static bool IsSessionAutoStartEnabled()
+	{
+		return shouldAutoStartSession;
 	}
 
 	//Here, SessionM instantiates the appropiate Native interface to be used on each platform.
@@ -64,6 +99,12 @@ public class SessionM : MonoBehaviour
 	public SessionState GetSessionState()
 	{
 		return sessionMNative.GetSessionState();
+	}
+
+    //Use this method to manually start a session. 
+	public void StartSession(string appKey)
+	{
+		sessionMNative.StartSession(appKey);
 	}
 
 	//Use this method for displaying a badge or other SessionM tools.  Remember, your Acheivement count can accumulate over days, so be sure to support at least
@@ -93,12 +134,6 @@ public class SessionM : MonoBehaviour
 	//Use this method to set user opt-out status
 	public void SetUserOptOutStatus(bool status){
 		sessionMNative.SetUserOptOutStatus(status);
-	}
-
-	//Use this method to set the value of shouldAutoUpdateAchievementsList
-	public void SetShouldAutoUpdateAchievementsList(bool shouldAutoUpdate)
-	{
-		sessionMNative.SetShouldAutoUpdateAchievementsList(shouldAutoUpdate);
 	}
 
 	//Use this method to manually update the user's achievementsList field. Has no effect if shouldAutoUpdateAchievementsList is set to true.
@@ -162,9 +197,14 @@ public class SessionM : MonoBehaviour
 		return sessionMNative.GetSDKVersion();
 	}
 
-	public string[] GetRewards()
+	public Reward[] GetRewards()
 	{
-		return UnpackJSONArray(sessionMNative.GetRewards());
+		return GetRewardData(sessionMNative.GetRewards());
+	}
+
+	public string GetMessagesList()
+	{
+		return sessionMNative.GetMessagesList();
 	}
 	
 	public LogLevel GetLogLevel()
@@ -188,6 +228,12 @@ public class SessionM : MonoBehaviour
 	{
 		sessionMNative.SetMetaData(data, key);
 	}
+
+	//Call this method before starting the session to set the app key.
+	public void SetAppKey(string appKey)
+	{
+		sessionMNative.SetAppKey(appKey);
+	}
 	
 	public void NotifyPresented()
 	{
@@ -207,6 +253,17 @@ public class SessionM : MonoBehaviour
 	public void DismissActivity()
 	{
 		sessionMNative.DismissActivity();
+	}
+
+	public void PresentTierList()
+	{
+		sessionMNative.PresentTierList();
+	}
+
+	public Tier[] GetTiers()
+	{
+		Debug.Log("GetTiers");
+		return GetTierData(sessionMNative.GetTiers());
 	}
 	
 	public void SetCallback(ISessionMCallback callback)
@@ -309,9 +366,52 @@ public class SessionM : MonoBehaviour
                 }
 		List<AchievementData> achievementsList = new List<AchievementData>(achievementsListArray);
 
-		UserData userData = new UserData(isOptedOut, isRegistered, isLoggedIn, (int)userPointBalance, (int)unclaimedAchievementCount, (int)unclaimedAchievementValue, achievements, achievementsList);
+		string tierName = (string)userDict["getTierName"];
+		string tierPercentage = (string)userDict["getTierPercentage"];
+		string tierAnniversaryDate = (string)userDict["getTierAnniversaryDate"];
+		UserData userData = new UserData(isOptedOut, isRegistered, isLoggedIn, (int)userPointBalance, (int)unclaimedAchievementCount, (int)unclaimedAchievementValue, achievements, achievementsList, tierName, tierPercentage, tierAnniversaryDate);
+
 		return userData;
 	}
+
+	public static Tier[] GetTierData(string jsonString)
+	{
+		var dictList = MiniJSON.Json.Deserialize(jsonString) as List<System.Object>;
+		Tier[] tierArray = new Tier[dictList.Count];
+
+		for(int i = 0; i < dictList.Count; i++) {
+			var dict = dictList[i] as Dictionary<System.String, System.Object>;
+			string tier = (string) dict["tier"];
+			string name = (string) dict["name"];
+			string instructions = (string) dict["instructions"];
+			tierArray[i] = new Tier(tier, name, instructions);
+		}
+
+		return tierArray;
+	}
+
+	public static Reward[] GetRewardData(string jsonString) 
+	{
+		var dictList = MiniJSON.Json.Deserialize(jsonString) as List<System.Object>;
+		Reward[] rewardArray = new Reward[dictList.Count];
+
+		for (int i = 0; i < dictList.Count; i++) {
+			var dict = dictList[i] as Dictionary<System.String, System.Object>;
+			long id = (System.Int64) dict["id"];
+			string name = (string) dict["name"];
+			long points = (System.Int64) dict["points"];
+			string imageURL = (string)dict["image"];
+			string type = (string) dict["type"];
+			string expiresAt = (string) dict["expires_at"];
+			string url = (string) dict["url"];
+			string tier = (string)dict ["tier"];
+
+			rewardArray[i] = new Reward ((int)id, name, (int)points, imageURL, url, tier, type, expiresAt);
+		}
+
+		return rewardArray;
+	}
+	
 
 	private static string[] UnpackJSONArray(string json)
 	{

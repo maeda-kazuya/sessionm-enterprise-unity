@@ -5,6 +5,7 @@
 //
 
 #import "SessionM_Unity.h"
+#import "SMFeedMessageData.h"
 
 #pragma mark - Interface
 
@@ -16,6 +17,9 @@ static NSString *SMPackStrings(NSArray * strings);
 static NSString *SMPackJSONArray(NSArray *jsonArray);
 static NSString *SMAchievementDataToJSONString(SMAchievementData *achievementData);
 static NSString *SMUserToJSONString(SMUser *user);
+static NSString *SMRewardsToJSONString(NSArray *rewards);
+static NSString *SMMessagesListToJSONString(NSArray *messages);
+static NSString *SMTiersToJSONString(NSArray *tiers);
 SessionM_Unity *__unityClientSharedInstance;
 
 @interface SessionM_Unity()<SessionMDelegate>
@@ -126,10 +130,9 @@ void SMSetCallbackGameObjectName(char *gameObjectName) {
 
 // Starts a session for the specified application ID
 void SMStartSession(char *appId) {
-    SM_SET_SERVER_URL(@"https://api.tour-sessionm.com");
     NSString *appIdString = [NSString stringWithCString:appId encoding:NSUTF8StringEncoding];
     SessionM *sessionM = [SessionM sharedInstance];
-    [sessionM startSessionWithAppID:@"0bfeb00013f0f634420a04ed5806a66a58d49d8b"];
+    [sessionM startSessionWithAppID:appIdString];
     sessionM.delegate = [SessionM_Unity sharedInstance];
 }
 
@@ -190,8 +193,27 @@ const char *SMGetSDKVersion(void) {
 
 // Returns a JSON representation of the list of rewards the user can redeem
 const char *SMGetRewardsJSON(void) {
-    const char *rewardsJSON = [SMPackJSONArray([SessionM sharedInstance].rewards) cStringUsingEncoding:NSUTF8StringEncoding];
-    return rewardsJSON ? strdup(rewardsJSON) : NULL;
+    NSString *rewardsString = nil;
+    NSArray *rewardsData = [SessionM sharedInstance].rewards;
+    if (rewardsData) {
+        rewardsString = SMRewardsToJSONString(rewardsData);
+    }
+    const char *c = [rewardsString cStringUsingEncoding:NSUTF8StringEncoding];
+    return c ? strdup(c) : NULL;
+}
+
+void SMSetMessagesEnabled(bool enabled) {
+    [SessionM sharedInstance].shouldUpdateMessagesListOnSessionStart = enabled;
+}
+
+const char *SMGetMessagesList(void) {
+    NSString *messagesString = nil;
+    NSArray *messagesData = [SessionM sharedInstance].messagesList;
+    if (messagesData) {
+        messagesString = SMMessagesListToJSONString(messagesData);
+    }
+    const char *c = [messagesString cStringUsingEncoding:NSUTF8StringEncoding];
+    return c ? strdup(c) : NULL;
 }
 
 // Sends meta data to SessionM SDK. Please refer to the documentation for more information on common keys. Data should only be supplied in accordance with your application's terms of service and privacy policy.
@@ -204,6 +226,11 @@ void SMSetMetaData(const char *data, const char *key) {
 // Sets the SessionM service region
 void SMSetServiceRegion(int region) {
     [SessionM setServiceRegion:region];
+}
+
+void SMSetServerType(const char *url) {
+    NSString *urlString = [NSString stringWithCString:url encoding:NSUTF8StringEncoding];
+    [SessionM setCustomServiceRegionWithServerURL:urlString];
 }
 
 // Sets the user's opted-out status
@@ -274,6 +301,16 @@ void SMNotifyCustomAchievementClaimed(void) {
 
 void SMPresentTierList(void) {
     [[SessionM sharedInstance] presentTierViewController];
+}
+
+const char *SMGetTiers(void) {
+    NSString *tiersString = nil;
+    NSArray *tiersData = [SessionM sharedInstance].tiers;
+    if (tiersData) {
+        tiersString = SMTiersToJSONString(tiersData);
+    }
+    const char *c = [tiersString cStringUsingEncoding:NSUTF8StringEncoding];
+    return c ? strdup(c) : NULL;
 }
 
 
@@ -347,6 +384,61 @@ static NSString *SMUserToJSONString(SMUser *user) {
 
     NSError *error = nil;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:userDict
+                                                       options:0
+                                                         error:&error];
+    NSString *jsonString = nil;
+    if (!error) {
+        jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    }
+
+    return jsonString;
+}
+
+static NSString *SMRewardsToJSONString(NSArray *rewards) {
+    NSError *error = nil;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:rewards
+                                                       options:0
+                                                         error:&error];
+    NSString *jsonString = nil;
+    if (!error) {
+        jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    }
+
+    return jsonString;
+}
+
+static NSString *SMMessagesListToJSONString(NSArray *messages) {
+    NSMutableArray *messagesJSON = [[NSMutableArray alloc] initWithCapacity:messages.count];
+
+    for (SMFeedMessageData *message in messages) {
+        NSDictionary *messageDict = @{
+                                      @"header": message.header ? message.header : @"",
+                                      @"subheader": message.subheader ? message.subheader : @"",
+                                      @"description": message.descriptionText ? message.descriptionText : @"",
+                                      @"iconURL": message.iconURL ? message.iconURL : @"",
+                                      @"imageURL": message.imageURL ? message.imageURL : @"",
+                                      @"actionType": @(message.actionType),
+                                      @"actionURL": message.actionURL ? message.actionURL : @"",
+                                      @"data": message.data ? message.data : @{}
+                                      };
+        [messagesJSON addObject:messageDict];
+    }
+
+    NSError *error = nil;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:messagesJSON
+                                                       options:0
+                                                         error:&error];
+    NSString *jsonString = nil;
+    if (!error) {
+        jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    }
+
+    return jsonString;
+}
+
+static NSString *SMTiersToJSONString(NSArray *tiers) {
+    NSError *error = nil;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:[SessionM sharedInstance].tiers
                                                        options:0
                                                          error:&error];
     NSString *jsonString = nil;

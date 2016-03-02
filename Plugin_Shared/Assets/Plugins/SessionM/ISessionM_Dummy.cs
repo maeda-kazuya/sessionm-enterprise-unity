@@ -36,6 +36,15 @@ public class ISessionM_Dummy : ISessionM
 	{
 	}
 
+	public void SetSessionAutoStartEnabled(bool autoStartEnabled)
+	{
+	}
+
+	public bool IsSessionAutoStartEnabled()
+	{
+		return true;
+	}
+
 	public void UpdateAchievementsList()
 	{
 	}
@@ -91,6 +100,14 @@ public class ISessionM_Dummy : ISessionM
 	{
 	}
 
+	public void SetServerType(string url)
+	{
+	}
+
+	public void SetAppKey(string appKey)
+	{
+	}
+
 	public string GetSDKVersion()
 	{
 		return null;
@@ -99,6 +116,14 @@ public class ISessionM_Dummy : ISessionM
 	public string GetRewards()
 	{
 		return null;
+	}
+
+	public string GetMessagesList()
+	{
+		return null;
+	}
+
+	public void SetMessagesEnabled(bool enabled){
 	}
 	
 	public void SetMetaData(string data, string key)
@@ -115,6 +140,15 @@ public class ISessionM_Dummy : ISessionM
 	
 	public void NotifyClaimed()
 	{
+	}
+
+	public void PresentTierList()
+	{
+	}
+
+	public string GetTiers()
+	{
+		return null;
 	}
 	
 	public void SetCallback(ISessionMCallback callback) 

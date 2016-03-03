@@ -15,7 +15,9 @@ import com.unity3d.player.UnityPlayerActivity;
 
 import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class BaseNativeActivity extends UnityPlayerActivity {
 
@@ -73,6 +75,27 @@ public class BaseNativeActivity extends UnityPlayerActivity {
             json = SessionMListener.getUserJSON(user);
         }
         return json;
+    }
+
+    public boolean logInUserWithEmail(String email, String password) {
+        return sessionM.logInUserWithEmail(email, password);
+    }
+
+    public void logOutUser() {
+        sessionM.logOutUser();
+    }
+
+    public boolean signUpUser(String email, String password, String birthYear, String gender, String zipCode) {
+
+        final Map<String, String> enrollWithEmailMetaData = new HashMap<>();
+
+        enrollWithEmailMetaData.put("email", email);
+        enrollWithEmailMetaData.put("password", password);
+        enrollWithEmailMetaData.put("yob", birthYear);
+        enrollWithEmailMetaData.put("gender", gender);
+        enrollWithEmailMetaData.put("zip", zipCode);
+
+        return sessionM.signUpUserWithData(enrollWithEmailMetaData);
     }
 
     public boolean authenticateWithToken(String provider, String token) {

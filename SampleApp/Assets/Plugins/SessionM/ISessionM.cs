@@ -106,6 +106,11 @@ public interface ISessionM
 	//Gets Current User JSON Object (Deserializes to UserData)
 	string GetUser();
 
+	// User LogIn/Out
+	bool LogInUserWithEmail(string email, string password);
+	void LogOutUser();
+	bool SignUpUser(string email, string password, string birthYear, string gender, string zipCode);
+
 	//Sets Current user opt-out status locally
 	void SetUserOptOutStatus(bool status);
 

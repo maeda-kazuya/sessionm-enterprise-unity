@@ -60,6 +60,10 @@ void SMNotifyCustomAchievementDismissed(void);
 void SMNotifyCustomAchievementClaimed(void);
 void SMPresentTierList(void);
 const char *SMGetTiers(void);
+
+BOOL SMLogInUserWithEmail(const char *email, const char *password);
+void SMLogOutUser(void);
+BOOL SMSignUpUser(const char *email, const char *password, const char *birthYear, const char *gender, const char *zipCode);
 BOOL SMAuthenticateWithToken(const char *provider, const char *token);
 
 @interface SessionM_Unity : NSObject

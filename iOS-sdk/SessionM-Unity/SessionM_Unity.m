@@ -313,6 +313,32 @@ const char *SMGetTiers(void) {
     return c ? strdup(c) : NULL;
 }
 
+BOOL SMLogInUserWithEmail(const char *email, const char *password) {
+    NSString *emailString = [NSString stringWithCString:email encoding:NSUTF8StringEncoding];
+    NSString *passwordString = [NSString stringWithCString:password encoding:NSUTF8StringEncoding];
+    return [[SessionM sharedInstance] logInUserWithEmail:emailString password:passwordString];
+}
+
+void SMLogOutUser(void) {
+    [[SessionM sharedInstance] logOutUser];
+}
+
+BOOL SMSignUpUser(const char *email, const char *password, const char *birthYear, const char *gender, const char *zipCode) {
+    NSString *emailString = [NSString stringWithCString:email encoding:NSUTF8StringEncoding];
+    NSString *passwordString = [NSString stringWithCString:password encoding:NSUTF8StringEncoding];
+    NSString *yearString = [NSString stringWithCString:birthYear encoding:NSUTF8StringEncoding];
+    NSString *genderString = [NSString stringWithCString:gender encoding:NSUTF8StringEncoding];
+    NSString *zipString = [NSString stringWithCString:zipCode encoding:NSUTF8StringEncoding];
+    NSDictionary *accountData = @{
+                                  SMUserDataEmailKey: emailString,
+                                  SMUserDataPasswordKey: passwordString,
+                                  SMUserDataBirthYearKey: yearString,
+                                  SMUserDataGenderKey: genderString,
+                                  SMUserDataZipcodeKey: zipString,
+                                };
+    return [[SessionM sharedInstance] signUpUserWithData:accountData];
+}
+
 BOOL SMAuthenticateWithToken(const char *provider, const char *token) {
     NSString *providerString = [NSString stringWithCString:provider encoding:NSUTF8StringEncoding];
     NSString *tokenString = [NSString stringWithCString:token encoding:NSUTF8StringEncoding];

@@ -96,6 +96,28 @@ public class ISessionM_Android : ISessionM
 		return userJSON;
 	}
 
+	public bool LogInUserWithEmail(string email, string password) {
+		bool success;
+		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
+			success = activityObject.Call<bool>("logInUserWithEmail", email, password);
+		}
+		return success;
+	}
+
+	public void LogOutUser() {
+		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
+			activityObject.Call("logOutUser");
+		}
+	}
+
+	public bool SignUpUser(string email, string password, string birthYear, string gender, string zipCode) {
+		bool success;
+		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
+			success = activityObject.Call<bool>("signUpUser", email, password, birthYear, gender, zipCode);
+		}
+		return success;
+	}
+
 	public void SetUserOptOutStatus(bool status){
 		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
 			activityObject.Call("setUserOptOutStatus", status);

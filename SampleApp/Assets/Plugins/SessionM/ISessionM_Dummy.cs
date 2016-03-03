@@ -28,6 +28,20 @@ public class ISessionM_Dummy : ISessionM
 	{
 		return null;
 	}
+
+	public bool LogInUserWithEmail(string email, string password)
+	{
+		return false;
+	}
+
+	public void LogOutUser()
+	{
+	}
+
+	public bool SignUpUser(string email, string password, string birthYear, string gender, string zipCode)
+	{
+		return false;
+	}
 	
 	public void SetUserOptOutStatus(bool status){
 	}

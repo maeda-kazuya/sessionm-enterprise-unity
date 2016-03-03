@@ -76,6 +76,27 @@ public class ISessionM_iOS : ISessionM
 	}
 
 	[DllImport ("__Internal")]
+	private static extern bool SMLogInUserWithEmail(string email, string password);
+	public bool LogInUserWithEmail(string email, string password)
+	{
+		return SMLogInUserWithEmail(email, password);
+	}
+
+	[DllImport ("__Internal")]
+	private static extern void SMLogOutUser();
+	public void LogOutUser()
+	{
+		SMLogOutUser();
+	}
+
+	[DllImport ("__Internal")]
+	private static extern bool SMSignUpUser(string email, string password, string birthYear, string gender, string zipCode);
+	public bool SignUpUser(string email, string password, string birthYear, string gender, string zipCode)
+	{
+		return SMSignUpUser(email, password, birthYear, gender, zipCode);
+	}
+
+	[DllImport ("__Internal")]
 	private static extern void SMPlayerDataSetUserOptOutStatus(bool status);
 	public void SetUserOptOutStatus(bool status) 
 	{

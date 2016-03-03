@@ -12,7 +12,9 @@ import com.sessionm.api.SessionM;
 import com.sessionm.api.User;
 
 import org.json.JSONObject;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SessionMPlugin{
 
@@ -43,6 +45,27 @@ public class SessionMPlugin{
     
     public static int getUnclaimedAchievementCount() {
         return sessionM.getUser().getUnclaimedAchievementCount();
+    }
+
+    public static boolean logInUserWithEmail(String email, String password) {
+        return sessionM.logInUserWithEmail(email, password);
+    }
+
+    public static void logOutUser() {
+        sessionM.logOutUser();
+    }
+
+    public static boolean signUpUser(String email, String password, String birthYear, String gender, String zipCode) {
+
+        final Map<String, String> enrollWithEmailMetaData = new HashMap<>();
+
+        enrollWithEmailMetaData.put("email", email);
+        enrollWithEmailMetaData.put("password", password);
+        enrollWithEmailMetaData.put("birth_year", birthYear);
+        enrollWithEmailMetaData.put("gender", gender);
+        enrollWithEmailMetaData.put("zip", zipCode);
+
+        return sessionM.signUpUserWithData(enrollWithEmailMetaData);
     }
 
     public static boolean authenticateWithToken(String provider, String token) {

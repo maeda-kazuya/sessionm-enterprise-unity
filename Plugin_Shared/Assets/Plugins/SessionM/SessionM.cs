@@ -229,6 +229,11 @@ public class SessionM : MonoBehaviour
 		sessionMNative.SetMetaData(data, key);
 	}
 
+	public bool AuthenticateWithToken(string provider, string token)
+	{
+		return sessionMNative.AuthenticateWithToken(provider, token);
+	}
+
 	//Call this method before starting the session to set the app key.
 	public void SetAppKey(string appKey)
 	{

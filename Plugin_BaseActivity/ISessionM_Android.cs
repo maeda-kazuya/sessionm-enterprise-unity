@@ -246,6 +246,11 @@ public class ISessionM_Android : ISessionM
 		androidInstance.Call("setMetaData", key, data);
 	}
 
+	public bool AuthenticateWithToken(string provider, string token)
+	{
+		return androidInstance.Call<bool>("authenticateWithToken", provider, token);
+	}
+
 	public void SetServiceRegion(ServiceRegion serviceRegion)
 	{
 		using (AndroidJavaObject activityObject = GetCurrentActivity()) {

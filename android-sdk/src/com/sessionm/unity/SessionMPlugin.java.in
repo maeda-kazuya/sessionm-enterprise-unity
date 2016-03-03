@@ -45,6 +45,10 @@ public class SessionMPlugin{
         return sessionM.getUser().getUnclaimedAchievementCount();
     }
 
+    public static boolean authenticateWithToken(String provider, String token) {
+        return sessionM.authenticateWithToken(provider, token);
+    }
+
     public static String getUnclaimedAchievementJSON() {
         String json = null;
         AchievementData achievement = sessionM.getUnclaimedAchievement();

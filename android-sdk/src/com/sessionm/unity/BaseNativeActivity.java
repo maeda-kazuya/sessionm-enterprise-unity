@@ -75,6 +75,10 @@ public class BaseNativeActivity extends UnityPlayerActivity {
         return json;
     }
 
+    public boolean authenticateWithToken(String provider, String token) {
+        return sessionM.authenticateWithToken(provider, token);
+    }
+
     public void setMessagesEnabled(boolean enabled) {
         sessionM.setMessagesEnabled(enabled);
     }

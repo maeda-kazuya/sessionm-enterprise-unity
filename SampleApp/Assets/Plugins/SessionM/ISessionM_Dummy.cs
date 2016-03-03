@@ -130,6 +130,11 @@ public class ISessionM_Dummy : ISessionM
 	{
 	}
 	
+	public bool AuthenticateWithToken(string provider, string token)
+	{
+		return false;
+	}
+
 	public void NotifyPresented()
 	{
 	}

@@ -300,7 +300,7 @@ void SMNotifyCustomAchievementClaimed(void) {
 }
 
 void SMPresentTierList(void) {
-    [[SessionM sharedInstance] presentTierViewController];
+    // [[SessionM sharedInstance] presentTierViewController];
 }
 
 const char *SMGetTiers(void) {

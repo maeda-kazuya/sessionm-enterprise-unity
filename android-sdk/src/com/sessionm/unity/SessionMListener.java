@@ -307,7 +307,7 @@ public class SessionMListener implements ActivityListener, SessionListener {
     //Return rewards data as JSON for unity
     public static String getRewardsJSON(){
         JSONArray rewardsArray = sessionM.getAvailableRewards();
-        String rewards = SMPackJSONArray(rewardsArray);
+        String rewards = rewardsArray.toString();
         return rewards;
     }
 

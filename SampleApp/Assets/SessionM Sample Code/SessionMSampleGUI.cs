@@ -69,7 +69,14 @@ public class SessionMSampleGUI : MonoBehaviour {
 
 	public void OnPopulateRewards(Reward[] rewards)
 	{
-		foreach (Reward reward in rewards) {
+		int childCount = rewardsGrid.transform.childCount;
+		for (int i = childCount - 1; i >= 0; i--) {
+			Debug.Log("Deleting i: " + i);
+			GameObject.DestroyImmediate(rewardsGrid.transform.GetChild(i).gameObject);
+		}
+
+		for (int i = 0; i < rewards.Length; i++) {
+			Reward reward = rewards[i];
 			RewardObject rewardGO = (RewardObject) GameObject.Instantiate (rewardObjectPrefab);
 			rewardGO.transform.SetParent(rewardsGrid.transform);
 			rewardGO.transform.localScale = Vector3.one;

@@ -90,11 +90,11 @@ public class SessionMSample : MonoBehaviour
 	private void OnEnable()
 	{
 		//Assign useful events to Helper Functions in the class.
-		sessionM.StartSession("0bfeb00013f0f634420a04ed5806a66a58d49d8b");
 		SessionMEventListener.NotifySessionStateChanged += NotifySessionStateChanged;
 		SessionMEventListener.NotifySessionError += NotifySessionError;
 		SessionMEventListener.NotifyUnclaimedAchievementDataUpdated += NotifyUnclaimedAchievementDataUpdated;
 		SessionMEventListener.NotifyUserInfoChanged += UserChanged;
+		sessionM.StartSession("0bfeb00013f0f634420a04ed5806a66a58d49d8b");
 		sessionMSDK.text = "SDK VERSION: " + sessionM.GetSDKVersion();
 		Test();
 		UserChanged(null);

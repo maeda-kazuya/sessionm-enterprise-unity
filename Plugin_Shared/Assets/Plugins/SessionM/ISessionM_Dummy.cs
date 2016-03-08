@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 //SessionMDummy.cs
 //
@@ -80,6 +81,10 @@ public class ISessionM_Dummy : ISessionM
 	
 	public void LogAction(string action, int count) 
 	{	
+	}
+
+	public void LogAction(string action, int count, Dictionary<string, object> payloads)
+	{
 	}
 	
 	public bool PresentActivity(ActivityType type)
@@ -170,6 +175,19 @@ public class ISessionM_Dummy : ISessionM
 		return null;
 	}
 	
+	public void UpdateOffers()
+	{
+	}
+
+	public string GetOffers()
+	{
+		return null;
+	}
+
+	public void FetchContent(string contentID, bool isExternalID)
+	{
+	}
+
 	public void SetCallback(ISessionMCallback callback) 
 	{
 	}

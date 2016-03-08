@@ -184,6 +184,12 @@ public class SessionM : MonoBehaviour
 		sessionMNative.LogAction(action, count);
 	}
 	
+	//Use this method to supply additional developer-defined data that is associated with the action.
+	public void LogAction(string action, int count, Dictionary<string, object> payloads)
+	{
+		sessionMNative.LogAction(action, count, payloads);
+	}
+
 	//Use this method to display an Acheivement if there is an unclaimed Achievement ready.  SessionM will automatically display an overlay
 	//Acheivement display for you.  You can see if there is an achievement ready by running the IsActivityAvailable method below.
 	public bool PresentActivity(ActivityType type)
@@ -284,6 +290,21 @@ public class SessionM : MonoBehaviour
 		return GetTierData(sessionMNative.GetTiers());
 	}
 	
+	public void UpdateOffers()
+	{
+		sessionMNative.UpdateOffers();
+	}
+
+	public Dictionary<string, object>[] GetOffers()
+	{
+		return GetOfferData(sessionMNative.GetOffers());
+	}
+
+	public void FetchContent(string contentID, bool isExternalID)
+	{
+		sessionMNative.FetchContent(contentID, isExternalID);
+	}
+
 	public void SetCallback(ISessionMCallback callback)
 	{
 		sessionMNative.SetCallback(callback);
@@ -394,11 +415,11 @@ public class SessionM : MonoBehaviour
 
 	public static Tier[] GetTierData(string jsonString)
 	{
-		var dictList = MiniJSON.Json.Deserialize(jsonString) as List<System.Object>;
+		List<object> dictList = Json.Deserialize(jsonString) as List<object>;
 		Tier[] tierArray = new Tier[dictList.Count];
 
 		for(int i = 0; i < dictList.Count; i++) {
-			var dict = dictList[i] as Dictionary<System.String, System.Object>;
+			Dictionary<string, object> dict = dictList[i] as Dictionary<string, object>;
 			string tier = (string) dict["tier"];
 			string name = (string) dict["name"];
 			string instructions = (string) dict["instructions"];
@@ -410,11 +431,11 @@ public class SessionM : MonoBehaviour
 
 	public static Reward[] GetRewardData(string jsonString) 
 	{
-		var dictList = MiniJSON.Json.Deserialize(jsonString) as List<System.Object>;
+		List<object> dictList = Json.Deserialize(jsonString) as List<object>;
 		Reward[] rewardArray = new Reward[dictList.Count];
 
 		for (int i = 0; i < dictList.Count; i++) {
-			var dict = dictList[i] as Dictionary<System.String, System.Object>;
+			Dictionary<string, object> dict = dictList[i] as Dictionary<string, object>;
 			long id = (System.Int64) dict["id"];
 			string name = (string) dict["name"];
 			long points = (System.Int64) dict["points"];
@@ -430,6 +451,18 @@ public class SessionM : MonoBehaviour
 		return rewardArray;
 	}
 	
+	public static Dictionary<string, object>[] GetOfferData(string jsonString)
+	{
+		List<object> dictList = Json.Deserialize(jsonString) as List<object>;
+		Dictionary<string, object>[] offerArray = new Dictionary<string, object>[dictList.Count];
+
+		for (int i = 0; i < dictList.Count; i++) {
+			Dictionary<string, object> dict = dictList[i] as Dictionary<string, object>;
+			offerArray[i] = dict;
+		}
+
+		return offerArray;
+	}
 
 	private static string[] UnpackJSONArray(string json)
 	{

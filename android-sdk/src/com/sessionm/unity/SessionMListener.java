@@ -9,7 +9,9 @@ import com.sessionm.api.SessionListener;
 import com.sessionm.api.SessionM;
 import com.sessionm.api.SessionM.ActivityType;
 import com.sessionm.api.User;
-import com.sessionm.api.mmc.data.MessageData;
+import com.sessionm.api.content.ContentManager;
+import com.sessionm.api.content.data.Content;
+import com.sessionm.api.message.data.MessageData;
 import com.unity3d.player.UnityPlayer;
 
 import org.json.JSONArray;
@@ -185,6 +187,18 @@ public class SessionMListener implements ActivityListener, SessionListener {
     }
 
     @Override
+    public void onContentFetched(boolean isSuccess, Content content, String errorMessage) {
+        if (Log.isLoggable(TAG, Log.DEBUG)) {
+            Log.d(TAG, this + ".onContentFetched(): " + content);
+        }
+
+        if (callbackGameObjectName != null) {
+            String jsonData = getContentJSON(content);
+            UnityPlayer.UnitySendMessage(callbackGameObjectName, "_sessionM_HandleFetchedContentMessage", jsonData);
+        }
+    }
+
+    @Override
     public void onUserAction(com.sessionm.api.SessionM instance, UserAction action, Map<String, String> data) {
         if (Log.isLoggable(TAG, Log.DEBUG)) {
             Log.d(TAG, this + ".onUserAction(): " + action.getCode() + ", data: " + data);
@@ -309,6 +323,30 @@ public class SessionMListener implements ActivityListener, SessionListener {
         JSONArray rewardsArray = sessionM.getAvailableRewards();
         String rewards = rewardsArray.toString();
         return rewards;
+    }
+
+    //Return content data as JSON for unity
+    public static String getContentJSON(Content content) {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("id", content.getID());
+            jsonObject.put("external_id", (content.getExternalID() == null) ? "" : content.getExternalID());
+            jsonObject.put("name", content.getName());
+            jsonObject.put("type", content.getType());
+            jsonObject.put("state", content.getState());
+            jsonObject.put("description", content.getDescription());
+            jsonObject.put("weight", content.getWeight());
+            jsonObject.put("image", (content.getImage() == null) ? "" : content.getImage());
+            jsonObject.put("metadata", (content.getMetadata() == null) ? "" : content.getMetadata());
+            jsonObject.put("created_at", content.getCreatedTime());
+            jsonObject.put("updated_at", (content.getUpdatedTime() == null) ? "" : content.getUpdatedTime());
+            jsonObject.put("expires_on", (content.getExpireTime() == null) ? "" : content.getExpireTime());
+        } catch (JSONException e) {
+            if (Log.isLoggable(TAG, Log.DEBUG)) {
+                Log.d(TAG, "JSONException when trying to get content json: " + e);
+            }
+        }
+        return jsonObject.toString();
     }
 
     public static String SMPackJSONArray(JSONArray jsonArray) {

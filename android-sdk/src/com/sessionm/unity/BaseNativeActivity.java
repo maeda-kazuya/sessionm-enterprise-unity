@@ -11,6 +11,7 @@ import com.sessionm.api.Activity;
 import com.sessionm.api.SessionM.ActivityType;
 import com.sessionm.api.SessionM;
 import com.sessionm.api.User;
+import com.sessionm.api.content.ContentManager;
 import com.unity3d.player.UnityPlayerActivity;
 
 import org.json.JSONObject;
@@ -125,6 +126,14 @@ public class BaseNativeActivity extends UnityPlayerActivity {
         return json;
     }
 
+    public void fetchContent(String contentID, boolean isExternalID) {
+        ContentManager manager = sessionM.getContentManager();
+        if (isExternalID) {
+            manager.fetchExternalContents(contentID);
+        } else {
+            manager.fetchContents(contentID);
+        }
+    }
 
     public void updateAchievementsList(){
         if(Log.isLoggable(TAG, Log.DEBUG)) {

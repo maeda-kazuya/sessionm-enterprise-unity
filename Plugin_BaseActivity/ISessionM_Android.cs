@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using MiniJSON;
 
@@ -186,6 +187,13 @@ public class ISessionM_Android : ISessionM
 	{
 		androidInstance.Call("logAction", action, count);
 	}
+
+	public void LogAction(string action, int count, Dictionary<string, object> payloads)
+	{
+		string payloadsJSON = Json.Serialize(payloads);
+		JSONObject payloadsObject = JSONObject(payloadsJSON);
+		androidInstance.Call("logAction", action, count, payloadsObject);
+	}
 	
 	public bool PresentActivity(ActivityType type)
 	{
@@ -338,6 +346,22 @@ public class ISessionM_Android : ISessionM
 		return tiers;
 	}
 	
+	public void UpdateOffers()
+	{
+	}
+
+	public string GetOffers()
+	{
+		return null;
+	}
+
+	public void FetchContent(string contentID, bool isExternalID)
+	{
+		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
+			activityObject.Call<string> ("fetchContent", contentID, isExternalID);
+		}
+	}
+
 	public void SetCallback(ISessionMCallback callback) 
 	{
 		this.callback = callback;

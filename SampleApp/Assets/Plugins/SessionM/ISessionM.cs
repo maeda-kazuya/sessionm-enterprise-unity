@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 // UI Activity type
 public enum ActivityType
@@ -15,7 +16,7 @@ public enum LogLevel
 {
 	Off = 0,
 	Info = 1, 
-	Debug = 3, 
+	Debug = 2
 }
 
 // Session state
@@ -131,6 +132,9 @@ public interface ISessionM
 	
 	// Logs a number of actions - equivalent of calling LogAction(string) a number of times specified in argument "count".
 	void LogAction(string action, int count);
+
+	// Logs a number of actions with additional developer-defined data associated with the action
+	void LogAction(string action, int count, Dictionary<string, object> payloads);
 	
 	// Presents UI activity of specified type if available. 
 	bool PresentActivity(ActivityType type);
@@ -189,5 +193,14 @@ public interface ISessionM
 
 	// Get tiers
 	string GetTiers();
+
+	// Update cached offers
+	void UpdateOffers();
+
+	// Get cached offers
+	string GetOffers();
+
+	// Fetch content data with specified ID
+	void FetchContent(string contentID, bool isExternalID);
 }
 

@@ -19,6 +19,7 @@
 #import "SMNotificationMessageData.h"
 #import "SMLoaderController.h"
 #import "SMReward.h"
+#import "SMContent.h"
 
 
 /*!
@@ -354,6 +355,20 @@ typedef enum SessionMSessionErrorType {
  @param sessionM SessionM service object.
  */
 - (void)sessionMDidUpdateOrderStatus:(SessionM *)sessionM;
+/*!
+ @abstract Notifies delegate that offers data has been fetched.
+ @discussion This method is called in response to calling the @link fetchOffers @/link method.
+ @param sessionM SessionM service object.
+ @param offers The fetched offers data.
+ */
+- (void)sessionM:(SessionM *)sessionM didFetchOffers:(NSArray<NSDictionary *> *)offers;
+/*!
+ @abstract Notifies delegate that content data has been fetched.
+ @discussion This method is called in response to calling the @link fetchContentWithID:external: @/link method.
+ @param sessionM SessionM service object.
+ @param content The fetched content data.
+ */
+- (void)sessionM:(SessionM *)sessionM didFetchContent:(SMContent *)content;
 /*!
  @abstract Notifies that media (typically video) will start playing.
  @discussion Application should use this method to suspend its own media playback if any.
@@ -817,6 +832,14 @@ typedef struct SMLocationCoordinate2D {
  */
 - (void)logAction:(NSString *)action withCount:(NSUInteger)count messageID:(NSString *)messageID;
 /*!
+ @abstract Logs specified number of actions and presents an achievement activity if new achievement is earned.
+ @discussion If activity becomes available as a result of the action delegate method @link sessionM:shouldAutopresentActivity: @/link, if implemented, is called to determine if activity should be presented.
+ @param action Action name.
+ @param count Number of actions.
+ @param payloads Any additional developer-defined data associated with the action.
+ */
+- (void)logAction:(NSString *)action withCount:(NSUInteger)count payloads:(NSDictionary *)payloads;
+/*!
  @abstract Claims the specified achievement and presents an ad.
  @discussion The specified achievement cannot be claimed if the session is not online, if the achievement is not in the @link claimableAchievements @/link array, or if another activity is already presented.
  @param achievement Achievement to claim.
@@ -1008,6 +1031,18 @@ typedef struct SMLocationCoordinate2D {
  @result BOOL indicating whether the SDK will attempt to authenticate the user. Returns <code>NO</code> if session is not online, or if either <code>provider</code> or <code>token</code> is <code>nil</code> or empty. Returns <code>YES</code> otherwise.
  */
 - (BOOL)authenticateWithProvider:(NSString *)provider token:(NSString *)token;
+/*!
+ @abstract Makes a request to fetch the data for all offers that can be redeemed by the user.
+ @discussion The @link sessionM:didFetchOffers: @/link delegate method is called when the offers data is updated.
+ */
+- (void)fetchOffers;
+/*!
+ @abstract Makes a request to fetch the data for the content with the specified ID.
+ @discussion The @link sessionM:didFetchContent: @/link delegate method is called when the content data is fetched.
+ @param contentID The ID of the content to be fetched.
+ @param isExternalID Indicates whether the provided content ID is an external (developer-defined) ID.
+ */
+- (void)fetchContentWithID:(NSString *)contentID external:(BOOL)isExternalID;
 
 @end
 

@@ -27,8 +27,14 @@ public interface ISessionMCallback
 	// This method is called when (1) new achievement has been earned with respective achievement data object, (2) last earned achievement has been claimed in which case achievement data object is null. 
 	void NotifyUnclaimedAchievementDataUpdated(ISessionM sessionM, IAchievementData achievementData);
 
-	// Notifies that user performed action withing context of current activity
+	// Notifies that user performed action withing context of current activity.
 	void NotifyUserAction(ISessionM sessionM, UserAction userAction, IDictionary<string, object> data);
+
+	// Notifies that cached offers have been updated.
+	void NotifyOffersUpdated(ISessionM sessionM, Dictionary<string, object>[] offers);
+
+	// Notifies that content data has been fetched.
+	void NotifyContentFetched(ISessionM sessionM, Dictionary<string, object> content);
 
 
 	// This method is deprecated. Please, use return value from ISessionM.PresentActivity(ActivityType) to determine is UI activitiy will be presented. 

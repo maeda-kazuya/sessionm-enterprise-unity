@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using MiniJSON;
 
@@ -144,6 +145,14 @@ public class ISessionM_iOS : ISessionM
 	{
 		SMLogActions(action, count);		
 	}
+
+	[DllImport ("__Internal")]
+	private static extern void SMLogActionsWithPayloads(string action, int count, string payloadsJSON);
+	public void LogAction(string action, int count, Dictionary<string, object> payloads)
+	{
+		string payloadsJSON = Json.Serialize(payloads);
+		SMLogActionsWithPayloads(action, count, payloadsJSON);
+	}
 	
 	[DllImport ("__Internal")]
 	private static extern bool SMPresentActivity(int type);
@@ -285,6 +294,27 @@ public class ISessionM_iOS : ISessionM
 		return tiers;
 	}
 	
+	[DllImport ("__Internal")]
+	private static extern void SMUpdateOffers();
+	public void UpdateOffers()
+	{
+		SMUpdateOffers();
+	}
+
+	[DllImport ("__Internal")]
+	private static extern string SMGetOffers();
+	public string GetOffers()
+	{
+		return SMGetOffers();
+	}
+
+	[DllImport ("__Internal")]
+	private static extern void SMFetchContentWithID(string contentID, bool isExternalID);
+	public void FetchContent(string contentID, bool isExternalID)
+	{
+		SMFetchContentWithID(contentID, isExternalID);
+	}
+
 	public void SetCallback(ISessionMCallback callback) 
 	{
 		this.callback = callback;

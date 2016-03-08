@@ -17,10 +17,12 @@ static NSString *SMPackStrings(NSArray * strings);
 static NSString *SMPackJSONArray(NSArray *jsonArray);
 static NSString *SMAchievementDataToJSONString(SMAchievementData *achievementData);
 static NSString *SMUserToJSONString(SMUser *user);
-static NSString *SMRewardsToJSONString(NSArray *rewards);
 static NSString *SMMessagesListToJSONString(NSArray *messages);
-static NSString *SMTiersToJSONString(NSArray *tiers);
+static NSString *SMContentToJSONString(SMContent *content);
+static NSString *SMObjectToJSONString(id object);
+
 SessionM_Unity *__unityClientSharedInstance;
+static NSArray<NSDictionary *> *currentOffers;
 
 @interface SessionM_Unity()<SessionMDelegate>
 
@@ -102,6 +104,21 @@ SessionM_Unity *__unityClientSharedInstance;
     [self invokeUnityGameObjectMethod:@"_sessionM_HandleUserActionMessage" message:jsonString];
 }
 
+- (void)sessionM:(SessionM *)sessionM didFetchOffers:(NSArray<NSDictionary *> *)offers {
+    currentOffers = offers;
+    NSString *offersString = SMObjectToJSONString(currentOffers);
+    [self invokeUnityGameObjectMethod:@"_sessionM_HandleUpdatedOffersMessage" message:offersString];
+}
+
+- (void)sessionM:(SessionM *)sessionM didFetchContent:(SMContent *)content {
+    if (content) {
+        NSString *contentString = SMContentToJSONString(content);
+        [self invokeUnityGameObjectMethod:@"_sessionM_HandleFetchedContentMessage" message:contentString];
+    } else {
+        NSLog(@"[SessionM-Unity] Could not fetch content data");
+    }
+}
+
 
 #pragma mark - Private
 
@@ -132,8 +149,8 @@ void SMSetCallbackGameObjectName(char *gameObjectName) {
 void SMStartSession(char *appId) {
     NSString *appIdString = [NSString stringWithCString:appId encoding:NSUTF8StringEncoding];
     SessionM *sessionM = [SessionM sharedInstance];
-    [sessionM startSessionWithAppID:appIdString];
     sessionM.delegate = [SessionM_Unity sharedInstance];
+    [sessionM startSessionWithAppID:appIdString];
 }
 
 // Returns the current session state
@@ -174,6 +191,15 @@ void SMLogActions(const char *action, int count) {
     [[SessionM sharedInstance] logAction:actionStr withCount:count];
 }
 
+// Logs multiple actions with additional developer-defined data
+void SMLogActionsWithPayloads(const char *action, int count, const char *payloadsJSON) {
+    NSString *actionStr = [NSString stringWithCString:action encoding:NSUTF8StringEncoding];
+    NSString *payloadsStr = [NSString stringWithCString:payloadsJSON encoding:NSUTF8StringEncoding];
+    NSData *payloadsData = [payloadsStr dataUsingEncoding:NSUTF8StringEncoding];
+    NSDictionary *payloadsDict = [NSJSONSerialization JSONObjectWithData:payloadsData options:0 error:NULL];
+    [[SessionM sharedInstance] logAction:actionStr withCount:count payloads:payloadsDict];
+}
+
 // Returns the current debug log level
 SMLogLevel SMGetLogLevel(void) {
     return [SessionM sharedInstance].logLevel;
@@ -196,14 +222,14 @@ const char *SMGetRewardsJSON(void) {
     NSString *rewardsString = nil;
     NSArray *rewardsData = [SessionM sharedInstance].rewards;
     if (rewardsData) {
-        rewardsString = SMRewardsToJSONString(rewardsData);
+        rewardsString = SMObjectToJSONString(rewardsData);
     }
     const char *c = [rewardsString cStringUsingEncoding:NSUTF8StringEncoding];
     return c ? strdup(c) : NULL;
 }
 
 void SMSetMessagesEnabled(bool enabled) {
-    [SessionM sharedInstance].shouldUpdateMessagesListOnSessionStart = enabled;
+    [SessionM sharedInstance].shouldEnableMessages = enabled;
 }
 
 const char *SMGetMessagesList(void) {
@@ -307,10 +333,29 @@ const char *SMGetTiers(void) {
     NSString *tiersString = nil;
     NSArray *tiersData = [SessionM sharedInstance].tiers;
     if (tiersData) {
-        tiersString = SMTiersToJSONString(tiersData);
+        tiersString = SMObjectToJSONString(tiersData);
     }
     const char *c = [tiersString cStringUsingEncoding:NSUTF8StringEncoding];
     return c ? strdup(c) : NULL;
+}
+
+void SMUpdateOffers(void) {
+    [[SessionM sharedInstance] fetchOffers];
+}
+
+const char *SMGetOffers(void) {
+    if (!currentOffers) {
+        return NULL;
+    }
+
+    NSString *offersString = SMObjectToJSONString(currentOffers);
+    const char *c = [offersString cStringUsingEncoding:NSUTF8StringEncoding];
+    return c ? strdup(c) : NULL;
+}
+
+void SMFetchContentWithID(const char *contentID, BOOL isExternalID) {
+    NSString *idString = [NSString stringWithCString:contentID encoding:NSUTF8StringEncoding];
+    [[SessionM sharedInstance] fetchContentWithID:idString external:isExternalID];
 }
 
 BOOL SMLogInUserWithEmail(const char *email, const char *password) {
@@ -368,7 +413,7 @@ static NSString *SMAchievementDataToJSONString(SMAchievementData *achievementDat
                                       @"name": achievementData.name ? achievementData.name : @"",
                                       @"message": achievementData.message ? achievementData.message : @"",
                                       @"limitText": achievementData.limitText ? achievementData.limitText : @"",
-                                      @"mpointValue": [[NSNumber alloc] initWithInteger:achievementData.mpointValue],
+                                      @"pointValue": [[NSNumber alloc] initWithInteger:achievementData.pointValue],
                                       @"isCustom": [[NSNumber alloc] initWithBool:achievementData.isCustom],
                                       @"lastEarnedDate": [[NSNumber alloc] initWithLongLong:time],
                                       @"timesEarned": [[NSNumber alloc] initWithUnsignedInteger:achievementData.timesEarned],
@@ -426,19 +471,6 @@ static NSString *SMUserToJSONString(SMUser *user) {
     return jsonString;
 }
 
-static NSString *SMRewardsToJSONString(NSArray *rewards) {
-    NSError *error = nil;
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:rewards
-                                                       options:0
-                                                         error:&error];
-    NSString *jsonString = nil;
-    if (!error) {
-        jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-    }
-
-    return jsonString;
-}
-
 static NSString *SMMessagesListToJSONString(NSArray *messages) {
     NSMutableArray *messagesJSON = [[NSMutableArray alloc] initWithCapacity:messages.count];
 
@@ -468,12 +500,44 @@ static NSString *SMMessagesListToJSONString(NSArray *messages) {
     return jsonString;
 }
 
-static NSString *SMTiersToJSONString(NSArray *tiers) {
+static NSString *SMContentToJSONString(SMContent *content) {
+    NSDictionary *contentDict = @{
+                                  @"id": content.contentID,
+                                  @"external_id": content.externalID ?: @"",
+                                  @"name": content.name,
+                                  @"type": content.type,
+                                  @"state": content.state,
+                                  @"description": content.descriptionText,
+                                  @"weight": @(content.weight),
+                                  @"image": content.imageURL ?: @"",
+                                  @"metadata": content.metadata ?: @{},
+                                  @"created_at": content.createdTime,
+                                  @"updated_at": content.updatedTime ?: @"",
+                                  @"expires_on": content.expireTime ?: @""
+                                  };
+
     NSError *error = nil;
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:[SessionM sharedInstance].tiers
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:contentDict
                                                        options:0
                                                          error:&error];
     NSString *jsonString = nil;
+    if (!error) {
+        jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    }
+
+    return jsonString;
+}
+
+static NSString *SMObjectToJSONString(id object) {
+    if (!object) {
+        return @"";
+    }
+
+    NSError *error = nil;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:object
+                                                       options:0
+                                                         error:&error];
+    NSString *jsonString = @"";
     if (!error) {
         jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
     }

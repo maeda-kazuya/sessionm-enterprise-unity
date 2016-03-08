@@ -36,6 +36,7 @@ void SMSetServerType(const char *url);
 void SMStartSession(char *appId);
 void SMLogAction(const char *action);
 void SMLogActions(const char *action, int count);
+void SMLogActionsWithPayloads(const char *action, int count, const char *payloadsJSON);
 BOOL SMPresentActivity(SMActivityType type);
 void SMDismissActivity(void);
 BOOL SMIsActivityAvailable(SMActivityType type);
@@ -60,6 +61,9 @@ void SMNotifyCustomAchievementDismissed(void);
 void SMNotifyCustomAchievementClaimed(void);
 void SMPresentTierList(void);
 const char *SMGetTiers(void);
+void SMUpdateOffers(void);
+const char *SMGetOffers(void);
+void SMFetchContentWithID(const char *contentID, BOOL isExternalID);
 
 BOOL SMLogInUserWithEmail(const char *email, const char *password);
 void SMLogOutUser(void);

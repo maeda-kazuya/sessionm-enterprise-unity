@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System;
 using System.Collections.Generic;
 using System.Collections;
@@ -26,6 +26,12 @@ public class SessionMEventListener : MonoBehaviour
 
 	// Notifies that user performed action withing context of current 	activity
 	public static event Action<UserAction, IDictionary<string, object>> NotifyUserAction;
+
+	// Notifies that cached offers have been updated.
+	public static event Action<Dictionary<string, object>[]> NotifyOffersUpdated;
+
+	// Notifies that content data has been fetched.
+	public static event Action<Dictionary<string, object>> NotifyContentFetched;
 
 	private ISessionM nativeParent;
 	private ISessionMCallback callback;
@@ -162,6 +168,40 @@ public class SessionMEventListener : MonoBehaviour
 
 		if(callback != null) {
 			callback.NotifyUnclaimedAchievementDataUpdated(nativeParent, achievementData);
+		}
+	}
+
+	private void _sessionM_HandleUpdatedOffersMessage(string message)
+	{
+		List<object> dictList = Json.Deserialize(message) as List<object>;
+		Dictionary<string, object>[] offerArray = new Dictionary<string, object>[dictList.Count];
+
+		for(int i = 0; i < dictList.Count; i++) {
+			Dictionary<string, object> dict = dictList[i] as Dictionary<string, object>;
+			offerArray[i] = dict;
+		}
+
+		//Register Event
+		if(NotifyOffersUpdated != null) {
+			NotifyOffersUpdated(offerArray);
+		}
+
+		if(callback != null) {
+			callback.NotifyOffersUpdated(nativeParent, offerArray);
+		}
+	}
+
+	private void _sessionM_HandleFetchedContentMessage(string message)
+	{
+		Dictionary<string, object> contentDict = Json.Deserialize(message) as Dictionary<string, object>;
+
+		//Register Event
+		if(NotifyContentFetched != null) {
+			NotifyContentFetched(contentDict);
+		}
+
+		if(callback != null) {
+			callback.NotifyContentFetched(nativeParent, contentDict);
 		}
 	}
 

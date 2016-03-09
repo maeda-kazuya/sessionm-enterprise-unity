@@ -14,3 +14,6 @@ Plugin_BaseActivity/Library/
 Plugin_BaseActivity/Temp/
 Plugin_BaseActivity/SessionMXcodeUpdatePostBuild.log
 SampleApp/SessionMXcodeUpdatePostBuild.log
+SampleApp/SampleApp-csharp.sln
+SampleApp/SampleApp.sln
+SampleApp/SampleApp.userprefs

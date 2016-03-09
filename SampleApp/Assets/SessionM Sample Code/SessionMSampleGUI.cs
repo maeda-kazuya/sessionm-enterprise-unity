@@ -60,7 +60,7 @@ public class SessionMSampleGUI : MonoBehaviour {
 		tiersText.text = "Available Tiers: \n";
 
 		for(int i = 0; i < tiers.Length; i++) {
-			tiersText.text += "Tier " + i + " : " + tiers[i].name + "\n";
+			tiersText.text += "Tier " + i + " : " + tiers[i].name + " (Multiplier: " + tiers[i].multiplier + ")\n";
 			if(tiers[i].instructions != null) {
 				tiersText.text += "Instructions: " + tiers[i].instructions + "\n";
 			}

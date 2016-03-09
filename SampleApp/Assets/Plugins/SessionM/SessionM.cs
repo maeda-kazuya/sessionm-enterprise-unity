@@ -286,7 +286,6 @@ public class SessionM : MonoBehaviour
 
 	public Tier[] GetTiers()
 	{
-		Debug.Log("GetTiers");
 		return GetTierData(sessionMNative.GetTiers());
 	}
 	
@@ -423,7 +422,8 @@ public class SessionM : MonoBehaviour
 			string tier = (string) dict["tier"];
 			string name = (string) dict["name"];
 			string instructions = (string) dict["instructions"];
-			tierArray[i] = new Tier(tier, name, instructions);
+			double multiplier = Convert.ToDouble(dict["multiplier"]);
+			tierArray[i] = new Tier(tier, name, instructions, multiplier);
 		}
 
 		return tierArray;

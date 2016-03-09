@@ -21,18 +21,16 @@ public class ISessionM_iOS : ISessionM
 	{
 		sessionMGameObject = sessionMParent;
 		
-		if(sessionMParent.iosAppId != null) {
-			SetShouldAutoUpdateAchievementsList(SessionM.shouldAutoUpdateAchievementsList);
-			SetMessagesEnabled(SessionM.shouldEnableMessages);
-			SetLogLevel(sessionMParent.logLevel);
-			if (SessionM.serviceRegion == ServiceRegion.Custom) {
-				SetServerType(SessionM.serverURL);
-			} else {
-				SetServiceRegion(SessionM.serviceRegion);
-			}
-			if (SessionM.shouldAutoStartSession) {
-				StartSession(null);
-			}
+		SetShouldAutoUpdateAchievementsList(SessionM.shouldAutoUpdateAchievementsList);
+		SetMessagesEnabled(SessionM.shouldEnableMessages);
+		SetLogLevel(sessionMParent.logLevel);
+		if (SessionM.serviceRegion == ServiceRegion.Custom) {
+			SetServerType(SessionM.serverURL);
+		} else {
+			SetServiceRegion(SessionM.serviceRegion);
+		}
+		if (SessionM.shouldAutoStartSession && sessionMParent.iosAppId != null) {
+			StartSession(sessionMParent.iosAppId);
 		}
 		
 		CreateListenerObject();
@@ -55,10 +53,10 @@ public class ISessionM_iOS : ISessionM
 	private static extern void SMStartSession(string appId);
 	public void StartSession(string appId)
 	{
-		if(sessionMGameObject.iosAppId != null) {
-			SMStartSession(sessionMGameObject.iosAppId);
-		} else {
+		if(appId != null) {
 			SMStartSession(appId);
+		} else if(sessionMGameObject.iosAppId != null) {
+			SMStartSession(sessionMGameObject.iosAppId);
 		}
 	}
 	

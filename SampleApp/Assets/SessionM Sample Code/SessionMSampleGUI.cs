@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 
 public class SessionMSampleGUI : MonoBehaviour {
 	[System.Serializable]
@@ -81,6 +82,23 @@ public class SessionMSampleGUI : MonoBehaviour {
 			rewardGO.transform.SetParent(rewardsGrid.transform);
 			rewardGO.transform.localScale = Vector3.one;
 			rewardGO.SetReward (reward);
+		}
+	}
+
+	public void OnPopulateOffers(Dictionary<string, object>[] offers)
+	{
+		int childCount = rewardsGrid.transform.childCount;
+		for (int i = childCount - 1; i >= 0; i--) {
+			Debug.Log("Deleting i: " + i);
+			GameObject.DestroyImmediate(rewardsGrid.transform.GetChild(i).gameObject);
+		}
+
+		for (int i = 0; i < offers.Length; i++) {
+			Dictionary<string, object> offer = offers[i];
+			RewardObject rewardGO = (RewardObject) GameObject.Instantiate(rewardObjectPrefab);
+			rewardGO.transform.SetParent(rewardsGrid.transform);
+			rewardGO.transform.localScale = Vector3.one;
+			rewardGO.SetOffer(offer);
 		}
 	}
 

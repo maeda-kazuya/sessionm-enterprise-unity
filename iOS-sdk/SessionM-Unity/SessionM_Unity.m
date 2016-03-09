@@ -507,7 +507,7 @@ static NSString *SMContentToJSONString(SMContent *content) {
                                   @"name": content.name,
                                   @"type": content.type,
                                   @"state": content.state,
-                                  @"description": content.descriptionText,
+                                  @"description": content.descriptionText ?: @"",
                                   @"weight": @(content.weight),
                                   @"image": content.imageURL ?: @"",
                                   @"metadata": content.metadata ?: @{},

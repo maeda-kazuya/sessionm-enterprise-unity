@@ -1,6 +1,8 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
+using System;
 using System.Collections;
+using System.Collections.Generic;
 
 public class RewardObject : MonoBehaviour 
 {
@@ -20,6 +22,19 @@ public class RewardObject : MonoBehaviour
 		this.url = reward.url;
 
 		StartCoroutine (DownloadImage (reward.imageURL));
+	}
+
+	public void SetOffer(Dictionary<string, object> offer)
+	{
+		title.text = (string) offer["name"];
+		type.text = "Type: " + (string) offer["type"];
+		points.text = Convert.ToString((Int64) offer["points"]);
+
+		if(offer["tier"] != null) {
+			tier.text = "Tier: " + (string) offer["tier"];
+		}
+
+		StartCoroutine (DownloadImage ((string) offer["logo"]));
 	}
 
 	private IEnumerator DownloadImage(string imageURL)

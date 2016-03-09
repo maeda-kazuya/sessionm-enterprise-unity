@@ -76,6 +76,7 @@ public class SessionMSample : MonoBehaviour
 
 	private void OffersUpdated(Dictionary<string, object>[] offers)
 	{
+		gui.OnPopulateOffers(offers);
 	}
 
 	private void ContentFetched(Dictionary<string, object> content)
@@ -103,7 +104,7 @@ public class SessionMSample : MonoBehaviour
 		SessionMEventListener.NotifyUserInfoChanged += UserChanged;
 		SessionMEventListener.NotifyOffersUpdated += OffersUpdated;
 		SessionMEventListener.NotifyContentFetched += ContentFetched;
-		sessionM.StartSession("0bfeb00013f0f634420a04ed5806a66a58d49d8b");
+		sessionM.StartSession("199eeab2d4821a86eff8d8ea375a3d78804eae98");
 		sessionMSDK.text = "SDK VERSION: " + sessionM.GetSDKVersion();
 		UserChanged(null);
 	}

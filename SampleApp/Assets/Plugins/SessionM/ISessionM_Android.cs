@@ -191,8 +191,9 @@ public class ISessionM_Android : ISessionM
 	public void LogAction(string action, int count, Dictionary<string, object> payloads)
 	{
 		string payloadsJSON = Json.Serialize(payloads);
-		JSONObject payloadsObject = JSONObject(payloadsJSON);
-		androidInstance.Call("logAction", action, count, payloadsObject);
+		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
+			activityObject.Call("logAction", action, count, payloadsJSON);
+		}
 	}
 	
 	public bool PresentActivity(ActivityType type)

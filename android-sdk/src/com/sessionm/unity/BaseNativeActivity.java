@@ -14,6 +14,7 @@ import com.sessionm.api.User;
 import com.sessionm.api.content.ContentManager;
 import com.unity3d.player.UnityPlayerActivity;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -36,6 +37,19 @@ public class BaseNativeActivity extends UnityPlayerActivity {
    
     // Convenience Unity/Android bridge methods
     
+    public void logAction(String action, int count, String payloadsJSON) {
+        if(Log.isLoggable(TAG, Log.DEBUG)) {
+            Log.d(TAG, "Log action: " + action + " count: " + count + " payloads: " + payloadsJSON);
+        }
+
+        try {
+            JSONObject payloadsObject = new JSONObject(payloadsJSON);
+            sessionM.logAction(action, count, payloadsObject);
+        } catch (JSONException e) {
+            Log.e(TAG, this + ".logAction()", e);
+        }
+    }
+
     public boolean presentActivity(ActivityType type) {
         if(Log.isLoggable(TAG, Log.DEBUG)) {
             Log.d(TAG, "Present activity: " + type);

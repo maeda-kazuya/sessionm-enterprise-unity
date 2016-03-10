@@ -140,6 +140,14 @@ public class BaseNativeActivity extends UnityPlayerActivity {
         return json;
     }
 
+    public String getOffers(){
+        return sessionM.getOffers();
+    }
+
+    public void fetchOffers(){
+        sessionM.fetchTierOffers();
+    }
+
     public void fetchContent(String contentID, boolean isExternalID) {
         ContentManager manager = sessionM.getContentManager();
         if (isExternalID) {

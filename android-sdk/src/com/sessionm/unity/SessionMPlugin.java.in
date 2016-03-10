@@ -106,7 +106,13 @@ public class SessionMPlugin{
         return json;
     }
 
+    public static String getOffers(){
+        return sessionM.getOffers();
+    }
 
+    public static void fetchOffers(){
+        sessionM.fetchTierOffers();
+    }
 
     public static void setServiceRegion(int serviceRegion) {
         if (serviceRegion == 0)

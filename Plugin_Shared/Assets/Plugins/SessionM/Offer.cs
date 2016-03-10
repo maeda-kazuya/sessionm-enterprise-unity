@@ -16,6 +16,7 @@ public class Offer
 	private string tier;
 	private string status;
 	private string logo;
+	private string terms;
 	private Dictionary<string, object> data;
 	private Dictionary<string, object>[] options;
 	private long points;
@@ -51,6 +52,9 @@ public class Offer
 		if (offer.ContainsKey("logo")) {
 			this.logo = (string) offer["logo"];
 		}
+		if (offer.ContainsKey("terms")) {
+			this.terms = (string) offer["terms"];
+		}
 		if (offer.ContainsKey("data")) {
 			this.data = offer["data"] as Dictionary<string, object>;
 		}
@@ -78,6 +82,7 @@ public class Offer
 	public string GetTier() { return tier; }
 	public string GetStatus() { return status; }
 	public string GetLogo() { return logo; }
+	public string GetTerms() { return terms; }
 	public Dictionary<string, object> GetData() { return data; }
 	public Dictionary<string, object>[] GetOptions() { return options; }
 	public long GetPoints() { return points; }

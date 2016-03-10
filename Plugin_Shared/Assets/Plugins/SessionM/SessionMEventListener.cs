@@ -173,11 +173,13 @@ public class SessionMEventListener : MonoBehaviour
 
 	private void _sessionM_HandleUpdatedOffersMessage(string message)
 	{
+		Debug.Log("_sessionM_HandleUpdatedOffersMessage: Start");
 		List<object> dictList = Json.Deserialize(message) as List<object>;
 		Dictionary<string, object>[] offerArray = new Dictionary<string, object>[dictList.Count];
 
 		for(int i = 0; i < dictList.Count; i++) {
 			Dictionary<string, object> dict = dictList[i] as Dictionary<string, object>;
+			Debug.Log("_sessionM_HandleUpdatedOffersMessage: Dictionary: '" + dict["name"] + ":" + dict["id"]);
 			offerArray[i] = dict;
 		}
 
@@ -189,10 +191,12 @@ public class SessionMEventListener : MonoBehaviour
 		if(callback != null) {
 			callback.NotifyOffersUpdated(nativeParent, offerArray);
 		}
+		Debug.Log("_sessionM_HandleUpdatedOffersMessage: Stop");
 	}
 
 	private void _sessionM_HandleFetchedContentMessage(string message)
 	{
+		Debug.Log ("_sessionM_HandleFetchedContentMessage: " + message);
 		Dictionary<string, object> contentDict = Json.Deserialize(message) as Dictionary<string, object>;
 
 		//Register Event

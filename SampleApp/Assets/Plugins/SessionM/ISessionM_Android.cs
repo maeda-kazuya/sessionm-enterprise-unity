@@ -359,7 +359,7 @@ public class ISessionM_Android : ISessionM
 	public void FetchContent(string contentID, bool isExternalID)
 	{
 		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
-			activityObject.Call<string> ("fetchContent", contentID, isExternalID);
+			activityObject.Call("fetchContent", contentID, isExternalID);
 		}
 	}
 

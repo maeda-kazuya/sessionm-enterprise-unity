@@ -54,7 +54,7 @@ public class SessionMSample : MonoBehaviour
 		if (state == SessionState.StartedOnline) {
 			gui.OnPopulateTiers(sessionM.GetTiers());
 			sessionM.UpdateOffers();
-			sessionM.FetchContent("Furious7_OneLastRide_BD_30_DM_HD_UPRX3032AH-DM_1080_800-mp4", true);
+			sessionM.FetchContent("gsn_content_1", true);
 		}
 	}
 
@@ -81,7 +81,7 @@ public class SessionMSample : MonoBehaviour
 
 	private void ContentFetched(Dictionary<string, object> content)
 	{
-		Debug.Log("Content fetched: " + content["name"]);
+		Debug.Log("Content fetched: " + content.Keys);
 	}
 
 	//Unity Lifecycle
@@ -89,7 +89,7 @@ public class SessionMSample : MonoBehaviour
 	private void Awake()
 	{
 		//Set service region or server type before SessionM instance is activated
-		SessionM.SetServerType("https://api.tour-sessionm.com");
+		SessionM.SetServerType("https://api.sessionm.com");
 		SessionM.SetSessionAutoStartEnabled(false);
 		sessionM.gameObject.SetActive(true);
 	}
@@ -104,7 +104,7 @@ public class SessionMSample : MonoBehaviour
 		SessionMEventListener.NotifyUserInfoChanged += UserChanged;
 		SessionMEventListener.NotifyOffersUpdated += OffersUpdated;
 		SessionMEventListener.NotifyContentFetched += ContentFetched;
-		sessionM.StartSession("199eeab2d4821a86eff8d8ea375a3d78804eae98");
+		sessionM.StartSession("1a852d1384411299aa9b5d12254ff628198e6674");
 		sessionMSDK.text = "SDK VERSION: " + sessionM.GetSDKVersion();
 		UserChanged(null);
 	}

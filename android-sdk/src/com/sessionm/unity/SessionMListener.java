@@ -151,6 +151,14 @@ public class SessionMListener implements ActivityListener, SessionListener {
     }
 
     @Override
+    public void onTierOffersUpdated(SessionM sessionM, String list) {
+        Log.e(TAG, "_sessionM_HandleUpdatedOffersMessage");
+        if (callbackGameObjectName != null) {
+            UnityPlayer.UnitySendMessage(callbackGameObjectName, "_sessionM_HandleUpdatedOffersMessage", list);
+        }
+    }
+
+    @Override
     public void onUnclaimedAchievement(SessionM sessionM, AchievementData achievementData) {
         if (Log.isLoggable(TAG, Log.DEBUG)) {
             Log.d(TAG, this + ".onUnclaimedAchievement: " + achievementData);

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using MiniJSON;
 
-#if UNITY_ANDROID
+//#if UNITY_ANDROID
 /*
  * SessionM Android Native Implementation.
  */ 
@@ -359,7 +359,7 @@ public class ISessionM_Android : ISessionM
 	public void FetchContent(string contentID, bool isExternalID)
 	{
 		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
-			activityObject.Call<string> ("fetchContent", contentID, isExternalID);
+			activityObject.Call("fetchContent", contentID, isExternalID);
 		}
 	}
 
@@ -409,4 +409,4 @@ public class ISessionM_Android : ISessionM
 		}
 	}
 }
-#endif
+//#endif

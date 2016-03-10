@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using MiniJSON;
 
-//#if UNITY_ANDROID
+#if UNITY_ANDROID
 /*
  * SessionM Android Native Implementation.
  */ 
@@ -27,18 +27,16 @@ public class ISessionM_Android : ISessionM
 		
 		CreateListenerObject();
 		
-		if(sessionMGameObject.androidAppId != null) {
-			SetShouldAutoUpdateAchievementsList(SessionM.shouldAutoUpdateAchievementsList);
-			SetMessagesEnabled(SessionM.shouldEnableMessages);
-			SetLogLevel(sessionMParent.logLevel);
-			if (SessionM.serviceRegion == ServiceRegion.Custom) {
-				SetServerType(SessionM.serverURL);
-			} else {
-				SetServiceRegion(SessionM.serviceRegion);
-			}
-			if (SessionM.shouldAutoStartSession) {
-				StartSession(null);
-			}
+		SetShouldAutoUpdateAchievementsList(SessionM.shouldAutoUpdateAchievementsList);
+		SetMessagesEnabled(SessionM.shouldEnableMessages);
+		SetLogLevel(sessionMParent.logLevel);
+		if (SessionM.serviceRegion == ServiceRegion.Custom) {
+			SetServerType(SessionM.serverURL);
+		} else {
+			SetServiceRegion(SessionM.serviceRegion);
+		}
+		if (SessionM.shouldAutoStartSession && sessionMGameObject.androidAppId != null) {
+			StartSession(sessionMGameObject.androidAppId);
 		}
 	}
 	
@@ -60,10 +58,10 @@ public class ISessionM_Android : ISessionM
 	public void StartSession(string appId)
 	{
 		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
-			if(sessionMGameObject.androidAppId != null) {
-				androidInstance.Call("startSession", activityObject, sessionMGameObject.androidAppId);			
-			} else {
+			if(appId != null) {
 				androidInstance.Call("startSession", activityObject, appId);
+			} else if(sessionMGameObject.androidAppId != null) {
+				androidInstance.Call("startSession", activityObject, sessionMGameObject.androidAppId);
 			}
 		}
 	}
@@ -359,7 +357,7 @@ public class ISessionM_Android : ISessionM
 	public void FetchContent(string contentID, bool isExternalID)
 	{
 		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
-			activityObject.Call("fetchContent", contentID, isExternalID);
+			activityObject.Call ("fetchContent", contentID, isExternalID);
 		}
 	}
 
@@ -409,4 +407,4 @@ public class ISessionM_Android : ISessionM
 		}
 	}
 }
-//#endif
+#endif

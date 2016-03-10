@@ -24,17 +24,17 @@ public class RewardObject : MonoBehaviour
 		StartCoroutine (DownloadImage (reward.imageURL));
 	}
 
-	public void SetOffer(Dictionary<string, object> offer)
+	public void SetOffer(Offer offer)
 	{
-		title.text = (string) offer["name"];
-		type.text = "Type: " + (string) offer["type"];
-		points.text = Convert.ToString((Int64) offer["points"]);
+		title.text = offer.GetName();
+		type.text = "Type: " + offer.GetType();
+		points.text = Convert.ToString(offer.GetPoints());
 
-		if(offer["tier"] != null) {
-			tier.text = "Tier: " + (string) offer["tier"];
+		if(offer.GetTier() != null) {
+			tier.text = "Tier: " + offer.GetTier();
 		}
 
-		StartCoroutine (DownloadImage ((string) offer["logo"]));
+		StartCoroutine (DownloadImage (offer.GetLogo()));
 	}
 
 	private IEnumerator DownloadImage(string imageURL)

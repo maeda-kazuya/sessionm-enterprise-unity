@@ -74,7 +74,7 @@ public class SessionMSample : MonoBehaviour
 		gui.OnPopulateUser(user);
 	}
 
-	private void OffersUpdated(Dictionary<string, object>[] offers)
+	private void OffersUpdated(Offer[] offers)
 	{
 		gui.OnPopulateOffers(offers);
 	}

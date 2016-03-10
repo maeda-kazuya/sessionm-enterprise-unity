@@ -294,7 +294,7 @@ public class SessionM : MonoBehaviour
 		sessionMNative.UpdateOffers();
 	}
 
-	public Dictionary<string, object>[] GetOffers()
+	public Offer[] GetOffers()
 	{
 		return GetOfferData(sessionMNative.GetOffers());
 	}
@@ -451,14 +451,15 @@ public class SessionM : MonoBehaviour
 		return rewardArray;
 	}
 	
-	public static Dictionary<string, object>[] GetOfferData(string jsonString)
+	public static Offer[] GetOfferData(string jsonString)
 	{
 		List<object> dictList = Json.Deserialize(jsonString) as List<object>;
-		Dictionary<string, object>[] offerArray = new Dictionary<string, object>[dictList.Count];
+		Offer[] offerArray = new Offer[dictList.Count];
 
 		for (int i = 0; i < dictList.Count; i++) {
 			Dictionary<string, object> dict = dictList[i] as Dictionary<string, object>;
-			offerArray[i] = dict;
+			Offer offer = new Offer(dict);
+			offerArray[i] = offer;
 		}
 
 		return offerArray;

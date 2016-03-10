@@ -85,7 +85,7 @@ public class SessionMSampleGUI : MonoBehaviour {
 		}
 	}
 
-	public void OnPopulateOffers(Dictionary<string, object>[] offers)
+	public void OnPopulateOffers(Offer[] offers)
 	{
 		int childCount = rewardsGrid.transform.childCount;
 		for (int i = childCount - 1; i >= 0; i--) {
@@ -94,7 +94,7 @@ public class SessionMSampleGUI : MonoBehaviour {
 		}
 
 		for (int i = 0; i < offers.Length; i++) {
-			Dictionary<string, object> offer = offers[i];
+			Offer offer = offers[i];
 			RewardObject rewardGO = (RewardObject) GameObject.Instantiate(rewardObjectPrefab);
 			rewardGO.transform.SetParent(rewardsGrid.transform);
 			rewardGO.transform.localScale = Vector3.one;

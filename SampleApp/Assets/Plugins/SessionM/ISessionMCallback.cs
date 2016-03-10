@@ -31,7 +31,7 @@ public interface ISessionMCallback
 	void NotifyUserAction(ISessionM sessionM, UserAction userAction, IDictionary<string, object> data);
 
 	// Notifies that cached offers have been updated.
-	void NotifyOffersUpdated(ISessionM sessionM, Dictionary<string, object>[] offers);
+	void NotifyOffersUpdated(ISessionM sessionM, Offer[] offers);
 
 	// Notifies that content data has been fetched.
 	void NotifyContentFetched(ISessionM sessionM, Dictionary<string, object> content);

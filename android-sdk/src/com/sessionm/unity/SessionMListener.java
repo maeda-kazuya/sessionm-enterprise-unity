@@ -342,7 +342,7 @@ public class SessionMListener implements ActivityListener, SessionListener {
             jsonObject.put("name", content.getName());
             jsonObject.put("type", content.getType());
             jsonObject.put("state", content.getState());
-            jsonObject.put("description", content.getDescription());
+            jsonObject.put("description", (content.getDescription() == null) ? "" : content.getDescription());
             jsonObject.put("weight", content.getWeight());
             jsonObject.put("image", (content.getImage() == null) ? "" : content.getImage());
             jsonObject.put("metadata", (content.getMetadata() == null) ? "" : content.getMetadata());

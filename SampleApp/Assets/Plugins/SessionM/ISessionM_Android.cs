@@ -347,11 +347,18 @@ public class ISessionM_Android : ISessionM
 	
 	public void UpdateOffers()
 	{
+		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
+			activityObject.Call ("fetchOffers");
+		}
 	}
 
 	public string GetOffers()
 	{
-		return null;
+		string offers = null;
+		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
+			offers = activityObject.Call<string> ("getOffers");
+		}
+		return offers;
 	}
 
 	public void FetchContent(string contentID, bool isExternalID)

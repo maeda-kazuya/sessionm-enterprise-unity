@@ -70,7 +70,7 @@ static NSArray<NSDictionary *> *currentOffers;
     NSString *jsonString = SMAchievementDataToJSONString(achievement);
     [self invokeUnityGameObjectMethod:@"_sessionM_HandleUpdatedUnclaimedAchievementMessage" message:jsonString];
 
-    return NO;
+    return !achievement.isCustom;
 }
 
 - (void)sessionM:(SessionM *)sessionM didPresentActivity:(SMActivity *)activity {
@@ -413,7 +413,7 @@ static NSString *SMAchievementDataToJSONString(SMAchievementData *achievementDat
                                       @"name": achievementData.name ? achievementData.name : @"",
                                       @"message": achievementData.message ? achievementData.message : @"",
                                       @"limitText": achievementData.limitText ? achievementData.limitText : @"",
-                                      @"pointValue": [[NSNumber alloc] initWithInteger:achievementData.pointValue],
+                                      @"mpointValue": [[NSNumber alloc] initWithInteger:achievementData.pointValue],
                                       @"isCustom": [[NSNumber alloc] initWithBool:achievementData.isCustom],
                                       @"lastEarnedDate": [[NSNumber alloc] initWithLongLong:time],
                                       @"timesEarned": [[NSNumber alloc] initWithUnsignedInteger:achievementData.timesEarned],

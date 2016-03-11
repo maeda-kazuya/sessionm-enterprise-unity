@@ -799,7 +799,7 @@ MonoBehaviour:
     m_Font: {fileID: 12800000, guid: 05290f271a8824d0c9af69e3b26c2cf2, type: 3}
     m_FontSize: 20
     m_FontStyle: 0
-    m_BestFit: 0
+    m_BestFit: 1
     m_MinSize: 10
     m_MaxSize: 40
     m_Alignment: 2

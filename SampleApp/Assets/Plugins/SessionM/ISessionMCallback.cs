@@ -2,38 +2,42 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-/*
- * Session M service callback interface. 
- * 
- * This interface is used in conjunction with ISessionM service interface to receive notifications from session M service. 
- */ 
+/*!
+ * Session M service callback interface.
+ *
+ * This interface is used in conjunction with ISessionM service interface to receive notifications from session M service.
+ */
 public interface ISessionMCallback
 {
-	// Notifies that session state has changed.  
+	/*! Notifies that session state has changed. */
 	void NotifySessionStateChanged(ISessionM sessionM, SessionState state);
-	// Notifies that session start error has occured.
+	/*! Notifies that session start error has occured. */
 	void NotifySessionError(ISessionM sessionM, int code, string description);
 
-	// Notifies that interactable display has started.
+	/*! Notifies that interactable display has started. */
 	void NotifyActivityPresented(ISessionM sessionM, ActivityType type);
-	// Notifies that interactable display has finished.
+	/*! Notifies that interactable display has finished. */
 	void NotifyActivityDismissed(ISessionM sessionM, ActivityType type);
 	
-	// Notifies that user info (achievement details, etc) has changed. 
-	// This method is reserved for future use. Please, contact Session M for more information. 
+	/*!
+	 * Notifies that user info (achievement details, etc) has changed.
+	 * This method is reserved for future use. Please, contact Session M for more information.
+	 */
 	void NotifyUserInfoChanged(ISessionM sessionM, IDictionary<string, object> info);
 	
-	// Notifies that current unclaimed achievement data has been updated. 
-	// This method is called when (1) new achievement has been earned with respective achievement data object, (2) last earned achievement has been claimed in which case achievement data object is null. 
+	/*!
+	 * Notifies that current unclaimed achievement data has been updated.
+	 * This method is called when (1) new achievement has been earned with respective achievement data object, (2) last earned achievement has been claimed in which case achievement data object is null.
+	 */
 	void NotifyUnclaimedAchievementDataUpdated(ISessionM sessionM, IAchievementData achievementData);
 
-	// Notifies that user performed action withing context of current activity.
+	/*! Notifies that user performed action withing context of current activity. */
 	void NotifyUserAction(ISessionM sessionM, UserAction userAction, IDictionary<string, object> data);
 
-	// Notifies that cached offers have been updated.
+	/*! Notifies that cached offers have been updated. */
 	void NotifyOffersUpdated(ISessionM sessionM, Offer[] offers);
 
-	// Notifies that content data has been fetched.
+	/*! Notifies that content data has been fetched. */
 	void NotifyContentFetched(ISessionM sessionM, Dictionary<string, object> content);
 
 

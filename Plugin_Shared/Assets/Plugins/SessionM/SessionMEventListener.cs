@@ -6,53 +6,55 @@ using MiniJSON;
 
 public class SessionMEventListener : MonoBehaviour 
 {
-	// Notifies that session state has changed.  
+	/*! Notifies that session state has changed. */
 	public static event Action<SessionState> NotifySessionStateChanged;
-	// Notifies that session start error has occured.
+	/*! Notifies that session start error has occured. */
 	public static event Action<int, string> NotifySessionError;
 
-	// Notifies that interactable display has started.
+	/*! Notifies that interactable display has started. */
 	public static event Action<ActivityType>  NotifyActivityPresented;
-	// Notifies that interactable display has finished.
+	/*! Notifies that interactable display has finished. */
 	public static event Action<ActivityType> NotifyActivityDismissed;
 
-	// Notifies that user info (achievement details, etc) has changed. 
-	// This method is reserved for future use. Please, contact Session M for more information. 
+	/*! Notifies that user info (achievement details, etc.) has changed. */
 	public static event Action<IDictionary<string, object>>  NotifyUserInfoChanged;
 
-	// Notifies that current unclaimed achievement data has been updated. 
-	// This method is called when (1) new achievement has been earned with respective achievement data object, (2) last earned achievement has been claimed in which case achievement data object is null. 
+	/*!
+	 * Notifies that current unclaimed achievement data has been updated.
+	 * This method is called when (1) new achievement has been earned with respective achievement data object, (2) last earned achievement has been claimed in which case achievement data object is null.
+	 */
 	public static event Action<IAchievementData> NotifyUnclaimedAchievementDataUpdated;
 
-	// Notifies that user performed action withing context of current 	activity
+	/*! Notifies that user performed action within context of current activity. */
 	public static event Action<UserAction, IDictionary<string, object>> NotifyUserAction;
 
-	// Notifies that cached offers have been updated.
+	/*! Notifies that cached offers have been updated. */
 	public static event Action<Offer[]> NotifyOffersUpdated;
 
-	// Notifies that content data has been fetched.
+	/*! Notifies that content data has been fetched. */
 	public static event Action<Dictionary<string, object>> NotifyContentFetched;
 
 	private ISessionM nativeParent;
 	private ISessionMCallback callback;
 
+	/*! Sets the object to use for executing native callback implementations. */
 	public void SetNativeParent(ISessionM nativeParent)
 	{
 		this.nativeParent = nativeParent;
 	}
 
+	/*! Sets the object to use for executing Unity callback implementations. */
 	public void SetCallback(ISessionMCallback callback)
 	{
 		this.callback = callback;
 	}
 
-	// native callback handling 
-
+	// Native callback handling
 	private void _sessionM_HandleStateTransitionMessage(string message) 
 	{
 		SessionState state = (SessionState)int.Parse(message);
 
-		//Register Event
+		// Register Event
 		if(NotifySessionStateChanged != null) {
 			NotifySessionStateChanged(state);
 		}
@@ -65,7 +67,7 @@ public class SessionMEventListener : MonoBehaviour
 	private void _sessionM_HandleSessionFailedMessage(string message)
 	{
 
-		// scan message and extract error information
+		// Scan message and extract error information
 		// expecting 2 components - error code and description	
 		List<string> components = GetStringComponents(message);
 		if(components == null || components.Count != 2) {
@@ -78,7 +80,7 @@ public class SessionMEventListener : MonoBehaviour
 		int errorCode = int.Parse(errorCodeString);
 		string description = components[1];
 
-		//Register Event
+		// Register Event
 		if(NotifySessionError != null) {
 			NotifySessionError(errorCode, description);
 		}
@@ -98,7 +100,7 @@ public class SessionMEventListener : MonoBehaviour
 
 		ActivityType activityType = (ActivityType)int.Parse(message);
 
-		//Register Event
+		// Register Event
 		if(NotifyActivityPresented != null)
 			NotifyActivityPresented(activityType);
 
@@ -117,7 +119,7 @@ public class SessionMEventListener : MonoBehaviour
 
 		ActivityType activityType = (ActivityType)int.Parse(message);
 
-		//Register Event
+		// Register Event
 		if(NotifyActivityDismissed != null) {
 			NotifyActivityDismissed(activityType);
 		}
@@ -131,7 +133,7 @@ public class SessionMEventListener : MonoBehaviour
 	{
 		Dictionary<string, object> userInfo = Json.Deserialize(message) as Dictionary<string,object>;
 
-		//Register Event
+		// Register Event
 		if(NotifyUserInfoChanged != null) {
 			NotifyUserInfoChanged(userInfo);
 		}
@@ -147,7 +149,7 @@ public class SessionMEventListener : MonoBehaviour
 		long userAction = (Int64)userActioniDict["userAction"];
 		Dictionary<string, object> data = (Dictionary<string, object>)userActioniDict["data"];
 
-		//Register Event
+		// Register Event
 		if(NotifyUserAction != null) {
 			NotifyUserAction((UserAction)userAction, data);
 		}
@@ -161,7 +163,7 @@ public class SessionMEventListener : MonoBehaviour
 	{
 		IAchievementData achievementData = SessionM.GetAchievementData(message);
 
-		//Register Event
+		// Register Event
 		if(NotifyUnclaimedAchievementDataUpdated != null) {
 			NotifyUnclaimedAchievementDataUpdated(achievementData);
 		}
@@ -183,7 +185,7 @@ public class SessionMEventListener : MonoBehaviour
 			offerArray[i] = offer;
 		}
 
-		//Register Event
+		// Register Event
 		if(NotifyOffersUpdated != null) {
 			NotifyOffersUpdated(offerArray);
 		}
@@ -198,7 +200,7 @@ public class SessionMEventListener : MonoBehaviour
 		Debug.Log ("_sessionM_HandleFetchedContentMessage: " + message);
 		Dictionary<string, object> contentDict = Json.Deserialize(message) as Dictionary<string, object>;
 
-		//Register Event
+		// Register Event
 		if(NotifyContentFetched != null) {
 			NotifyContentFetched(contentDict);
 		}
@@ -208,7 +210,7 @@ public class SessionMEventListener : MonoBehaviour
 		}
 	}
 
-	// parse the string extracting components; 
+	// Parse the string extracting components
 	// input string has the following format: "<length1>:<string1><length2>:<string2><length3>:<string3>" where "<length>:<string>" is a token representing a string (input string consists of many such tokens)
 	private List<string> GetStringComponents(string inputString)
 	{
@@ -218,7 +220,7 @@ public class SessionMEventListener : MonoBehaviour
 		while(tokenStartIndex < inputString.Length) {
 			int separatorIndex = inputString.IndexOf(':', tokenStartIndex);	
 			if(separatorIndex < 0) {
-				// this should never happen in a well-formatted string	
+				// This should never happen in a well-formatted string
 				return null;
 			}
 

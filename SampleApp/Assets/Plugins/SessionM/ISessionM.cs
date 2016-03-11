@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-// UI Activity type
+/*! UI Activity type */
 public enum ActivityType
 {
 	// User achievement.  
@@ -11,7 +11,7 @@ public enum ActivityType
 	Portal = 2
 }
 
-// Log levels
+/*! Debug log levels (iOS only) */
 public enum LogLevel
 {
 	Off = 0,
@@ -19,7 +19,7 @@ public enum LogLevel
 	Debug = 2
 }
 
-// Session state
+/*! Session state */
 public enum SessionState
 {
 	Stopped = 0,
@@ -27,7 +27,7 @@ public enum SessionState
 	StartedOffline = 2
 }
 
-// Service region
+/*! Service region */
 public enum ServiceRegion
 {
 	Unknown = 0,
@@ -36,8 +36,9 @@ public enum ServiceRegion
 	Custom = 3
 }
 
-/* User actions. 
- * User action within Session M UI activity. Identifies events such as user engaging with achievement prompt, etc.
+/*!
+ * User actions.
+ * User action within SessionM UI activity. Identifies events such as user engaging with achievement prompt, etc.
  */ 
 public enum UserAction
 {
@@ -57,8 +58,8 @@ public enum UserAction
 	VirtualItemRewardAction = 113
 }
 
-/*
- * Session M service interface. 
+/*!
+ * SessionM service interface. 
  *
  * In order to enable session M service in your Unity application make sure to do the following:
  * 1. Register with Session M developer portal and obtain valid application ID for your application. 
@@ -92,115 +93,123 @@ public enum UserAction
  */ 
 public interface ISessionM
 {
-	
-	// Sets callback object.
+	/*! Sets the object to use for executing Unity callback implementations. */
 	void SetCallback(ISessionMCallback callback); 
 	
-	ISessionMCallback GetCallback(); 
+	/*! Returns callback object. */
+	ISessionMCallback GetCallback();
 	
-	// Starts session with an application identifier.
+	/*! Starts session with an application identifier. */
 	void StartSession(string appId);
 	
-	// Returns session state
+	/*! Returns session state. */
 	SessionState GetSessionState();
 
-	//Gets Current User JSON Object (Deserializes to UserData)
+	/*! Gets Current User JSON Object (Deserializes to UserData). */
 	string GetUser();
 
-	// User LogIn/Out
+	/*! Sends a request to the server to log in the user with the specified email and password. Returns whether the request can be sent. */
 	bool LogInUserWithEmail(string email, string password);
+
+	/*! Logs out the current user. */
 	void LogOutUser();
+
+	/*! Sends a request to the server to sign up the user with the specified email and parameters. Returns whether the request can be sent. */
 	bool SignUpUser(string email, string password, string birthYear, string gender, string zipCode);
 
-	//Sets Current user opt-out status locally
+	/*! Sets current user opt-out status locally. */
 	void SetUserOptOutStatus(bool status);
 
-	//Sets value of shouldAutoUpdateAchievementsList (default is false)
+	/*! Sets value of shouldAutoUpdateAchievementsList (default is false). */
 	void SetShouldAutoUpdateAchievementsList(bool shouldAutoUpdate);
 
-	//Manually updates user's achievementsList field. Has no effect is shouldAutoUpdateAchievementsList is set to true.
+	/*! Manually updates the user's achievements list. */
 	void UpdateAchievementsList();
 
-	// Returns number of unclaimed achievements
+	/*! Returns user's number of unclaimed achievements. */
 	int GetUnclaimedAchievementCount();
 	
-	// Returns current unclaimed achievement data
+	/*! Returns current unclaimed achievement data. */
 	string GetUnclaimedAchievementData();
 	
-	// Logs action. Calling this method may trigger an achievement which application will be notified about via ISessionMCallback.NotifyUnclaimedAchievementDataUpdated(ISessionM,IAchievementData) callback.  
+	/*! Logs action. Calling this method may trigger an achievement which application will be notified about via ISessionMCallback.NotifyUnclaimedAchievementDataUpdated(ISessionM,IAchievementData) callback. */
 	void LogAction(string action); 
 	
-	// Logs a number of actions - equivalent of calling LogAction(string) a number of times specified in argument "count".
+	/*! Logs a number of actions - equivalent of calling LogAction(string) a number of times specified in argument "count". */
 	void LogAction(string action, int count);
 
-	// Logs a number of actions with additional developer-defined data associated with the action
+	/*! Logs a number of actions with additional developer-defined data associated with the action. */
 	void LogAction(string action, int count, Dictionary<string, object> payloads);
 	
-	// Presents UI activity of specified type if available. 
+	/*! Presents UI activity of specified type if available. */
 	bool PresentActivity(ActivityType type);
-	// Dismisses currently presented UI activity.
+
+	/*! Dismisses currently presented UI activity. */
 	void DismissActivity();
 	
-	// Returns true if specified UI activity is available for presentation, false - otherwise. User portal (ActivityType.Portal) is always available. 
-	// Achievement activity (ActivityType.Achievement) become available when new achievement is earned as a result of user action.  
+	/*!
+	 * Returns true if specified UI activity is available for presentation, false - otherwise. User portal (ActivityType.Portal) is always available.
+	 * Achievement activity (ActivityType.Achievement) become available when new achievement is earned as a result of user action.
+	*/
 	bool IsActivityAvailable(ActivityType type);
-	// Returns true if UI activity is currently being presented, false - otherwise.
+
+	/*! Returns true if UI activity is currently being presented, false - otherwise. */
 	bool IsActivityPresented();
 	
-	// Return logging level (iOS only)
+	/*! Returns debug log level (iOS only). */
 	LogLevel GetLogLevel();
-	// Set logging level (iOS only)
+
+	/*! Ses debug log level (iOS only). */
 	void SetLogLevel(LogLevel level);
 
-	// Sets service region
+	/*! Sets service region. */
 	void SetServiceRegion(ServiceRegion region);
 
-	// Sets server url
+	/*! Sets server url. */
 	void SetServerType(string url);
 
-	// Sets app key
+	/*! Sets app key. */
 	void SetAppKey(string appKey);
 
-	// Returns SDK version 
+	/*! Returns SDK version. */
 	string GetSDKVersion();
 	
-	// Returns a list of all rewards the user can redeem
+	/*! This method is deprecated. Please use GetOffers instead. */
 	string GetRewards();
 
-	// Sets messages feature enabled
+	/*! Sets messages feature enabled. */
 	void SetMessagesEnabled(bool enabled);
 
-	// Returns a list of all messages
+	/*! Returns a list of all messages. */
 	string GetMessagesList();
 
-	// Set meta data properties
+	/*! Sets session metadata to be sent on session start. */
 	void SetMetaData(string data, string key);
 	
-	// Attempts to authenticate user with the provided token. Returns false if either provider or token is missing.
+	/*! Attempts to authenticate user with the provided token. Returns false if either provider or token is missing. */
 	bool AuthenticateWithToken(string provider, string token);
 
-	// Notifies the SessionM SDK that a custom achievement has been presented
+	/*! Notifies the SessionM SDK that a custom achievement has been presented. */
 	void NotifyPresented();
 	
-	// Notifies the SessionM SDK that a custom achievement has been dismissed
+	/*! Notifies the SessionM SDK that a custom achievement has been dismissed. */
 	void NotifyDismissed();
 	
-	// Notifies the SessionM SDK that a custom achievement has been claimed
+	/*! Notifies the SessionM SDK that a custom achievement has been claimed. */
 	void NotifyClaimed();
 
-	// Presents Tiers List
+	/*! Presents list of tiers the user can reach. Note: this method is deprecated. */
 	void PresentTierList();
 
-	// Get tiers
+	/*! Returns list of tiers user can reach. */
 	string GetTiers();
 
-	// Update cached offers
+	/*! Updates list of cached offers that the user can redeem. */
 	void UpdateOffers();
 
-	// Get cached offers
+	/*! Returns list of cached offers that the user can redeem. */
 	string GetOffers();
 
-	// Fetch content data with specified ID
+	/*! Fetches content data with specified ID. */
 	void FetchContent(string contentID, bool isExternalID);
 }
-

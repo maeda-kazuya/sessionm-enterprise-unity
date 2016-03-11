@@ -23,6 +23,7 @@ public class Offer
 	private long weight;
 	private bool isFeatured;
 
+	/*! Creates a new offer with the specified data. */
 	public Offer(Dictionary<string, object> offer)
 	{
 		if (offer.ContainsKey("id")) {
@@ -73,19 +74,34 @@ public class Offer
 		}
 	}
 
+	/*! Returns offer ID. */
 	public string GetID() { return id; }
+	/*! Returns offer name. */
 	public string GetName() { return name; }
+	/*! Returns offer type. */
 	public string GetOfferType() { return offerType; }
+	/*! Returns offer description. */
 	public string GetDescription() { return description; }
+	/*! Returns date of when offer became available for redemption. */
 	public string GetStartTime() { return startTime; }
+	/*! Returns date of when offer will no longer be available for redemption. */
 	public string GetEndTime() { return endTime; }
+	/*! Returns the tier the user must achieve to redeem the offer. */
 	public string GetTier() { return tier; }
+	/*! Returns offer status. */
 	public string GetStatus() { return status; }
+	/*! Returns offer image URL. */
 	public string GetLogo() { return logo; }
+	/*! Returns offer redemption terms. */
 	public string GetTerms() { return terms; }
+	/*! Returns additional data associated with offer. */
 	public Dictionary<string, object> GetData() { return data; }
+	/*! Returns additional options associated with offer. */
 	public Dictionary<string, object>[] GetOptions() { return options; }
+	/*! Returns amount of points needed to redeem offer. */
 	public long GetPoints() { return points; }
+	/*! Returns offer weight (can be used for sorting). */
 	public long GetWeight() { return weight; }
+	/*! Returns whether the offer is listed as a featured offer in the Rewards Store. */
 	public bool GetIsFeatured() { return isFeatured; }
 }

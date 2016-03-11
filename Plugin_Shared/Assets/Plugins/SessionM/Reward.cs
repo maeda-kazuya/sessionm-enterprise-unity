@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 [System.Serializable]
+
+/*! This class is deprecated. Please use Offer instead. */
 public class Reward
 {
 	public int id;

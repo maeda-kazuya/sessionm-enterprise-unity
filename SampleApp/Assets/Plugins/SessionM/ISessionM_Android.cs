@@ -5,10 +5,10 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using MiniJSON;
 
-#if UNITY_ANDROID
-/*
+/*!
  * SessionM Android Native Implementation.
  */ 
+#if UNITY_ANDROID
 public class ISessionM_Android : ISessionM
 {	
 	private SessionM sessionMGameObject;

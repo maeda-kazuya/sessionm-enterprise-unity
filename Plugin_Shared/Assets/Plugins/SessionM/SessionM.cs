@@ -5,21 +5,24 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using MiniJSON;
 
-/*
- * Session M service implementation. Implements and provides access (via SessionM.GetInstance()) to the SessionM service.
+/*!
+ * SessionM service implementation. Implements and provides access (via SessionM.GetInstance()) to the SessionM service.
+ * The SessionM Class is a MonoBehaviour singleton. Drop the game object in your scene and set it up instead of trying to instantiate it via code.
+ * Put the SessionM object in your project as early as possible. The object will survive loads, so there's never a reason to put it in more than one place in your scenes.
  */ 
 public class SessionM : MonoBehaviour
 {
 	private ISessionMCallback callback;
-	
-	public string iosAppId;
-	public string androidAppId;
-	public LogLevel logLevel;
-	
-	
-	//The SessionM Class is a monobehaviour Singleton.  Drop the Gameobject in your scene and set it up instead of trying to instantiate it via code.
-	//Put the SessionM object as early in your project as possible.  The object will survive loads, so there's never a reason to put it in more than one place in your scenes.
 	private static SessionM instance;
+	
+	/*! iOS Application ID linked to SampleApp game object. */
+	public string iosAppId;
+	/*! Android Application ID linked to SampleApp game object. */
+	public string androidAppId;
+	/*! iOS debug log level linked to SampleApp game object. */
+	public LogLevel logLevel;	
+
+	/*! Returns the SessionM singleton instance. */	
 	public static SessionM GetInstance() 
 	{
 		if(instance == null) {
@@ -35,86 +38,96 @@ public class SessionM : MonoBehaviour
 		return instance;
 	}
 
+	/*!
+	 * The SessionM service region used to determine request routes - must be set before starting session. Default value is ServiceRegion.USA.
+	 *
+	 * Note: using SetServerType will cause serviceRegion to be set to ServiceRegion.Custom
+	 */
 	public static ServiceRegion serviceRegion = ServiceRegion.USA;
+	/*! The server that the SessionM plug-in routes requests to - must be set before starting session. Default value is 'https://api.sessionm.com'. */
 	public static string serverURL = "https://api.sessionm.com";
+	/*! Determines whether the user's achievements list will be updated automatically. Default value is false. */
 	public static bool shouldAutoUpdateAchievementsList = false;
+	/*! Determines whether access to the messages API is enabled. Default value is false. */
 	public static bool shouldEnableMessages = false;
+	/*! Determines whether the session is started automatically when the SessionM game object is activated. Default value is true. */
 	public static bool shouldAutoStartSession = true;
 
-	//Call this method before starting the session to set the service region.
+	/*! Call this method before starting the session to set the service region. Do not use with SetServerType. */
 	public static void SetServiceRegion(ServiceRegion region)
 	{
 		serviceRegion = region;
 	}
 
-	//Call this method before starting the session to set the server url.
+	/*! Call this method before starting the session to set the server URL. Do not use with SetServiceRegion. */
 	public static void SetServerType(string url)
 	{
 		serviceRegion = ServiceRegion.Custom;
 		serverURL = url;
 	}
 
-	///Use this method to set whether the achievements list will be updated automatically.
+	/*! Sets whether the user's achievements list will be updated automatically. Default value is false. */
 	public static void SetShouldAutoUpdateAchievementsList(bool shouldAutoUpdate)
 	{
 		shouldAutoUpdateAchievementsList = shouldAutoUpdate;
 	}
 
-	//Use this method to enable or disable messages API.
+	/*! Sets whether access to the messages API is enabled. Default value is false. */
 	public static void SetMessagesEnabled(bool shouldEnable)
 	{
 		shouldEnableMessages = shouldEnable;
 	}
 
-	//Set if session should auto start. Default is true.
+	/*! Determines whether the session is started automatically when the SessionM game object is activated. Default value is true. */
 	public static void SetSessionAutoStartEnabled(bool autoStartEnabled)
 	{
 		shouldAutoStartSession = autoStartEnabled;
 	}
 
-	//Get if session should auto start. Default is true.
+	/*! Returns shouldAutoStartSession. */
 	public static bool IsSessionAutoStartEnabled()
 	{
 		return shouldAutoStartSession;
 	}
 
-	//Here, SessionM instantiates the appropiate Native interface to be used on each platform.
-	//iOS: iSessionM_IOS
-	//Android: iSessionM_Android
-	//All others: iSessionM_Dummy (The Dummy simply catches all calls coming into SessionM un unsupported platforms.)
-	//If you need to modify how SessionM is interacting with either iOS or Android natively, please look in the respective Interface Class.
 	private ISessionM sessionMNative;
+	/*!
+	 * Instantiates the appropiate native interface to be used for the current platform.
+	 *
+	 * iOS: ISessionM_IOS
+	 * Android: ISessionM_Android
+	 * All others: ISessionM_Dummy (the dummy simply catches all calls coming into SessionM from unsupported platforms)
+	 *
+	 * If you need to modify how SessionM is interacting with either iOS or Android natively, please look in the respective interface class.
+	 */
 	public ISessionM SessionMNative 
 	{
 		get { return sessionMNative; }
 	}
 	
-	//The following methods can be called at anytime via the SessionM Singleton.
-	//For instance, you can call GetSessionState from anywhere in Unity program by aclling SessionM.GetInstance().GetSessionState()
-	
-	//Returns SessionM's current SessionState
-	//Can be: Stopped, Started Online, Started Offline
-	//Use this method to determine if your user is in a valid region for SessionM.  If SessionM is in a Stopped State, you should 
-	//suppress SessionM elements.
+	/*!
+	 * Returns SessionM's current session state.
+	 *
+	 * Can be: Stopped, Started Online, Started Offline
+	 */
 	public SessionState GetSessionState()
 	{
 		return sessionMNative.GetSessionState();
 	}
 
-    //Use this method to manually start a session. 
+	/*! Manually starts a session with the specified application API key. */
 	public void StartSession(string appKey)
 	{
 		sessionMNative.StartSession(appKey);
 	}
 
-	//Use this method for displaying a badge or other SessionM tools.  Remember, your Acheivement count can accumulate over days, so be sure to support at least
-	//triple digit numbers.
+	/*! Returns user's number of unclaimed achievements. */
 	public int GetUnclaimedAchievementCount()
 	{
 		return sessionMNative.GetUnclaimedAchievementCount();
 	}
 
-	//Use this method to get current user data.
+	/*! Returns current user data. */
 	public UserData GetUserData()
 	{
 		UserData userData = null;
@@ -131,31 +144,33 @@ public class SessionM : MonoBehaviour
 		return userData;
 	}
 
-        // User LogIn/Out
+        /*! Sends a request to the server to log in the user with the specified email and password. Returns whether the request can be sent. */
 	public bool LogInUserWithEmail(string email, string password) {
 		return sessionMNative.LogInUserWithEmail(email, password);
 	}
 
+	/*! Logs out the current user. */
 	public void LogOutUser() {
 		sessionMNative.LogOutUser();
 	}
 
+        /*! Sends a request to the server to sign up the user with the specified parameters. Returns whether the request can be sent. */
 	public bool SignUpUser(string email, string password, string birthYear, string gender, string zipCode) {
 		return sessionMNative.SignUpUser(email, password, birthYear, gender, zipCode);
 	}
 
-	//Use this method to set user opt-out status
+	/*! Sets current user opt-out status locally. */
 	public void SetUserOptOutStatus(bool status){
 		sessionMNative.SetUserOptOutStatus(status);
 	}
 
-	//Use this method to manually update the user's achievementsList field. Has no effect if shouldAutoUpdateAchievementsList is set to true.
+	/*! Manually updates the user's achievements list. */
 	public void UpdateAchievementsList()
 	{
 		sessionMNative.UpdateAchievementsList();
 	}
 
-	//This method is required for displaying Native Acheivements.  Fore more information, please see the Unity plugin documetnation.
+	/*! Returns current unclaimed achievement data. */
 	public AchievementData GetUnclaimedAchievementData() 
 	{
 		IAchievementData achievementData = null;
@@ -171,151 +186,163 @@ public class SessionM : MonoBehaviour
 		return achievementData as AchievementData;
 	}
 	
-	//This method is vital to using SessionM, whenever your user completes an action that contributes towards a SessionM Acheivement
-	//report it to SessionM using this method.
+	/*! Logs an event for the specified achievement action. */
 	public void LogAction(string action) 
 	{
 		sessionMNative.LogAction(action);
 	}
 	
-	//You can use this method if multiple actions were achieved simultaneously.
+	/*! Logs multiple events for the specified achievement action. */
 	public void LogAction(string action, int count) 
 	{
 		sessionMNative.LogAction(action, count);
 	}
 	
-	//Use this method to supply additional developer-defined data that is associated with the action.
+	/*! Logs multiple events for the specified achievement action while supplying additional developer-defined data that is associated with the action. */
 	public void LogAction(string action, int count, Dictionary<string, object> payloads)
 	{
 		sessionMNative.LogAction(action, count, payloads);
 	}
 
-	//Use this method to display an Acheivement if there is an unclaimed Achievement ready.  SessionM will automatically display an overlay
-	//Acheivement display for you.  You can see if there is an achievement ready by running the IsActivityAvailable method below.
+	/*! Presents UI activity of specified type. */
 	public bool PresentActivity(ActivityType type)
 	{
 		return sessionMNative.PresentActivity(type);
 	}
 	
+	/*! Returns whether an activity of the specified type is available. */
 	public bool IsActivityAvailable(ActivityType type)
 	{
 		return sessionMNative.IsActivityAvailable(type);
 	}
 	
-	//Use this to display the SessionM Portal.  You can use this after users have clicked on a Native Acheivement, or when they click on a SessionM
-	//button in your app.
+	/*! Displays the rewards portal. */
 	public bool ShowPortal()
 	{
 		return PresentActivity(ActivityType.Portal);
 	}
 	
-	//The following methods are generally used for debugging and won't be utilized by most SessionM Developers.
-	
+	/*! Returns the version number of the SessionM Unity Plug-in. */
 	public string GetSDKVersion()
 	{
 		return sessionMNative.GetSDKVersion();
 	}
 
+	/*! This method is deprecated. Please use GetOffers instead. */
 	public Reward[] GetRewards()
 	{
 		return GetRewardData(sessionMNative.GetRewards());
 	}
 
+	/*! Returns a list of campaign messages. */
 	public string GetMessagesList()
 	{
 		return sessionMNative.GetMessagesList();
 	}
-	
+
+	/*! Returns the current iOS debug log level. */
 	public LogLevel GetLogLevel()
 	{
 		return sessionMNative.GetLogLevel();
 	}
-	
+
+	/*! Sets the iOS debug log level. For Android, use logcat instead. */
 	public void SetLogLevel(LogLevel level)
 	{
-		//Note Log Level only works on iOS.  For Android, use logcat.
-		//LogLevel can also be set on the SessionM Object.
 		sessionMNative.SetLogLevel(level);
 	}
-	
+
+	/*! Returns whether a UI activity is currently presented. */	
 	public bool IsActivityPresented()
 	{
 		return sessionMNative.IsActivityPresented();
 	}
-	
+
+	/*! Sets session metadata to be sent on session start. */
 	public void SetMetaData(string data, string key)
 	{
 		sessionMNative.SetMetaData(data, key);
 	}
 
+	/*! Sends a request to the server to authenticate a user with the specified OAuth token string from the specified provider. Returns whether request can be sent. */
 	public bool AuthenticateWithToken(string provider, string token)
 	{
 		return sessionMNative.AuthenticateWithToken(provider, token);
 	}
 
-	//Call this method before starting the session to set the app key.
+	/*! Call this method before starting the session to set the app key. */
 	public void SetAppKey(string appKey)
 	{
 		sessionMNative.SetAppKey(appKey);
 	}
 	
+	/*! Notifies the SessionM SDK that a custom achievement has been presented. */
 	public void NotifyPresented()
 	{
 		sessionMNative.NotifyPresented();
 	}
 	
+	/*! Notifies the SessionM SDK that a custom achievement has been dismissed. */
 	public void NotifyDismissed()
 	{
 		sessionMNative.NotifyDismissed();
 	}
 	
+	/*! Notifies the SessionM SDK that a custom achievement has been claimed. */
 	public void NotifyClaimed()
 	{
 		sessionMNative.NotifyClaimed();
 	}
-	
+
+	/*! Dismisses currently presented UI activity. */	
 	public void DismissActivity()
 	{
 		sessionMNative.DismissActivity();
 	}
 
+	/*! Presents list of tiers the user can reach. Note: this method is deprecated. */
 	public void PresentTierList()
 	{
 		sessionMNative.PresentTierList();
 	}
 
+	/*! Returns the list of tiers the user can reach. */
 	public Tier[] GetTiers()
 	{
 		return GetTierData(sessionMNative.GetTiers());
 	}
 	
+	/*! Sends a request to the server to update the cached list of offers that the user can redeem. Offers are returned in NotifyOffersUpdated callback. */
 	public void UpdateOffers()
 	{
 		sessionMNative.UpdateOffers();
 	}
 
+	/*! Returns the cached list of offers that the user can redeem. */
 	public Offer[] GetOffers()
 	{
 		return GetOfferData(sessionMNative.GetOffers());
 	}
 
+	/*! Sends a request to the server to fetch the data for the content with the specified ID (external IDs are developer-defined). Content data is returned in NotifyContentFetched callback. */
 	public void FetchContent(string contentID, bool isExternalID)
 	{
 		sessionMNative.FetchContent(contentID, isExternalID);
 	}
 
+	/*! Sets the object to use for executing Unity callback implementations. */
 	public void SetCallback(ISessionMCallback callback)
 	{
 		sessionMNative.SetCallback(callback);
 	}
 	
+	/*! Returns callback object. */
 	public ISessionMCallback GetCallback() 
 	{
 		return sessionMNative.GetCallback();
 	}
 	
 	// Unity Lifecycle
-	
 	private void Awake() 
 	{
 		SetSessionMNative();
@@ -341,7 +368,7 @@ public class SessionM : MonoBehaviour
 		#endif
 	}
 	
-	//This is a useful method you can call whenever you need to parse a JSON string into a the IAchievementData custom class.
+	/*! This is a useful method you can call whenever you need to parse a JSON string into the IAchievementData custom class. */
 	public static IAchievementData GetAchievementData(string jsonString) 
 	{
 		Dictionary<string, object> achievementDict = Json.Deserialize(jsonString) as Dictionary<string,object>;
@@ -365,8 +392,7 @@ public class SessionM : MonoBehaviour
 		return achievementData;
 	}
 
-	//This is a useful method you can call whenever you need to parse a JSON string into a the UserData custom class.
-	public static UserData GetUserData(string jsonString)
+	private static UserData GetUserData(string jsonString)
 	{
 		Dictionary<string, object> userDict = Json.Deserialize(jsonString) as Dictionary<string, object>;
 		bool isOptedOut = (bool)userDict["isOptedOut"];
@@ -412,7 +438,7 @@ public class SessionM : MonoBehaviour
 		return userData;
 	}
 
-	public static Tier[] GetTierData(string jsonString)
+	private static Tier[] GetTierData(string jsonString)
 	{
 		List<object> dictList = Json.Deserialize(jsonString) as List<object>;
 		Tier[] tierArray = new Tier[dictList.Count];
@@ -429,7 +455,7 @@ public class SessionM : MonoBehaviour
 		return tierArray;
 	}
 
-	public static Reward[] GetRewardData(string jsonString) 
+	private static Reward[] GetRewardData(string jsonString) 
 	{
 		List<object> dictList = Json.Deserialize(jsonString) as List<object>;
 		Reward[] rewardArray = new Reward[dictList.Count];
@@ -451,7 +477,7 @@ public class SessionM : MonoBehaviour
 		return rewardArray;
 	}
 	
-	public static Offer[] GetOfferData(string jsonString)
+	private static Offer[] GetOfferData(string jsonString)
 	{
 		List<object> dictList = Json.Deserialize(jsonString) as List<object>;
 		Offer[] offerArray = new Offer[dictList.Count];

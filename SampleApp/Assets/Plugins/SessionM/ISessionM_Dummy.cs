@@ -1,10 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-//SessionMDummy.cs
-//
-//Dummy class used for platforms SessionM does not support and in editor mode.
-
+/*! Dummy class used for platforms SessionM does not support - and in editor mode. */
 public class ISessionM_Dummy : ISessionM
 {
 	public ISessionM_Dummy()
@@ -196,6 +193,4 @@ public class ISessionM_Dummy : ISessionM
 	{
 		return null;
 	}
-	
 }
-

@@ -5,10 +5,10 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using MiniJSON;
 
-#if UNITY_IOS
-/*
+/*!
  * SessionM iOS Native Implementation.
  */ 
+#if UNITY_IOS
 public class ISessionM_iOS : ISessionM
 {	
 	private SessionM sessionMGameObject;

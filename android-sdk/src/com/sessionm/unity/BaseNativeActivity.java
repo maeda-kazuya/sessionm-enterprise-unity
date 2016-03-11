@@ -150,11 +150,7 @@ public class BaseNativeActivity extends UnityPlayerActivity {
 
     public void fetchContent(String contentID, boolean isExternalID) {
         ContentManager manager = sessionM.getContentManager();
-        if (isExternalID) {
-            manager.fetchExternalContents(contentID);
-        } else {
-            manager.fetchContents(contentID);
-        }
+        manager.fetchContent(contentID, isExternalID);
     }
 
     public void updateAchievementsList(){

@@ -10,6 +10,7 @@ import com.sessionm.api.Activity;
 import com.sessionm.api.SessionM.ActivityType;
 import com.sessionm.api.SessionM;
 import com.sessionm.api.User;
+import com.sessionm.api.content.ContentManager;
 
 import org.json.JSONObject;
 import java.util.HashMap;
@@ -112,6 +113,11 @@ public class SessionMPlugin{
 
     public static void fetchOffers(){
         sessionM.fetchTierOffers();
+    }
+
+    public static void fetchContent(String contentID, boolean isExternalID) {
+        ContentManager manager = sessionM.getContentManager();
+        manager.fetchContent(contentID, isExternalID);
     }
 
     public static void setServiceRegion(int serviceRegion) {

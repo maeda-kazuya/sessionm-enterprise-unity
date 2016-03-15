@@ -12,6 +12,8 @@ public class SessionMSampleGUI : MonoBehaviour {
 		public Button button;
 	}
 
+	public SessionMSample sample;
+
 	public GUISet[] guiSets;
 
 	//Output Labels
@@ -24,6 +26,7 @@ public class SessionMSampleGUI : MonoBehaviour {
 	public Text tierLabel;
 	public Text tierPercentage;
 	public Text tierAnniversary;
+	public Text contentFetch;
 
 	//Filliable Text Forms
 	public Text authenticateProvider;
@@ -59,6 +62,7 @@ public class SessionMSampleGUI : MonoBehaviour {
 
 	private void UpdateGUIState()
 	{
+		Debug.Log (currentState);
 		foreach (GUISet gui in guiSets) {
 			bool isCurrent = (gui.guiState == currentState);
 			gui.canvas.alpha = isCurrent ? 1.0f : 0.0f;
@@ -126,6 +130,16 @@ public class SessionMSampleGUI : MonoBehaviour {
 		tierAnniversary.text = "Tier Anniversary: " + user.GetTierAnniversaryDate();
 	}
 
+	public void OnPopulateContent(Dictionary<string, object> content)
+	{
+		string contentOutput = "";
+		foreach(KeyValuePair<string, object> entry in content) {
+			contentOutput += " : ";
+			contentOutput += entry.Key + " | ";
+			contentOutput += entry.Value + "\n";
+		}
+	}
+
 	public void OnUserHit()
 	{
 		CurrentState = GUIState.USER;
@@ -139,6 +153,25 @@ public class SessionMSampleGUI : MonoBehaviour {
 	public void OnTierHit()
 	{
 		CurrentState = GUIState.TIER;
+	}
+
+	public void OnFetchContent()
+	{
+		CurrentState = GUIState.FETCH_CONTENT;
+		sample.OnFetchContent(fetchContentID.text);
+	}
+
+	public void OnManualLogAction()
+	{
+		var payloads = new Dictionary<string, object>();
+		payloads.Add("0", (object) manualLogActionPayloadJSON.text);
+		int count = int.Parse(manualLogActionCount.text);
+		sample.OnLogActionWithPayloads(manualLogActionName.text, count, payloads);
+	}
+
+	public void OnAuthenticateToken()
+	{
+		CurrentState = GUIState.AUTH_WITH_TOKEN;
 	}
 
 	//Unity Lifecycle

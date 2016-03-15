@@ -40,6 +40,16 @@ public class SessionMSample : MonoBehaviour
 		sessionM.ShowPortal();
 	}
 
+	public void OnLogActionWithPayloads(string action, int count, Dictionary<string, object> payloads)
+	{
+		sessionM.LogAction(action, count, payloads);
+	}
+
+	public void OnFetchContent(string contentID)
+	{
+		sessionM.FetchContent(contentID, true);
+	}
+
 	//Helper Methods 
 
 	private void NotifySessionError(int errorCode, string error)
@@ -82,6 +92,7 @@ public class SessionMSample : MonoBehaviour
 	private void ContentFetched(Dictionary<string, object> content)
 	{
 		Debug.Log("Content fetched: " + content.Keys);
+		gui.OnPopulateContent(content);
 	}
 
 	//Unity Lifecycle

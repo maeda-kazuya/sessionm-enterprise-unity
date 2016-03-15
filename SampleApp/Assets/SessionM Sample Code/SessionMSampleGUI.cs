@@ -14,6 +14,7 @@ public class SessionMSampleGUI : MonoBehaviour {
 
 	public GUISet[] guiSets;
 
+	//Output Labels
 	public Text optOutLabel;
 	public Text isRegisteredLabel;
 	public Text isLoggedInLabel;
@@ -24,6 +25,14 @@ public class SessionMSampleGUI : MonoBehaviour {
 	public Text tierPercentage;
 	public Text tierAnniversary;
 
+	//Filliable Text Forms
+	public Text authenticateProvider;
+	public Text authenticateTokenString;
+	public Text fetchContentID;
+	public Text manualLogActionName;
+	public Text manualLogActionCount;
+	public Text manualLogActionPayloadJSON;
+
 	public Text tiersText;
 
 	public GridLayoutGroup rewardsGrid;
@@ -33,7 +42,9 @@ public class SessionMSampleGUI : MonoBehaviour {
 	{
 		USER,
 		REWARDS,
-		TIER
+		TIER,
+		AUTH_WITH_TOKEN,
+		FETCH_CONTENT
 	}
 
 	private GUIState currentState;

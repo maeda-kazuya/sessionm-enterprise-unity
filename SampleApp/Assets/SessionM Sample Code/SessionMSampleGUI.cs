@@ -62,7 +62,6 @@ public class SessionMSampleGUI : MonoBehaviour {
 
 	private void UpdateGUIState()
 	{
-		Debug.Log (currentState);
 		foreach (GUISet gui in guiSets) {
 			bool isCurrent = (gui.guiState == currentState);
 			gui.canvas.alpha = isCurrent ? 1.0f : 0.0f;
@@ -165,8 +164,14 @@ public class SessionMSampleGUI : MonoBehaviour {
 	{
 		var payloads = new Dictionary<string, object>();
 		payloads.Add("0", (object) manualLogActionPayloadJSON.text);
-		int count = int.Parse(manualLogActionCount.text);
-		sample.OnLogActionWithPayloads(manualLogActionName.text, count, payloads);
+		sample.OnLogActionWithPayloads(manualLogActionName.text, actionCount, payloads);
+	}
+
+	private int actionCount = 0;
+	public void OnUpdateCount(Scrollbar scrollbar)
+	{
+		actionCount = Mathf.RoundToInt((scrollbar.value * 10)) + 1;
+		manualLogActionCount.text = actionCount.ToString();
 	}
 
 	public void OnAuthenticateToken()

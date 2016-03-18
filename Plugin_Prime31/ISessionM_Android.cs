@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using MiniJSON;
+using SessionMMiniJSON;
 
 /*!
  * SessionM Android Native Implementation.

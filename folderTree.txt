@@ -30,8 +30,8 @@
 │       │   │   ├── SessionM.jar.meta
 │       │   │   └── SessionMUnity.jar.meta
 │       │   ├── Android.meta
-│       │   ├── MiniJSON.cs
-│       │   ├── MiniJSON.cs.meta
+│       │   ├── SessionMMiniJSON.cs
+│       │   ├── SessionMMiniJSON.cs.meta
 │       │   ├── SessionM
 │       │   │   ├── AchievementData.cs
 │       │   │   ├── AchievementData.cs.meta

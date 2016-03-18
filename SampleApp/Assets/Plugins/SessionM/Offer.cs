@@ -2,7 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using MiniJSON;
+using SessionMMiniJSON;
 
 [System.Serializable]
 public class Offer

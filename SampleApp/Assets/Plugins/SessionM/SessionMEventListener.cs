@@ -2,7 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 using System.Collections;
-using MiniJSON;
+using SessionMMiniJSON;
 
 public class SessionMEventListener : MonoBehaviour 
 {

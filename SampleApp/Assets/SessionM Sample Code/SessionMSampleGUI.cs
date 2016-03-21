@@ -18,6 +18,7 @@ public class SessionMSampleGUI : MonoBehaviour {
 	public Text isRegisteredLabel;
 	public Text isLoggedInLabel;
 	public Text pointBalanceLabel;
+	public Text tierPointBalanceLabel;
 	public Text unclaimedAchCountLabel;
 	public Text unclaimedAchValueLabel;
 	public Text tierLabel;
@@ -108,6 +109,7 @@ public class SessionMSampleGUI : MonoBehaviour {
 		isRegisteredLabel.text = "Is Registered: " + user.IsRegistered();
 		isLoggedInLabel.text = "Is Logged In: " + user.IsLoggedIn();
 		pointBalanceLabel.text = "Point Balance: " + user.GetUserPointBalance();
+		tierPointBalanceLabel.text = "Tier Point Balance: " + user.GetUserTierPointBalance();
 		unclaimedAchCountLabel.text = "Unclaimed Achievement Count: " + user.GetUnclaimedAchievementCount();
 		unclaimedAchValueLabel.text = "Unclaimed Achievement Value: " + user.GetUnclaimedAchievementValue();
 		tierLabel.text = "Tier Name: " + user.GetTierName();

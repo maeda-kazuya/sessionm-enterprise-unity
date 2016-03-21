@@ -10,6 +10,7 @@ public class UserData
 	private bool isRegistered;
 	private bool isLoggedIn;
 	private int pointBalance;
+	private int tierPointBalance;
 	private int unclaimedAchievementCount;
 	private int unclaimedAchievementValue;
 	private List<AchievementData> achievements;
@@ -19,12 +20,13 @@ public class UserData
 	private string tierAnniversaryDate;
 
 	/*! Creates a new user with the specified parameters. */
-	public UserData(bool isOptedOut, bool isRegistered, bool isLoggedIn, int pointBalance, int unclaimedAchievementCount, int unclaimedAcheivementValue, List<AchievementData> achievements, List<AchievementData> achievementsList, string tierName, string tierPercentage, string tierAnniversaryDate)
+	public UserData(bool isOptedOut, bool isRegistered, bool isLoggedIn, int pointBalance, int tierPointBalance, int unclaimedAchievementCount, int unclaimedAcheivementValue, List<AchievementData> achievements, List<AchievementData> achievementsList, string tierName, string tierPercentage, string tierAnniversaryDate)
 	{
 		this.isOptedOut = isOptedOut;
 		this.isRegistered = isRegistered;
 		this.isLoggedIn = isLoggedIn;
 		this.pointBalance = pointBalance;
+		this.tierPointBalance = tierPointBalance;
 		this.unclaimedAchievementCount = unclaimedAchievementCount;
 		this.unclaimedAchievementValue = unclaimedAcheivementValue;
 		this.achievements = achievements;
@@ -42,6 +44,8 @@ public class UserData
 	public bool IsLoggedIn() { return this.isLoggedIn; }
 	/*! Returns user's current point balance. */
 	public int GetUserPointBalance() { return this.pointBalance; }
+	/*! Returns user's current tier point balance. */
+	public int GetUserTierPointBalance() { return this.tierPointBalance; }
 	/*! Returns how many achievements that the user has earned, but not claimed. */
 	public int GetUnclaimedAchievementCount() { return this.unclaimedAchievementCount; }
 	/*! Returns total point value of achievements that the user has earned, but not claimed. */

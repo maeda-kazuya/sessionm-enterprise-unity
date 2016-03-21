@@ -301,6 +301,7 @@ public class SessionMListener implements ActivityListener, SessionListener {
             jsonObject.put("isRegistered", user.isRegistered());
             jsonObject.put("isLoggedIn", user.isLoggedIn());
             jsonObject.put("getPointBalance", user.getPointBalance());
+            jsonObject.put("getTierPointBalance", user.getTierPointBalance());
             jsonObject.put("getUnclaimedAchievementCount", user.getUnclaimedAchievementCount());
             jsonObject.put("getUnclaimedAchievementValue", user.getUnclaimedAchievementValue());
             jsonObject.put("getAchievementsJSON", userAchievementsJSONString);

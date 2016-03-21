@@ -450,6 +450,7 @@ static NSString *SMUserToJSONString(SMUser *user) {
                                @"isRegistered": [NSNumber numberWithBool:user.isRegistered],
                                @"isLoggedIn": [NSNumber numberWithBool:user.isLoggedIn],
                                @"getPointBalance": [NSNumber numberWithUnsignedInteger:user.pointBalance],
+                               @"getTierPointBalance": [NSNumber numberWithUnsignedInteger:user.tierPointBalance],
                                @"getUnclaimedAchievementCount": [NSNumber numberWithUnsignedInteger:user.unclaimedAchievementCount],
                                @"getUnclaimedAchievementValue": [NSNumber numberWithUnsignedInteger:user.unclaimedAchievementValue],
                                @"getAchievementsJSON": userAchievementsJSONString,

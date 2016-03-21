@@ -502,10 +502,10 @@ RectTransform:
   m_LocalScale: {x: 0.5650056, y: 0.56500566, z: 0.56500566}
   m_Children: []
   m_Father: {fileID: 305771522}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 149.5, y: 35.2}
+  m_AnchoredPosition: {x: 149.5, y: 25.2}
   m_SizeDelta: {x: 300, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &118267395
@@ -770,10 +770,10 @@ RectTransform:
   m_LocalScale: {x: 0.5650056, y: 0.56500566, z: 0.56500566}
   m_Children: []
   m_Father: {fileID: 305771522}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 149.5, y: 23.7}
+  m_AnchoredPosition: {x: 149.5, y: 13.7}
   m_SizeDelta: {x: 300, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &201596114
@@ -917,6 +917,7 @@ RectTransform:
   - {fileID: 409459773}
   - {fileID: 1694318304}
   - {fileID: 810325282}
+  - {fileID: 2040255995}
   - {fileID: 913695623}
   - {fileID: 1110316188}
   - {fileID: 743977658}
@@ -1002,6 +1003,7 @@ MonoBehaviour:
   isRegisteredLabel: {fileID: 409459774}
   isLoggedInLabel: {fileID: 1694318305}
   pointBalanceLabel: {fileID: 810325283}
+  tierPointBalanceLabel: {fileID: 2040255996}
   unclaimedAchCountLabel: {fileID: 913695624}
   unclaimedAchValueLabel: {fileID: 1110316189}
   tierLabel: {fileID: 743977659}
@@ -1508,10 +1510,10 @@ RectTransform:
   m_LocalScale: {x: 0.5650056, y: 0.56500566, z: 0.56500566}
   m_Children: []
   m_Father: {fileID: 305771522}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 149.5, y: 47.3}
+  m_AnchoredPosition: {x: 149.5, y: 37.3}
   m_SizeDelta: {x: 300, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &743977659
@@ -1760,10 +1762,10 @@ RectTransform:
   m_LocalScale: {x: 0.5650056, y: 0.56500566, z: 0.56500566}
   m_Children: []
   m_Father: {fileID: 305771522}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 149.5, y: 72.2}
+  m_AnchoredPosition: {x: 149.5, y: 62.2}
   m_SizeDelta: {x: 300, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &913695624
@@ -1954,10 +1956,10 @@ RectTransform:
   m_LocalScale: {x: 0.5650056, y: 0.56500566, z: 0.56500566}
   m_Children: []
   m_Father: {fileID: 305771522}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 149.5, y: 59.9}
+  m_AnchoredPosition: {x: 149.5, y: 49.9}
   m_SizeDelta: {x: 300, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1110316189
@@ -3798,6 +3800,79 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1937492721}
+--- !u!1 &2040255994
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 224: {fileID: 2040255995}
+  - 222: {fileID: 2040255997}
+  - 114: {fileID: 2040255996}
+  m_Layer: 5
+  m_Name: Tier Point Balance
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2040255995
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2040255994}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.56500554, y: 0.56500566, z: 0.56500566}
+  m_Children: []
+  m_Father: {fileID: 305771522}
+  m_RootOrder: 4
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 149.5, y: 73.7}
+  m_SizeDelta: {x: 300, y: 30}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2040255996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2040255994}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.43529412, g: 0.43529412, b: 0.43529412, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_FontData:
+    m_Font: {fileID: 12800000, guid: 05290f271a8824d0c9af69e3b26c2cf2, type: 3}
+    m_FontSize: 20
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 10
+    m_MaxSize: 40
+    m_Alignment: 2
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: 'Tier Point Balance:'
+--- !u!222 &2040255997
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2040255994}
 --- !u!1 &2136274493
 GameObject:
   m_ObjectHideFlags: 0

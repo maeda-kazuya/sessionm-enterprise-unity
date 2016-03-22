@@ -34,6 +34,9 @@ public class SessionMEventListener : MonoBehaviour
 	/*! Notifies that content data has been fetched. */
 	public static event Action<Dictionary<string, object>> NotifyContentFetched;
 
+	/*! Notifies that customer-defined data has been updated. */
+	public static event Action<Dictionary<string, object>> NotifyCustomerDataUpdated;
+
 	private ISessionM nativeParent;
 	private ISessionMCallback callback;
 
@@ -207,6 +210,21 @@ public class SessionMEventListener : MonoBehaviour
 
 		if(callback != null) {
 			callback.NotifyContentFetched(nativeParent, contentDict);
+		}
+	}
+
+	private void _sessionM_HandleUpdatedCustomerDataMessage(string message)
+	{
+		Debug.Log ("_sessionM_HandleUpdatedCustomerDataMessage: " + message);
+		Dictionary<string, object> dataDict = Json.Deserialize(message) as Dictionary<string, object>;
+
+		// Register Event
+		if(NotifyCustomerDataUpdated != null) {
+			NotifyCustomerDataUpdated(dataDict);
+		}
+
+		if(callback != null) {
+			callback.NotifyCustomerDataUpdated(nativeParent, dataDict);
 		}
 	}
 

@@ -40,6 +40,9 @@ public interface ISessionMCallback
 	/*! Notifies that content data has been fetched. */
 	void NotifyContentFetched(ISessionM sessionM, Dictionary<string, object> content);
 
+	/*! Notifies that customer-defined data has been updated. */
+	void NotifyCustomerDataUpdated(ISessionM sessionM, Dictionary<string, object> data);
+
 
 	// This method is deprecated. Please, use return value from ISessionM.PresentActivity(ActivityType) to determine is UI activitiy will be presented. 
 	//void NotifyActivityUnavailable(ISessionM sessionM, ActivityType type);
@@ -47,4 +50,3 @@ public interface ISessionMCallback
 	// For achievement use NotifyUnclaimedAchievementDataUpdated(ISessionM, IAchievementData)
 	//void NotifyActivityAvailable(ISessionM sessionM, ActivityType type);
 }
-

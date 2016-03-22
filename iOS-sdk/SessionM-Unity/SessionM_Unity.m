@@ -119,6 +119,11 @@ static NSArray<NSDictionary *> *currentOffers;
     }
 }
 
+- (void)sessionM:(SessionM *)sessionM didUpdateCustomerData:(NSDictionary *)data {
+    NSString *dataString = SMObjectToJSONString(data);
+    [self invokeUnityGameObjectMethod:@"_sessionM_HandleUpdatedCustomerDataMessage" message:dataString];
+}
+
 
 #pragma mark - Private
 

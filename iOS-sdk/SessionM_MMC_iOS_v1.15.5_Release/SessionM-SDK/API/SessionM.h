@@ -370,6 +370,13 @@ typedef enum SessionMSessionErrorType {
  */
 - (void)sessionM:(SessionM *)sessionM didFetchContent:(SMContent *)content;
 /*!
+ @abstract Notifies delegate that customer-defined data has been updated.
+ @discussion This method is called in response to calling the @link logAction:withCounts:payloads: @/link method.
+ @param sessionM SessionM service object.
+ @param data The updated customer-defined data.
+ */
+- (void)sessionM:(SessionM *)sessionM didUpdateCustomerData:(NSDictionary *)data;
+/*!
  @abstract Notifies that media (typically video) will start playing.
  @discussion Application should use this method to suspend its own media playback if any.
  @param sessionM SessionM service object.

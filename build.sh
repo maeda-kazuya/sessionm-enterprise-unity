@@ -29,11 +29,11 @@ cp Plugin_BaseActivity/AndroidManifest.xml.meta build/BaseActivity/Assets/Plugin
 cp Plugin_BaseActivity/ISessionM_Android.cs build/BaseActivity/Assets/Plugins/SessionM
 cp Plugin_BaseActivity/ISessionM_Android.cs.meta build/BaseActivity/Assets/Plugins/SessionM
 
-cp Plugin_Prime31/AndroidManifest.xml ${PRIME31_JAR_PATH} build/Prime31/Assets/Plugins/Android
-cp Plugin_Prime31/AndroidManifest.xml.meta build/Prime31/Assets/Plugins/Android
-cp Plugin_Prime31/Prime31UnityActivity.jar.meta build/Prime31/Assets/Plugins/Android
-cp Plugin_Prime31/ISessionM_Android.cs build/Prime31/Assets/Plugins/SessionM
-cp Plugin_Prime31/ISessionM_Android.cs.meta build/Prime31/Assets/Plugins/SessionM
+#cp Plugin_Prime31/AndroidManifest.xml ${PRIME31_JAR_PATH} build/Prime31/Assets/Plugins/Android
+#cp Plugin_Prime31/AndroidManifest.xml.meta build/Prime31/Assets/Plugins/Android
+#cp Plugin_Prime31/Prime31UnityActivity.jar.meta build/Prime31/Assets/Plugins/Android
+#cp Plugin_Prime31/ISessionM_Android.cs build/Prime31/Assets/Plugins/SessionM
+#cp Plugin_Prime31/ISessionM_Android.cs.meta build/Prime31/Assets/Plugins/SessionM
 
 cd build/BaseActivity
 echo "Building SessionM Unity BaseActivity Plugin..."
@@ -41,14 +41,14 @@ echo
 $UNITY_PATH -batchmode -exportPackage Assets/Plugins Assets/Editor SessionM-BaseActivity.unityPackage -projectPath "$DEST_PATH/build/BaseActivity" -quit
 cp SessionM-BaseActivity.unityPackage ../
 
-cd ../Prime31
-echo "Building SessionM Unity Prime31 Plugin..."
-echo
-$UNITY_PATH -batchmode -exportPackage Assets/Plugins Assets/Editor SessionM-Prime31.unityPackage -projectPath "$DEST_PATH/build/Prime31" -quit
-cp SessionM-Prime31.unityPackage ../
+#cd ../Prime31
+#echo "Building SessionM Unity Prime31 Plugin..."
+#echo
+#$UNITY_PATH -batchmode -exportPackage Assets/Plugins Assets/Editor SessionM-Prime31.unityPackage -projectPath "$DEST_PATH/build/Prime31" -quit
+#cp SessionM-Prime31.unityPackage ../
 
 cd ..
 
-rm -rf BaseActivity/ Prime31/
+#rm -rf BaseActivity/ Prime31/
 zip -9 -r "SessionM_Unity_v${UNITY_SDK_VERSION}.zip" * ../ReleaseNotes.txt
 echo "Done."

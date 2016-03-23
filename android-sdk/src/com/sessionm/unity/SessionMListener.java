@@ -159,6 +159,15 @@ public class SessionMListener implements ActivityListener, SessionListener {
     }
 
     @Override
+    public void onSessionCustomerDataUpdated(SessionM sessionM, com.sessionm.json.JSONObject jsonObject) {
+        String json = jsonObject.toString();
+        Log.e(TAG, "_sessionM_HandleUpdatedCustomerDataMessage");
+        if (callbackGameObjectName != null) {
+            UnityPlayer.UnitySendMessage(callbackGameObjectName, "_sessionM_HandleUpdatedCustomerDataMessage", json);
+        }
+    }
+
+    @Override
     public void onUnclaimedAchievement(SessionM sessionM, AchievementData achievementData) {
         if (Log.isLoggable(TAG, Log.DEBUG)) {
             Log.d(TAG, this + ".onUnclaimedAchievement: " + achievementData);

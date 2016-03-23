@@ -159,7 +159,7 @@ public class SessionMListener implements ActivityListener, SessionListener {
     }
 
     @Override
-    public void onSessionCustomerDataUpdated(SessionM sessionM, com.sessionm.json.JSONObject jsonObject) {
+    public void onSessionCustomerDataUpdated(SessionM sessionM, JSONObject jsonObject) {
         String json = jsonObject.toString();
         Log.e(TAG, "_sessionM_HandleUpdatedCustomerDataMessage");
         if (callbackGameObjectName != null) {

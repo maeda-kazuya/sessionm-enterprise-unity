@@ -688,7 +688,7 @@ typedef struct SMLocationCoordinate2D {
 /*!
  @property tiers
  @abstract An array of <code>NSDictionary</code> objects containing information on the available tiers in the rewards system.
- @discussion Some rewards can only be redeemed by users who have achieved a specific tier. The tier information in the dictionary elements can be accessed with the @link SessionMTierIDKey @/link, @link SessionMTierInstructionsKey @/link, @link SessionMTierNameKey @/link and @link SessionMTierMultiplierKey @/link keys.
+ @discussion Some rewards can only be redeemed by users who have achieved a specific tier. The tier information in the dictionary elements can be accessed with the @link SessionMTierIDKey @/link, @link SessionMTierInstructionsKey @/link, @link SessionMTierNameKey @/link, @link SessionMTierMultiplierKey @/link, @link SessionMTierStartValueKey @/link and @link SessionMTierEndValueKey @/link keys.
  */
 @property(nonatomic, strong, readonly) NSArray<NSDictionary *> *tiers;
 /*!
@@ -1366,6 +1366,16 @@ extern NSString *const SessionMTierNameKey;
  @abstract Returns multiplier bonus applied to points received by a user who has reached the tier.
  */
 extern NSString *const SessionMTierMultiplierKey;
+/*!
+ @const SessionMTierStartValueKey
+ @abstract Returns amount of points needed to reach the tier.
+ */
+extern NSString *const SessionMTierStartValueKey;
+/*!
+ @const SessionMTierEndValueKey
+ @abstract Returns amount of points needed to reach the next tier.
+ */
+extern NSString *const SessionMTierEndValueKey;
 
 
 #endif /* __SESSIONM__ */

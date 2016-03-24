@@ -451,7 +451,9 @@ public class SessionM : MonoBehaviour
 			string name = (string) dict["name"];
 			string instructions = (string) dict["instructions"];
 			double multiplier = Convert.ToDouble(dict["multiplier"]);
-			tierArray[i] = new Tier(tier, name, instructions, multiplier);
+			int startValue = Convert.ToInt32(dict["start_value"]);
+			int endValue = Convert.ToInt32(dict["end_value"]);
+			tierArray[i] = new Tier(tier, name, instructions, multiplier, startValue, endValue);
 		}
 
 		return tierArray;

@@ -460,6 +460,7 @@ static NSString *SMUserToJSONString(SMUser *user) {
                                @"getUnclaimedAchievementValue": [NSNumber numberWithUnsignedInteger:user.unclaimedAchievementValue],
                                @"getAchievementsJSON": userAchievementsJSONString,
                                @"getAchievementsListJSON": userAchievementsListJSONString,
+                               @"getTierIdentifier": user.tierIdentifier ? user.tierIdentifier: @"",
                                @"getTierName": user.tierName ? user.tierName : @"",
                                @"getTierPercentage": @(user.tierPercentage).stringValue,
                                @"getTierAnniversaryDate": user.tierAnniversaryDate ? user.tierAnniversaryDate : @""

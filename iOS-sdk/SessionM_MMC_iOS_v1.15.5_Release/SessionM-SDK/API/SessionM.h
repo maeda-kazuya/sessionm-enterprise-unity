@@ -371,7 +371,7 @@ typedef enum SessionMSessionErrorType {
 - (void)sessionM:(SessionM *)sessionM didFetchContent:(SMContent *)content;
 /*!
  @abstract Notifies delegate that customer-defined data has been updated.
- @discussion This method is called in response to calling the @link logAction:withCounts:payloads: @/link method.
+ @discussion This method is called in response to calling the @link logAction:withCount:payloads: @/link method.
  @param sessionM SessionM service object.
  @param data The updated customer-defined data.
  */
@@ -688,7 +688,7 @@ typedef struct SMLocationCoordinate2D {
 /*!
  @property tiers
  @abstract An array of <code>NSDictionary</code> objects containing information on the available tiers in the rewards system.
- @discussion Some rewards can only be redeemed by users who have achieved a specific tier. The tier information in the dictionary elements can be accessed with the @link SessionMTierIDKey @/link, @link SessionMTierInstructionsKey @/link and @link SessionMTierNameKey @/link keys.
+ @discussion Some rewards can only be redeemed by users who have achieved a specific tier. The tier information in the dictionary elements can be accessed with the @link SessionMTierIDKey @/link, @link SessionMTierInstructionsKey @/link, @link SessionMTierNameKey @/link and @link SessionMTierMultiplierKey @/link keys.
  */
 @property(nonatomic, strong, readonly) NSArray<NSDictionary *> *tiers;
 /*!
@@ -1186,6 +1186,11 @@ typedef enum SMAchievementDismissType {
  */
 @property(nonatomic, strong, readonly) NSArray *claimableAchievements;
 /*!
+ @property tierIdentifier
+ @abstract Identifier string for user's current tier.
+ */
+@property(nonatomic, strong, readonly) NSString *tierIdentifier;
+/*!
  @property tierName
  @abstract User's current tier.
  */
@@ -1356,6 +1361,11 @@ extern NSString *const SessionMTierInstructionsKey;
  @abstract Returns tier name.
  */
 extern NSString *const SessionMTierNameKey;
+/*!
+ @const SessionMTierMultiplierKey
+ @abstract Returns multiplier bonus applied to points received by a user who has reached the tier.
+ */
+extern NSString *const SessionMTierMultiplierKey;
 
 
 #endif /* __SESSIONM__ */

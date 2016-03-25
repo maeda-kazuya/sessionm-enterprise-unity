@@ -63,7 +63,7 @@ public class SessionMSampleGUI : MonoBehaviour {
 
 		for(int i = 0; i < tiers.Length; i++) {
 			Tier tier = tiers[i];
-			tiersText.text += "Tier " + i + " : " + tier.GetName() + " (Multiplier: " + tier.GetMultiplier() + "  -  Start/End: " + tier.GetStartValue() + "/" + tier.GetEndValue() + ")\n";
+			tiersText.text += "Tier " + i + " : " + tier.GetName() + " (Mult.: " + tier.GetMultiplier() + "  -  Start/End: " + tier.GetStartValue() + "/" + tier.GetEndValue() + "  -  Req. Points/Secure %: " + tier.GetRequiredPoints() + "/" + tier.GetSecurePercent() + ")\n";
 		}
 	}
 

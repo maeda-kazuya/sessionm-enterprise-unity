@@ -447,13 +447,15 @@ public class SessionM : MonoBehaviour
 
 		for(int i = 0; i < dictList.Count; i++) {
 			Dictionary<string, object> dict = dictList[i] as Dictionary<string, object>;
-			string tier = (string) dict["tier"];
-			string name = (string) dict["name"];
-			string instructions = (string) dict["instructions"];
-			double multiplier = Convert.ToDouble(dict["multiplier"]);
-			int startValue = Convert.ToInt32(dict["start_value"]);
-			int endValue = Convert.ToInt32(dict["end_value"]);
-			tierArray[i] = new Tier(tier, name, instructions, multiplier, startValue, endValue);
+			string tier = (string)GetValueOrDefault<string, object>(dict, "tier", "");
+			string name = (string)GetValueOrDefault<string, object>(dict, "name", "");
+			string instructions = (string)GetValueOrDefault<string, object>(dict, "instructions", "");
+			double multiplier = Convert.ToDouble(GetValueOrDefault<string, object>(dict, "multiplier", "0.0"));
+			int startValue = Convert.ToInt32(GetValueOrDefault<string, object>(dict, "start_value", "0"));
+			int endValue = Convert.ToInt32(GetValueOrDefault<string, object>(dict, "end_value", "0"));
+			double securePercent = Convert.ToDouble(GetValueOrDefault<string, object>(dict, "maintenance_percent", "0.0"));
+			int requiredPoints = Convert.ToInt32(GetValueOrDefault<string, object>(dict, "required_points", "0"));
+			tierArray[i] = new Tier(tier, name, instructions, multiplier, startValue, endValue, securePercent, requiredPoints);
 		}
 
 		return tierArray;
@@ -500,5 +502,11 @@ public class SessionM : MonoBehaviour
 		string[] separatorArray = new string[] {"__"};
 		string[] JSONArray = json.Split(separatorArray, StringSplitOptions.None);
 		return JSONArray;
+	}
+
+	private static TValue GetValueOrDefault<TKey, TValue>(Dictionary<TKey, TValue> dict, TKey key, TValue defaultVal)
+	{
+		TValue val;
+		return dict.TryGetValue(key, out val) ? val : defaultVal;
 	}
 }

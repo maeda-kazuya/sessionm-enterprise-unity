@@ -10,9 +10,11 @@ public class Tier
 	private double multiplier;
 	private int startValue;
 	private int endValue;
+	private double securePercent;
+	private int requiredPoints;
 
 	/*! Creates a new tier with the specified parameters. */
-	public Tier(string tier, string name, string instructions, double multiplier, int startValue, int endValue)
+	public Tier(string tier, string name, string instructions, double multiplier, int startValue, int endValue, double securePercent, int requiredPoints)
 	{
 		this.tier = tier;
 		this.name = name;
@@ -20,6 +22,8 @@ public class Tier
 		this.multiplier = multiplier;
 		this.startValue = startValue;
 		this.endValue = endValue;
+		this.securePercent = securePercent;
+		this.requiredPoints = requiredPoints;
 	}
 
 	/*! Returns short tier name used for string matching. */
@@ -34,4 +38,8 @@ public class Tier
 	public int GetStartValue() { return startValue; }
 	/*! Returns amount of points needed for a user to reach the next tier. */
 	public int GetEndValue() { return endValue; }
+	/*! Returns fraction of points towards the next tier a user must earn to remain in the current tier. */
+	public double GetSecurePercent() { return securePercent; }
+	/*! Returns amount of points a user must earn to remain in the tier. */
+	public int GetRequiredPoints() { return requiredPoints; }
 }

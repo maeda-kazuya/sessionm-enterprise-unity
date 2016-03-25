@@ -1376,6 +1376,16 @@ extern NSString *const SessionMTierStartValueKey;
  @abstract Returns amount of points needed to reach the next tier.
  */
 extern NSString *const SessionMTierEndValueKey;
+/*!
+ @const SessionMTierSecurePercentKey
+ @abstract Returns fraction of points towards the next tier a user must earn to remain in the current tier.
+ */
+extern NSString *const SessionMTierSecurePercentKey;
+/*!
+ @const SessionMTierRequiredPointsKey
+ @abstract Returns amount of points a user must earn to remain in the tier.
+ */
+extern NSString *const SessionMTierRequiredPointsKey;
 
 
 #endif /* __SESSIONM__ */

@@ -204,6 +204,9 @@ public interface ISessionM
 	/*! Returns list of tiers user can reach. */
 	string GetTiers();
 
+	/*! Returns multiplier bonus applied to points received by a user in the current application. */
+	double GetApplicationMultiplier();
+
 	/*! Updates list of cached offers that the user can redeem. */
 	void UpdateOffers();
 

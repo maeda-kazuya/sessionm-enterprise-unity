@@ -692,6 +692,11 @@ typedef struct SMLocationCoordinate2D {
  */
 @property(nonatomic, strong, readonly) NSArray<NSDictionary *> *tiers;
 /*!
+ @property applicationMultiplier
+ @abstract Returns multiplier bonus applied to points received by a user in the current application.
+ */
+@property(nonatomic, readonly) float applicationMultiplier;
+/*!
  @property messagesList
  @abstract An array of @link SMMessageData @/link objects representing in-app messages that the developer has configured in the SessionM Mobile Marketing Cloud portal.
  */
@@ -1200,6 +1205,11 @@ typedef enum SMAchievementDismissType {
  @abstract Date that the user achieved current tier.
  */
 @property(nonatomic, strong, readonly) NSString *tierAnniversaryDate;
+/*!
+ @property startTier
+ @abstract User's tier at the start of the year.
+ */
+@property(nonatomic, strong, readonly) NSString *startTier;
 /*!
  @property tierPercentage
  @abstract User's progress towards next tier.

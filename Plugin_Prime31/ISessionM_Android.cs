@@ -345,6 +345,13 @@ public class ISessionM_Android : ISessionM
 		return tiers;
 	}
 	
+	public double GetApplicationMultiplier()
+	{
+		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
+			return activityObject.Call<double> ("getApplicationMultiplier");
+		}
+	}
+
 	public void UpdateOffers()
 	{
 		using (AndroidJavaObject activityObject = GetCurrentActivity()) {

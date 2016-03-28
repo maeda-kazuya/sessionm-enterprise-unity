@@ -344,6 +344,10 @@ const char *SMGetTiers(void) {
     return c ? strdup(c) : NULL;
 }
 
+double SMGetApplicationMultiplier(void) {
+    return [SessionM sharedInstance].applicationMultiplier;
+}
+
 void SMUpdateOffers(void) {
     [[SessionM sharedInstance] fetchOffers];
 }
@@ -463,7 +467,8 @@ static NSString *SMUserToJSONString(SMUser *user) {
                                @"getTierIdentifier": user.tierIdentifier ? user.tierIdentifier: @"",
                                @"getTierName": user.tierName ? user.tierName : @"",
                                @"getTierPercentage": @(user.tierPercentage).stringValue,
-                               @"getTierAnniversaryDate": user.tierAnniversaryDate ? user.tierAnniversaryDate : @""
+                               @"getTierAnniversaryDate": user.tierAnniversaryDate ? user.tierAnniversaryDate : @"",
+                               @"getStartTier": user.startTier ? user.startTier : @""
                                };
 
     NSError *error = nil;

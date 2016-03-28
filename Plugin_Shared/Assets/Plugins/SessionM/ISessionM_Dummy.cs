@@ -172,6 +172,11 @@ public class ISessionM_Dummy : ISessionM
 		return null;
 	}
 	
+	public double GetApplicationMultiplier()
+	{
+		return 0.0;
+	}
+
 	public void UpdateOffers()
 	{
 	}

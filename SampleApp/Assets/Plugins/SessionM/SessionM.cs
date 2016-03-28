@@ -312,6 +312,12 @@ public class SessionM : MonoBehaviour
 		return GetTierData(sessionMNative.GetTiers());
 	}
 	
+	/*! Returns multiplier bonus applied to points received by a user in the current application. */
+	public double GetApplicationMultiplier()
+	{
+		return sessionMNative.GetApplicationMultiplier();
+	}
+
 	/*! Sends a request to the server to update the cached list of offers that the user can redeem. Offers are returned in NotifyOffersUpdated callback. */
 	public void UpdateOffers()
 	{
@@ -435,7 +441,8 @@ public class SessionM : MonoBehaviour
 		string tierName = (string)userDict["getTierName"];
 		string tierPercentage = (string)userDict["getTierPercentage"];
 		string tierAnniversaryDate = (string)userDict["getTierAnniversaryDate"];
-		UserData userData = new UserData(isOptedOut, isRegistered, isLoggedIn, (int)userPointBalance, (int)userTierPointBalance, (int)unclaimedAchievementCount, (int)unclaimedAchievementValue, achievements, achievementsList, tierIdentifier, tierName, tierPercentage, tierAnniversaryDate);
+		string startTier = (string)userDict["getStartTier"];
+		UserData userData = new UserData(isOptedOut, isRegistered, isLoggedIn, (int)userPointBalance, (int)userTierPointBalance, (int)unclaimedAchievementCount, (int)unclaimedAchievementValue, achievements, achievementsList, tierIdentifier, tierName, tierPercentage, tierAnniversaryDate, startTier);
 
 		return userData;
 	}

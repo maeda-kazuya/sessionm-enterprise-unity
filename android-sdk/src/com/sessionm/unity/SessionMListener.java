@@ -319,6 +319,7 @@ public class SessionMListener implements ActivityListener, SessionListener {
             jsonObject.put("getTierName", user.getTierName());
             jsonObject.put("getTierPercentage", String.valueOf(user.getTierPercentage()));
             jsonObject.put("getTierAnniversaryDate", user.getTierAnniversaryDate());
+            jsonObject.put("getStartTier", user.getStartTier());
         } catch (JSONException e) {
             if (Log.isLoggable(TAG, Log.DEBUG)) {
                 Log.d(TAG, "JSONException when trying to get user json: " + e);

@@ -291,6 +291,13 @@ public class ISessionM_iOS : ISessionM
 		string tiers = SMGetTiers();
 		return tiers;
 	}
+
+	[DllImport ("__Internal")]
+	private static extern double SMGetApplicationMultiplier();
+	public double GetApplicationMultiplier()
+	{
+		return SMGetApplicationMultiplier();
+	}
 	
 	[DllImport ("__Internal")]
 	private static extern void SMUpdateOffers();

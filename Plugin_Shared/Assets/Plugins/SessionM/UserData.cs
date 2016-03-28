@@ -19,9 +19,10 @@ public class UserData
 	private string tierName;
 	private string tierPercentage;
 	private string tierAnniversaryDate;
+	private string startTier;
 
 	/*! Creates a new user with the specified parameters. */
-	public UserData(bool isOptedOut, bool isRegistered, bool isLoggedIn, int pointBalance, int tierPointBalance, int unclaimedAchievementCount, int unclaimedAcheivementValue, List<AchievementData> achievements, List<AchievementData> achievementsList, string tierIdentifier, string tierName, string tierPercentage, string tierAnniversaryDate)
+	public UserData(bool isOptedOut, bool isRegistered, bool isLoggedIn, int pointBalance, int tierPointBalance, int unclaimedAchievementCount, int unclaimedAcheivementValue, List<AchievementData> achievements, List<AchievementData> achievementsList, string tierIdentifier, string tierName, string tierPercentage, string tierAnniversaryDate, string startTier)
 	{
 		this.isOptedOut = isOptedOut;
 		this.isRegistered = isRegistered;
@@ -36,6 +37,7 @@ public class UserData
 		this.tierName = tierName;
 		this.tierPercentage = tierPercentage;
 		this.tierAnniversaryDate = tierAnniversaryDate;
+		this.startTier = startTier;
 	}
 
 	/*! Returns whether user is opted out of the rewards system. */
@@ -64,4 +66,6 @@ public class UserData
 	public string GetTierPercentage() { return this.tierPercentage; }
 	/*! Returns when user reached their current tier. */
 	public string GetTierAnniversaryDate() { return this.tierAnniversaryDate; }
+	/*! Returns user's tier at the start of the year. */
+	public string GetStartTier() { return this.startTier; }
 }

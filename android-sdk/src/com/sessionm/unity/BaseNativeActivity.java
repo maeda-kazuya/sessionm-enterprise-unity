@@ -140,6 +140,10 @@ public class BaseNativeActivity extends UnityPlayerActivity {
         return json;
     }
 
+    public double getApplicationMultiplier(){
+        return sessionM.getApplicationMultiplier();
+    }
+
     public String getOffers(){
         return sessionM.getOffers();
     }

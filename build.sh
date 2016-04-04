@@ -29,11 +29,11 @@ cp Plugin_BaseActivity/AndroidManifest.xml.meta build/BaseActivity/Assets/Plugin
 cp Plugin_BaseActivity/ISessionM_Android.cs build/BaseActivity/Assets/Plugins/SessionM
 cp Plugin_BaseActivity/ISessionM_Android.cs.meta build/BaseActivity/Assets/Plugins/SessionM
 
-#cp Plugin_Prime31/AndroidManifest.xml ${PRIME31_JAR_PATH} build/Prime31/Assets/Plugins/Android
-#cp Plugin_Prime31/AndroidManifest.xml.meta build/Prime31/Assets/Plugins/Android
-#cp Plugin_Prime31/Prime31UnityActivity.jar.meta build/Prime31/Assets/Plugins/Android
-#cp Plugin_Prime31/ISessionM_Android.cs build/Prime31/Assets/Plugins/SessionM
-#cp Plugin_Prime31/ISessionM_Android.cs.meta build/Prime31/Assets/Plugins/SessionM
+cp Plugin_Prime31/AndroidManifest.xml ${PRIME31_JAR_PATH} build/Prime31/Assets/Plugins/Android
+cp Plugin_Prime31/AndroidManifest.xml.meta build/Prime31/Assets/Plugins/Android
+cp Plugin_Prime31/Prime31UnityActivity.jar.meta build/Prime31/Assets/Plugins/Android
+cp Plugin_Prime31/ISessionM_Android.cs build/Prime31/Assets/Plugins/SessionM
+cp Plugin_Prime31/ISessionM_Android.cs.meta build/Prime31/Assets/Plugins/SessionM
 
 cd build/BaseActivity
 echo "Building SessionM Unity BaseActivity Plugin..."

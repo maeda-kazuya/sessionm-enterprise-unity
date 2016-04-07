@@ -47,7 +47,7 @@ PluginImporter:
       enabled: 1
       settings:
         CompileFlags: 
-        FrameworkDependencies: StoreKit;EventKit;EventKitUI;ImageIO;AdSupport;
+        FrameworkDependencies: CoreData;StoreKit;EventKit;EventKitUI;ImageIO;AdSupport;
   userData: 
   assetBundleName: 
   assetBundleVariant: 

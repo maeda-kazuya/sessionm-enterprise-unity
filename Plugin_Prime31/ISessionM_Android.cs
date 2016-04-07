@@ -16,6 +16,7 @@ public class ISessionM_Android : ISessionM
 	private SessionMEventListener listener;
 	
 	private static AndroidJavaObject androidInstance;
+	private AndroidJavaClass sessionMObject = new AndroidJavaClass("com.sessionm.unity.SessionMPlugin");
 	
 	private Boolean isPresented = false;
 	
@@ -44,10 +45,8 @@ public class ISessionM_Android : ISessionM
 	{
 		listener = sessionMGameObject.gameObject.AddComponent<SessionMEventListener>();
 		
-		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
-			activityObject.CallStatic("setCallbackGameObjectName", sessionMGameObject.gameObject.name);
-		}
-		
+		sessionMObject.CallStatic("setCallbackGameObjectName", sessionMGameObject.gameObject.name);
+
 		listener.SetNativeParent(this);
 		
 		if(callback != null) {
@@ -86,102 +85,66 @@ public class ISessionM_Android : ISessionM
 	
 	public string GetUser()
 	{
-		string userJSON = null;
-		
-		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
-			userJSON = activityObject.Call<string>("getUser");
-		}
-		
-		return userJSON;
+		return sessionMObject.CallStatic<string>("getUser");
 	}
 
-	public bool LogInUserWithEmail(string email, string password) {
-		bool success;
-		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
-			success = activityObject.Call<bool>("logInUserWithEmail", email, password);
-		}
-		return success;
+	public bool LogInUserWithEmail(string email, string password)
+	{
+		return sessionMObject.CallStatic<bool>("logInUserWithEmail", email, password);
 	}
 
-	public void LogOutUser() {
-		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
-			activityObject.Call("logOutUser");
-		}
+	public void LogOutUser()
+	{
+		sessionMObject.CallStatic("logOutUser");
 	}
 
-	public bool SignUpUser(string email, string password, string birthYear, string gender, string zipCode) {
-		bool success;
-		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
-			success = activityObject.Call<bool>("signUpUser", email, password, birthYear, gender, zipCode);
-		}
-		return success;
+	public bool SignUpUser(string email, string password, string birthYear, string gender, string zipCode)
+	{
+		return sessionMObject.CallStatic<bool>("signUpUser", email, password, birthYear, gender, zipCode);
 	}
 
-	public void SetUserOptOutStatus(bool status){
-		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
-			activityObject.Call("setUserOptOutStatus", status);
-		}
+	public void SetUserOptOutStatus(bool status)
+	{
+		sessionMObject.CallStatic("setUserOptOutStatus", status);
 	}
 	
 	public void SetShouldAutoUpdateAchievementsList(bool shouldAutoUpdate)
 	{
-		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
-			activityObject.Call("setShouldAutoUpdateAchievementsList", shouldAutoUpdate);                   
-		}
+		sessionMObject.CallStatic("setShouldAutoUpdateAchievementsList", shouldAutoUpdate);
 	}
 
-    public void SetSessionAutoStartEnabled(bool autoStart)
+	public void SetSessionAutoStartEnabled(bool autoStart)
 	{
-		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
-			activityObject.Call("setSessionAutoStartEnabled", autoStart);                   
-		}
+		sessionMObject.CallStatic("setSessionAutoStartEnabled", autoStart);
 	}
 
 	public bool IsSessionAutoStartEnabled()
 	{
-		bool isEnabled = true;
-		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
-			isEnabled = activityObject.Call<bool>("isSessionAutoStartEnabled");                   
-		}
-		return isEnabled;
+		return sessionMObject.CallStatic<bool>("isSessionAutoStartEnabled");
 	}
 	
 	public void UpdateAchievementsList()
 	{
-		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
-			activityObject.Call("updateAchievementsList");                  
-		}
+		sessionMObject.CallStatic("updateAchievementsList");
 	}
 	
 	public int GetUnclaimedAchievementCount()
 	{
-		int count = 0;
-		
-		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
-			count = activityObject.Call<int>("getUnclaimedAchievementCount");			
-		}
-		
-		return count;
+		return sessionMObject.CallStatic<int>("getUnclaimedAchievementCount");
 	}
 	
-	public string GetUnclaimedAchievementData() 
+	public string GetUnclaimedAchievementData()
 	{
-		string achievementJSON = null;
-		
-		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
-			achievementJSON = activityObject.Call<string>("getUnclaimedAchievementJSON");			
-		}
-		
-		return achievementJSON;
+		return sessionMObject.CallStatic<string>("getUnclaimedAchievementJSON");
 	}
 	
 	
-	public void LogAction(string action) 
+	public void LogAction(string action)
 	{
 		androidInstance.Call("logAction", action);
 	}
 	
-	public void LogAction(string action, int count) 
+	public void LogAction(string action, int count)
 	{
 		androidInstance.Call("logAction", action, count);
 	}
@@ -196,9 +159,8 @@ public class ISessionM_Android : ISessionM
 	
 	public bool PresentActivity(ActivityType type)
 	{
-		using (AndroidJavaObject activityType = GetAndroidActivityTypeObject(type),
-		       activityObject = GetCurrentActivity()) {
-			isPresented = activityObject.Call<bool>("presentActivity", activityType);			
+		using (AndroidJavaObject activityType = GetAndroidActivityTypeObject(type)) {
+			isPresented = androidInstance.Call<bool>("presentActivity", activityType);
 		}
 		return isPresented;
 	}
@@ -222,10 +184,8 @@ public class ISessionM_Android : ISessionM
 	public bool IsActivityAvailable(ActivityType type)
 	{
 		bool available = false;
-
-		using (AndroidJavaObject activityType = GetAndroidActivityTypeObject(type),
-		       activityObject = GetCurrentActivity()) {
-			available = activityObject.Call<bool>("isActivityAvailable", activityType);			
+		using (AndroidJavaObject activityType = GetAndroidActivityTypeObject(type)) {
+			available = sessionMObject.CallStatic<bool>("isActivityAvailable", activityType);
 		}
 		return available;
 	}
@@ -242,32 +202,22 @@ public class ISessionM_Android : ISessionM
 
 	public string GetSDKVersion()
 	{
-		return androidInstance.Call<string>("getSDKVersion");			
+		return androidInstance.Call<string>("getSDKVersion");
 	}
 	
 	public string GetRewards()
 	{
-		string rewardsJSON = null;
-		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
-			rewardsJSON = activityObject.Call<string>("getRewardsJSON");
-		}
-		return rewardsJSON;
+		return sessionMObject.CallStatic<string>("getRewardsJSON");
 	}
 
 	public string GetMessagesList()
 	{
-		string messagesJSON = null;
-		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
-			messagesJSON = activityObject.Call<string>("getMessagesList");
-		}
-		return messagesJSON;
+		return sessionMObject.CallStatic<string>("getMessagesList");
 	}
 
 	public void SetMessagesEnabled(bool enabled)
 	{
-		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
-			activityObject.Call("setMessagesEnabled", enabled);
-		}
+		sessionMObject.CallStatic("setMessagesEnabled", enabled);
 	}
 	
 	public void SetMetaData(string data, string key)
@@ -282,142 +232,112 @@ public class ISessionM_Android : ISessionM
 
 	public void SetServiceRegion(ServiceRegion serviceRegion)
 	{
-		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
-            //Always 0 for now
-			activityObject.Call("setServiceRegion", 0);                  
-		}
+		//Always 0 for now
+		sessionMObject.CallStatic("setServiceRegion", 0);
 	}
 
 	public void SetServerType(string url)
 	{
-		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
-			activityObject.Call("setServerType", url);                  
-		}
+		sessionMObject.CallStatic("setServerType", url);
 	}
 
 	public void SetAppKey(string appKey)
 	{
-		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
-			activityObject.Call("setAppKey", appKey);                  
-		}
+		sessionMObject.CallStatic("setAppKey", appKey);
 	}
 	
 	public void NotifyPresented()
 	{
-		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
-			isPresented = activityObject.Call<bool>("notifyCustomAchievementPresented");
-		}
+		isPresented = sessionMObject.CallStatic<bool>("notifyCustomAchievementPresented");
 	}
 	
 	public void NotifyDismissed()
 	{
 		if (isPresented) {
-			using (AndroidJavaObject activityObject = GetCurrentActivity()) {
-				activityObject.Call ("notifyCustomAchievementCancelled");
-				isPresented = false;
-			}
+			sessionMObject.CallStatic("notifyCustomAchievementCancelled");
 		}
 	}
 	
 	public void NotifyClaimed()
-	{	
+	{
 		if (isPresented) {
-			using (AndroidJavaObject activityObject = GetCurrentActivity()) {
-				activityObject.Call ("notifyCustomAchievementClaimed");
-				isPresented = false;
-			}
+			sessionMObject.CallStatic("notifyCustomAchievementClaimed");
+			isPresented = false;
 		}
 	}
 
 	public void PresentTierList()
 	{
-		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
-			activityObject.Call ("presentTierList");
-		}
+		sessionMObject.CallStatic("presentTierList");
 	}
 
 	public string GetTiers()
 	{
-		string tiers = null;
-		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
-			tiers = activityObject.Call<string> ("getTiers");
-		}
-		return tiers;
+		return sessionMObject.CallStatic<string>("getTiers");
 	}
 	
 	public double GetApplicationMultiplier()
 	{
-		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
-			return activityObject.Call<double> ("getApplicationMultiplier");
-		}
+		return sessionMObject.CallStatic<double>("getApplicationMultiplier");
 	}
 
 	public void UpdateOffers()
 	{
-		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
-			activityObject.Call ("fetchOffers");
-		}
+		sessionMObject.CallStatic("fetchOffers");
 	}
 
 	public string GetOffers()
 	{
-		string offers = null;
-		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
-			offers = activityObject.Call<string> ("getOffers");
-		}
-		return offers;
+		return sessionMObject.CallStatic<string>("getOffers");
 	}
 
 	public void FetchContent(string contentID, bool isExternalID)
 	{
-		using (AndroidJavaObject activityObject = GetCurrentActivity()) {
-			activityObject.Call ("fetchContent", contentID, isExternalID);
-		}
+		sessionMObject.CallStatic("fetchContent", contentID, isExternalID);
 	}
 
-	public void SetCallback(ISessionMCallback callback) 
+	public void SetCallback(ISessionMCallback callback)
 	{
 		this.callback = callback;
 		listener.SetCallback(callback);
 	}
 	
-	public ISessionMCallback GetCallback() 
+	public ISessionMCallback GetCallback()
 	{
 		return this.callback;
 	}
 	
-	// MonoBehavior 
-	
-	public AndroidJavaObject GetCurrentActivity() 
+	// MonoBehavior
+	public AndroidJavaObject GetCurrentActivity()
 	{
 		using (AndroidJavaClass playerClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer")) {
 			return playerClass.GetStatic<AndroidJavaObject>("currentActivity");
 		}
 	}
 	
-	private AndroidJavaObject GetAndroidActivityTypeObject(ActivityType type) 
+	private AndroidJavaObject GetAndroidActivityTypeObject(ActivityType type)
 	{
 		if(Application.platform != RuntimePlatform.Android) {
-			return null;	
+			return null;
 		}
 		
 		using (AndroidJavaClass typeClass = new AndroidJavaClass("com.sessionm.api.SessionM$ActivityType")) {
 			string typeString = null;
 			if(type == ActivityType.Achievement) {
-				typeString = "ACHIEVEMENT";	
+				typeString = "ACHIEVEMENT";
 			} else if(type == ActivityType.Portal) {
-				typeString = "PORTAL";	
+				typeString = "PORTAL";
 			}
 			
 			AndroidJavaObject activityType = typeClass.CallStatic<AndroidJavaObject>("valueOf", typeString);
-			return activityType;		
+			return activityType;
 		}
 	}
 	
 	protected static void initAndroidInstance()
 	{
 		using (AndroidJavaClass sessionMClass = new AndroidJavaClass("com.sessionm.api.SessionM")) {
-			androidInstance = sessionMClass.CallStatic<AndroidJavaObject>("getInstance"); 
+			androidInstance = sessionMClass.CallStatic<AndroidJavaObject>("getInstance");
 		}
 	}
 }

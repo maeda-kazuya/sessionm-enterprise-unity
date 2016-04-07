@@ -83,7 +83,7 @@ public class SessionMPlugin{
     }
 
     public static void setMessagesEnabled(boolean enabled) {
-            sessionM.setMessagesEnabled(enabled);
+        sessionM.setMessagesEnabled(enabled);
     }
 
     public static String getUser() {
@@ -105,6 +105,10 @@ public class SessionMPlugin{
         if (tiersList != null)
             json = SessionMListener.getTiersJSON(tiersList);
         return json;
+    }
+
+    public static double getApplicationMultiplier(){
+        return sessionM.getApplicationMultiplier();
     }
 
     public static String getOffers(){

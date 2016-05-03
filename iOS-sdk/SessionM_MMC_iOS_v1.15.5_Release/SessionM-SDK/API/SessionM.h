@@ -1164,7 +1164,7 @@ typedef enum SMAchievementDismissType {
  @property tierPointBalance
  @abstract Returns user's current tier points balance.
  */
-@property(nonatomic, readonly) NSUInteger tierPointBalance;
+@property(nonatomic, readonly) unsigned long tierPointBalance;
 /*!
  @property unclaimedAchievementCount
  @abstract Returns user's unclaimed achievement count.

@@ -442,7 +442,7 @@ public class SessionM : MonoBehaviour
 		string tierPercentage = (string)userDict["getTierPercentage"];
 		string tierAnniversaryDate = (string)userDict["getTierAnniversaryDate"];
 		string startTier = (string)userDict["getStartTier"];
-		UserData userData = new UserData(isOptedOut, isRegistered, isLoggedIn, userPointBalance, userTierPointBalance, (int)unclaimedAchievementCount, (int)unclaimedAchievementValue, achievements, achievementsList, tierIdentifier, tierName, tierPercentage, tierAnniversaryDate, startTier);
+		UserData userData = new UserData(isOptedOut, isRegistered, isLoggedIn, (int)userPointBalance, userTierPointBalance, (int)unclaimedAchievementCount, (int)unclaimedAchievementValue, achievements, achievementsList, tierIdentifier, tierName, tierPercentage, tierAnniversaryDate, startTier);
 
 		return userData;
 	}

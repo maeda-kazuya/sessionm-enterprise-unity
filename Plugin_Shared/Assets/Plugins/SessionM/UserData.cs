@@ -9,8 +9,8 @@ public class UserData
 	private bool isOptedOut;
 	private bool isRegistered;
 	private bool isLoggedIn;
-	private int pointBalance;
-	private int tierPointBalance;
+	private long pointBalance;
+	private long tierPointBalance;
 	private int unclaimedAchievementCount;
 	private int unclaimedAchievementValue;
 	private List<AchievementData> achievements;
@@ -22,7 +22,7 @@ public class UserData
 	private string startTier;
 
 	/*! Creates a new user with the specified parameters. */
-	public UserData(bool isOptedOut, bool isRegistered, bool isLoggedIn, int pointBalance, int tierPointBalance, int unclaimedAchievementCount, int unclaimedAcheivementValue, List<AchievementData> achievements, List<AchievementData> achievementsList, string tierIdentifier, string tierName, string tierPercentage, string tierAnniversaryDate, string startTier)
+	public UserData(bool isOptedOut, bool isRegistered, bool isLoggedIn, long pointBalance, long tierPointBalance, int unclaimedAchievementCount, int unclaimedAcheivementValue, List<AchievementData> achievements, List<AchievementData> achievementsList, string tierIdentifier, string tierName, string tierPercentage, string tierAnniversaryDate, string startTier)
 	{
 		this.isOptedOut = isOptedOut;
 		this.isRegistered = isRegistered;
@@ -47,9 +47,9 @@ public class UserData
 	/*! Returns whether user is currently logged in. */
 	public bool IsLoggedIn() { return this.isLoggedIn; }
 	/*! Returns user's current point balance. */
-	public int GetUserPointBalance() { return this.pointBalance; }
+	public long GetUserPointBalance() { return this.pointBalance; }
 	/*! Returns user's current tier point balance. */
-	public int GetUserTierPointBalance() { return this.tierPointBalance; }
+	public long GetUserTierPointBalance() { return this.tierPointBalance; }
 	/*! Returns how many achievements that the user has earned, but not claimed. */
 	public int GetUnclaimedAchievementCount() { return this.unclaimedAchievementCount; }
 	/*! Returns total point value of achievements that the user has earned, but not claimed. */

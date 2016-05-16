@@ -3,10 +3,14 @@ source ../Config-SdkVersion
 
 echo "Installing latest SessionM podspec"
 pod install
-perl -pi -e 's/ -ObjC//g' 'Pods/Target Support Files/Pods/Pods.debug.xcconfig'
-printf "\nVALID_ARCHS = armv7 armv7s arm64 i386 x86_64" >> "Pods/Target Support Files/Pods/Pods.debug.xcconfig"
-perl -pi -e 's/ -ObjC//g' 'Pods/Target Support Files/Pods/Pods.release.xcconfig'
-printf "\nVALID_ARCHS = armv7 armv7s arm64 i386 x86_64" >> "Pods/Target Support Files/Pods/Pods.release.xcconfig"
+
+DEBUG_CONFIG="Pods/Target Support Files/Pods-SessionM-Unity/Pods-SessionM-Unity.debug.xcconfig"
+RELEASE_CONFIG="Pods/Target Support Files/Pods-SessionM-Unity/Pods-SessionM-Unity.release.xcconfig"
+perl -pi -e 's/ -ObjC//g' "${DEBUG_CONFIG}"
+printf "\nVALID_ARCHS = armv7 armv7s arm64 i386 x86_64" >> "${DEBUG_CONFIG}"
+perl -pi -e 's/ -ObjC//g' "${RELEASE_CONFIG}"
+printf "\nVALID_ARCHS = armv7 armv7s arm64 i386 x86_64" >> "${RELEASE_CONFIG}"
+
 sed -e 's/$(UNITY_SDK_VERSION)/'${UNITY_SDK_VERSION}'/g' SessionM-Unity/SessionM_Unity.h.in > SessionM-Unity/SessionM_Unity.h
 
 CONFIGURATION=Release

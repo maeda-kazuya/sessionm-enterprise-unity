@@ -1,3 +1,7 @@
 source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '7.0'
-pod 'SessionM', :path => './'
+
+target "SessionM-Unity" do
+	pod 'SessionM', :path => './'
+end
+

@@ -2,7 +2,7 @@ SessionM Unity SDK Release Notes
 ________________
 Copyright: 2016 SessionM. All rights reserved.
 Date: 09/12/2016
-Version: 2.1.1
+Version: 2.1.2
 
 Changes:
 - Updated iOS SDK to support iOS 10.

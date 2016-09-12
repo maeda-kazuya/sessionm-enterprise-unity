@@ -1,18 +1,13 @@
 SessionM Unity SDK Release Notes
 ________________
-Copyright: 2015 SessionM. All rights reserved.
-Date: 06/17/2015
-Version: 2.1
+Copyright: 2016 SessionM. All rights reserved.
+Date: 09/12/2016
+Version: 2.1.1
 
 Changes:
-- Added Unity 5 support.
-- Added SetServiceRegion api method.
-- Added GetRewards api method.
-- Added UpdateAchievementsList api method.
-- Added SetShouldAutoUpdateAchievementsList api method.
-- Added various fields and methods to IAchievementData and UserData classes.
+- Updated iOS SDK to support iOS 10.
 
 
-For more info, please see http://www.sessionm.com/documentation/unity-integration.php
+For more info, please see https://documentation.sessionm.com/sdk-integrations/unity-integration
 
 Please also check out our source code and our Unity Sample App on Github: https://github.com/sessionm/sessionm-unity

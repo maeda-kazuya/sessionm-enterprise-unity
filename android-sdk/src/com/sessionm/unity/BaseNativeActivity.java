@@ -24,7 +24,7 @@ import java.util.Map;
 public class BaseNativeActivity extends UnityPlayerActivity {
 
     private final static String TAG = "SessionM.Unity";
-    private final static String VERSION_NUM = "2.0.1";
+    private final static String VERSION_NUM = "2.1.3";
     
     private final SessionM sessionM = SessionM.getInstance();
     

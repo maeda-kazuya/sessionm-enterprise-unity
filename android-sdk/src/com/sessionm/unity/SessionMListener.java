@@ -347,6 +347,8 @@ public class SessionMListener implements ActivityListener, SessionListener {
 
     //Return content data as JSON for unity
     public static String getContentJSON(Content content) {
+        if (content == null) 
+            return "";
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("id", content.getID());
